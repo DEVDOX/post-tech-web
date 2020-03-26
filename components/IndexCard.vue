@@ -9,7 +9,7 @@
         <img class="w-10 h-10 rounded-full object-cover mr-4" src="/image/pikachu.jpg" alt="Avatar of Jonathan Reinink">
         <div class="w-full flex justify-between items-center">
           <p class="text-gray-700 leading-none text-base">@RikuS3n</p>
-          <p class="text-gray-600 text-sm">2020 / 3 / 26</p>
+          <p class="text-gray-600 text-sm">2020/3/26</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,7 @@
-module.exports = {
+import { Configuration } from '@nuxt/types'
+
+
+const config: Configuration = {
   mode: 'universal',
   /*
    ** Headers of the page
@@ -32,7 +35,9 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [
+    '~/plugins/tailwind-vue'
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -67,7 +72,16 @@ module.exports = {
         langDir: 'lang/',
         defaultLocale: 'jp'
       }
-    ]
+    ],
+
+    ['@nuxt/typescript-build', {
+      typeCheck: {
+        memoryLimit: 4096,
+        workers: 2
+      },
+      ignoreNotFoundWarnings: false
+    }]
+
   ],
   /*
    ** Build configuration
@@ -79,3 +93,5 @@ module.exports = {
     extend(config, ctx) {}
   }
 }
+
+export default config
