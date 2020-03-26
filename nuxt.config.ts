@@ -3,9 +3,7 @@ import { Configuration } from '@nuxt/types'
 
 const config: Configuration = {
   mode: 'universal',
-  /*
-   ** Headers of the page
-   */
+
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -21,41 +19,28 @@ const config: Configuration = {
   },
 
   server: {
-    port: 8000, // デフォルト: 3000
-    host: '0.0.0.0', // デフォルト: localhost,
+    port: 8000,
+    host: '0.0.0.0',
   },
-  /*
-   ** Customize the progress-bar color
-   */
+
   loading: { color: '#fff' },
-  /*
-   ** Global CSS
-   */
+
   css: [],
-  /*
-   ** Plugins to load before mounting the App
-   */
+
   plugins: [
     '~/plugins/tailwind-vue'
   ],
-  /*
-   ** Nuxt.js dev-modules
-   */
+
   buildModules: [
     '@nuxt/typescript-build',
-    // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss'
   ],
-  /*
-   ** Nuxt.js modules
-   */
+
   modules: [
     '@nuxtjs/pwa',
-    // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
-
+    'nuxt-webfontloader',
     ['nuxt-i18n',
       {
         locales: [
@@ -83,13 +68,15 @@ const config: Configuration = {
     }]
 
   ],
-  /*
-   ** Build configuration
-   */
+
+  webfontloader: {
+    google: {
+      families: ['Source+Sans+Pro:400,700']
+    }
+  },
+
+
   build: {
-    /*
-     ** You can extend webpack config here
-     */
     extend(config, ctx) {}
   }
 }
