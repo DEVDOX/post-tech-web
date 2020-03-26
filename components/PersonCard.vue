@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-sm w-full lg:max-w-full lg:flex">
-    <div class="w-full border-t border-r border-b border-l border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal cursor-pointer hover:shadow-md duration-150">
-      <n-link to="/">
+    <div class="w-full border-t border-r border-b border-l border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal cursor-pointer hover:shadow duration-150">
+      <n-link to="/user/RikuS3n">
       <div class="mb-3">
         <div class="flex justify-center items-center">
           <img class="w-16 h-16 rounded-full object-cover mr-4" src="/image/pikachu.jpg" alt="Avatar of Jonathan Reinink">

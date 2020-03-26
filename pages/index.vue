@@ -9,7 +9,7 @@
         <IndexCard class="mb-3" />
       </div>
       <div id="toc" class="w-3/12 mx-3">
-        <PersonCard />
+        <PersonCard :hover="true" />
       </div>
     </div>
   </div>

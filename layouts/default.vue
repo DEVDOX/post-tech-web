@@ -33,5 +33,6 @@ html {
 
 .all-wrapper {
   min-height: 100vh;
+  background-color: #f9fafa;
 }
 </style>

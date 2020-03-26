@@ -3,5 +3,7 @@ export default {
   good: 'いいね',
   article: '記事',
   follow: 'フォロー',
-  follower: 'フォロワー'
+  follower: 'フォロワー',
+  newPost: '投稿する',
+  signIn: 'サインイン',
 }

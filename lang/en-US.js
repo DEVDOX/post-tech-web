@@ -3,5 +3,7 @@ export default {
   good: 'Good',
   article: 'Article',
   follow: 'Follow',
-  follower: 'Follower'
+  follower: 'Follower',
+  newPost: 'New Post',
+  signIn: 'Sign in',
 }
