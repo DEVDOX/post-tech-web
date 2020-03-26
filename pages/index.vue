@@ -12,29 +12,6 @@
         <PersonCard />
       </div>
     </div>
-    <t-pagination
-      prev-label="Previous"
-      next-label="Next"
-      first-label="First"
-      last-label="Last"
-      :total-items="100"
-      :per-page="4"
-      :limit="5"
-      :value="3"
-      :hide-ellipsis="true"
-      :hide-first-last-controls="true"
-      wrapper-class="flex w-full justify-between"
-      item-class="h-12"
-      page-class="w-12"
-      control-class=""
-      disabled-control-class="opacity-50"
-      ellipsis-class=""
-      button-class="p-2 text-blue-500 hover:text-blue-700 w-full"
-      control-button-class="text-blue-500 hover:text-blue-700"
-      ellipsis-button-class="text-gray-600"
-      active-button-class="font-bold underline"
-    />
-
   </div>
 </template>
 

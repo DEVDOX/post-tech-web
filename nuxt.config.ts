@@ -25,7 +25,9 @@ const config: Configuration = {
 
   loading: { color: '#fff' },
 
-  css: [],
+  css: [
+    '@mdi/font/css/materialdesignicons.min.css',
+  ],
 
   plugins: [
     '~/plugins/tailwind-vue'
@@ -53,9 +55,16 @@ const config: Configuration = {
             file: 'ja-JP.js'
           },
         ],
+        detectBrowserLanguage: {
+          useCookie: true,
+          cookieKey: 'i18n_redirected',
+          alwaysRedirect: false,
+          fallbackLocale: 'ja'
+        },
         lazy: true,
         langDir: 'lang/',
-        defaultLocale: 'jp'
+        defaultLocale: 'jp',
+        strategy: 'no_prefix',
       }
     ],
 
@@ -74,7 +83,6 @@ const config: Configuration = {
       families: ['Source+Sans+Pro:400,700']
     }
   },
-
 
   build: {
     extend(config, ctx) {}

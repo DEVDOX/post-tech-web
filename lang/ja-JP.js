@@ -1,3 +1,7 @@
 export default {
-  welcome: 'ようこそ'
+  welcome: 'ようこそ',
+  good: 'いいね',
+  article: '記事',
+  follow: 'フォロー',
+  follower: 'フォロワー'
 }
