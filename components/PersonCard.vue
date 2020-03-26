@@ -8,7 +8,6 @@
             <p class="text-gray-800 text-base leading-none">@RikuS3n</p>
           </div>
         </div>
-        <p class="text-gray-700 text-base">ああああいいいうううえええおおおお</p>
       </div>
       <div class="flex justify-center items-center">
         <div class="w-1/3 text-center">
