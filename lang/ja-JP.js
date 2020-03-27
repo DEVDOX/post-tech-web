@@ -1,9 +1,11 @@
 export default {
   welcome: 'ようこそ',
-  good: 'いいね',
+  like: 'いいね',
   article: '記事',
   follow: 'フォロー',
   follower: 'フォロワー',
   newPost: '投稿する',
-  signIn: 'サインイン',
+  login: 'ログイン',
+  loginWith: 'Login with ',
+  search: 'キーワードで探す',
 }

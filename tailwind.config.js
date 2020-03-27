@@ -3,6 +3,10 @@ module.exports = {
     extend: {
       colors: {
         twitter: '#1da1f2'
+      },
+      screens: {
+        //'lg': '1400px',
+        'xl': '1400px',
       }
     },
   },
