@@ -8,14 +8,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import Header from '~/components/Header.vue';
 
-export default Vue.extend({
+@Component({
   components: {
     Header
   }
 })
+export default class DefaultLayout extends Vue {
+  handler(e: any) {
+    console.log('fired')
+    this.$root.$emit('close')
+  }
+
+  mounted() {
+    window.addEventListener('keydown', this.handler)
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handler)
+  }
+}
 </script>
 
 <style>

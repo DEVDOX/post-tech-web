@@ -5,9 +5,11 @@ module.exports = {
         twitter: '#1da1f2'
       },
       screens: {
-        //'lg': '1400px',
         'xl': '1400px',
-      }
+      },
+      variants: {
+        borderWidth: ['last']
+      },
     },
   },
   variants: {},

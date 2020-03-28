@@ -12,21 +12,16 @@
                 <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">いいねした記事</a>
               </li>
             </ul>
-            <div id="article" class="last:border-b-0 border-b py-3 cursor-pointer" v-for="i in 5" :key="i">
+            <!-- last:border-b-0 が効いてない -->
+            <div id="article" class="border-b last:border-b-0 py-3 cursor-pointer" v-for="i in 5" :key="i">
               <n-link to="/post/">
                 <div class="mb-5">
                   <div id="title" class="text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</div>
-                  <p class="text-gray-900 text-base">
-                    <n-link to="/tag/lifestyle">
-                      <span class="hover:underline">#lifestyle</span>
-                    </n-link>
-                    <n-link to="/tag/nuxt">
-                      <span class="hover:underline">#nuxt</span>
-                    </n-link>
-                    <n-link to="/tag/preffered">
-                      <span class="hover:underline">#preffered</span>
-                    </n-link>
-                  </p>
+                  <div class="text-gray-900 text-base">
+                    <n-link to="/tag/" class="hover:underline">#lifestyle</n-link>
+                    <n-link to="/tag/" class="hover:underline">#nuxt</n-link>
+                    <n-link to="/tag/" class="hover:underline">#preffered</n-link>
+                  </div>
                 </div>
                 <div class="flex items-center">
                   <img class="w-10 h-10 rounded-full object-cover mr-2" src="/image/pikachu.jpg" alt="avatar">
@@ -99,5 +94,10 @@ export default class UserPage extends Vue {
 <style scoped>
 #article:hover #title {
   text-decoration: underline;
+}
+
+.stretched-link::after {
+  content: "";
+  @apply z-10 absolute inset-0 bg-transparent pointer-events-auto;
 }
 </style>

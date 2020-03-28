@@ -27,11 +27,11 @@
           <n-link to="/user/RikuS3n" class="inline-block"><img class="w-10 h-10 rounded-full object-cover mr-4" src="/image/pikachu.jpg" alt="avatar"></n-link>
         </div>
         <div v-else-if="!isSignIn">
-          <button @click="toggleModal" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">{{ $t('login') }}</button>
+          <button @click="openModal" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">{{ $t('login') }}</button>
         </div>
       </div>
     </nav>
-    <LoginModal :isOpen="isOpen" @close="toggleModal"/>
+    <LoginModal :isOpen="isOpen" @close="closeModal"/>
   </div>
 </template>
 
@@ -48,8 +48,16 @@ export default class Header extends Vue {
   @Prop() isSignIn!: boolean
   isOpen: boolean = false
 
-  toggleModal() {
-    this.isOpen = !this.isOpen
+  mounted() {
+    this.$root.$on('close', this.closeModal)
+  }
+
+  openModal() {
+    this.isOpen = true
+  }
+
+  closeModal() {
+    this.isOpen = false
   }
 }
 </script>
