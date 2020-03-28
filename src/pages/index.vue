@@ -28,6 +28,9 @@ import PersonCard from '~/components/PersonCard.vue'
   }
 })
 export default class IndexPage extends Vue {
+  mounted() {
+    console.log(process.env.GITHUB_CLIENT_ID)
+  }
 }
 </script>
 
