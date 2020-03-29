@@ -2,36 +2,18 @@
   <div class="px-1 xl:px-3">
     <div class="flex flex-wrap -mx-1 xl:-mx-3">
       <div id="main" class="w-full lg:w-2/3 px-1 xl:px-3 mb-3">
-        <div class="w-full lg:flex">
-          <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col leading-normal duration-150">
-            <ul class="flex border-b">
-              <li class="-mb-px mr-1">
-                <a class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold" href="#">自分の記事</a>
-              </li>
-              <li class="mr-1">
-                <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">いいねした記事</a>
-              </li>
-            </ul>
-            <!-- last:border-b-0 が効いてない -->
-            <div id="article" class="w-full border-b last:border-b-0 py-3 relative cursor-pointer" v-for="i in 5" :key="i">
-              <n-link to="/post/" class="stretched-link"></n-link>
-              <div class="mb-5">
-                <div id="title" class="text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</div>
-                <div class="relative text-gray-900 text-base z-20">
-                  <n-link to="/tag/" class="hover:underline">#lifestyle</n-link>
-                  <n-link to="/tag/" class="hover:underline">#nuxt</n-link>
-                  <n-link to="/tag/" class="hover:underline">#preffered</n-link>
-                </div>
-              </div>
-              <div class="flex items-center">
-                <img class="w-10 h-10 rounded-full object-cover mr-2" src="/image/pikachu.jpg" alt="avatar">
-                <div class="w-full flex justify-start items-center">
-                  <p class="text-gray-700 leading-none text-base mr-3">@RikuS3n</p>
-                  <p class="text-gray-700 mr-3"><i class="mdi mdi-thumb-up-outline"></i>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
-                  <p class="text-gray-700 text-sm ml-auto">2020/3/26</p>
-                </div>
-              </div>
-            </div>
+        <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col leading-normal duration-150">
+          <ul class="flex border-b">
+            <li class="-mb-px mr-1">
+              <a class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold" href="#">自分の記事</a>
+            </li>
+            <li class="mr-1">
+              <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">いいねした記事</a>
+            </li>
+          </ul>
+          <!-- last:border-b-0 が効いてない -->
+          <div id="article" v-for="i in 5" :key="i" class="w-full border-b last:border-b-0 relative">
+            <ArticleCard />
           </div>
         </div>
       </div>
@@ -79,10 +61,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import ArticleCard from '~/components/ArticleCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
 
 @Component({
   components: {
+    ArticleCard,
     PersonCard
   }
 })

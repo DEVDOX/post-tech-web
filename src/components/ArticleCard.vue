@@ -1,7 +1,7 @@
 <template>
-  <div class="w-full lg:max-w-full lg:flex relative rounded hover:shadow duration-150">
+  <div class="w-full relative p-4">
     <n-link to="/post/abc3" class="stretched-link"></n-link>
-    <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal">
+    <div class="w-full flex flex-col justify-between leading-normal">
       <div class="mb-5">
         <div class="text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</div>
         <div class="relative text-gray-900 text-base z-20">
@@ -26,7 +26,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
-export default class IndexCard extends Vue {
+export default class ArticleCard extends Vue {
 }
 </script>
 

@@ -2,12 +2,12 @@
   <div class="px-1 xl:px-3">
     <div class="flex flex-wrap -mx-1 xl:-mx-3">
       <div id="sidebar" class="w-full lg:w-1/6 xl:w-2/12 px-1 xl:px-3">
-        <IndexCard class="mb-3" />
+        <ArticleCard class="mb-3" />
       </div>
       <div id="main" class="w-full lg:w-5/6 xl:w-7/12 px-1 xl:px-3">
-        <IndexCard class="mb-3" />
-        <IndexCard class="mb-3" />
-        <IndexCard class="mb-3" />
+        <div v-for="i in 5" :key="i" class="hover:shadow border border-gray-400 rounded bg-white duration-150 mb-3">
+          <ArticleCard />
+        </div>
       </div>
       <div id="toc" class="w-full lg:w-full xl:w-3/12 px-1 xl:px-3">
         <PersonCard :hover="true" />
@@ -18,12 +18,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import IndexCard from '~/components/IndexCard.vue'
+import ArticleCard from '~/components/ArticleCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
 
 @Component({
   components: {
-    IndexCard,
+    ArticleCard,
     PersonCard
   }
 })

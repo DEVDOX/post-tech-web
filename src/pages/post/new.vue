@@ -20,6 +20,7 @@
       <mavon-editor
         :toolbars="markdownOption"
         language="en"
+        v-model="content"
       />
     </no-ssr>
   </div>
@@ -30,6 +31,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component
 export default class NewPost extends Vue {
+  content = ''
   markdownOption = {
     bold: true,
     italic: true,
