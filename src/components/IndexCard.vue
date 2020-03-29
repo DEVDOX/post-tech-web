@@ -1,6 +1,6 @@
 <template>
   <div class="w-full lg:max-w-full lg:flex relative rounded hover:shadow duration-150">
-    <n-link to="/post/" class="stretched-link"></n-link>
+    <n-link to="/post/abc3" class="stretched-link"></n-link>
     <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal">
       <div class="mb-5">
         <div class="text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</div>

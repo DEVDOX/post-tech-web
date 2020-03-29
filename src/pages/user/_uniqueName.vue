@@ -13,25 +13,24 @@
               </li>
             </ul>
             <!-- last:border-b-0 が効いてない -->
-            <div id="article" class="border-b last:border-b-0 py-3 cursor-pointer" v-for="i in 5" :key="i">
-              <n-link to="/post/">
-                <div class="mb-5">
-                  <div id="title" class="text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</div>
-                  <div class="text-gray-900 text-base">
-                    <n-link to="/tag/" class="hover:underline">#lifestyle</n-link>
-                    <n-link to="/tag/" class="hover:underline">#nuxt</n-link>
-                    <n-link to="/tag/" class="hover:underline">#preffered</n-link>
-                  </div>
+            <div id="article" class="w-full border-b last:border-b-0 py-3 relative cursor-pointer" v-for="i in 5" :key="i">
+              <n-link to="/post/" class="stretched-link"></n-link>
+              <div class="mb-5">
+                <div id="title" class="text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</div>
+                <div class="relative text-gray-900 text-base z-20">
+                  <n-link to="/tag/" class="hover:underline">#lifestyle</n-link>
+                  <n-link to="/tag/" class="hover:underline">#nuxt</n-link>
+                  <n-link to="/tag/" class="hover:underline">#preffered</n-link>
                 </div>
-                <div class="flex items-center">
-                  <img class="w-10 h-10 rounded-full object-cover mr-2" src="/image/pikachu.jpg" alt="avatar">
-                  <div class="w-full flex justify-start items-center">
-                    <p class="text-gray-700 leading-none text-base mr-3">@RikuS3n</p>
-                    <p class="text-gray-700 mr-3"><i class="mdi mdi-thumb-up-outline"></i>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
-                    <p class="text-gray-700 text-sm ml-auto">2020/3/26</p>
-                  </div>
+              </div>
+              <div class="flex items-center">
+                <img class="w-10 h-10 rounded-full object-cover mr-2" src="/image/pikachu.jpg" alt="avatar">
+                <div class="w-full flex justify-start items-center">
+                  <p class="text-gray-700 leading-none text-base mr-3">@RikuS3n</p>
+                  <p class="text-gray-700 mr-3"><i class="mdi mdi-thumb-up-outline"></i>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
+                  <p class="text-gray-700 text-sm ml-auto">2020/3/26</p>
                 </div>
-              </n-link>
+              </div>
             </div>
           </div>
         </div>

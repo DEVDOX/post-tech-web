@@ -9,4 +9,6 @@ export default {
   register: 'Register',
   loginWith: 'Login with ',
   search: 'Search anything',
+  title: 'Title',
+  tags: 'Tags',
 }

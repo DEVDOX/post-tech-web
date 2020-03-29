@@ -31,7 +31,7 @@
         </div>
       </div>
     </nav>
-    <LoginModal :isOpen="isOpen" @close="closeModal"/>
+    <LoginModal :isModalOpen="isModalOpen" @close="closeModal"/>
   </div>
 </template>
 
@@ -47,17 +47,20 @@ import LoginModal from '~/components/LoginModal.vue'
 export default class Header extends Vue {
   @Prop() isSignIn!: boolean
   isOpen: boolean = false
+  isModalOpen: boolean = false
 
   mounted() {
+    this.isOpen = false
+    this.isModalOpen = false
     this.$root.$on('close', this.closeModal)
   }
 
   openModal() {
-    this.isOpen = true
+    this.isModalOpen = true
   }
 
   closeModal() {
-    this.isOpen = false
+    this.isModalOpen = false
   }
 }
 </script>
