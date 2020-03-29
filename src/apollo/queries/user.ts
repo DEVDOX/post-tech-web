@@ -1,19 +1,22 @@
 import gql from 'graphql-tag'
 
-export const GET_USER_BY_ID = gql`
-  query user($id: ID) {
-    user: getUser(id: $id) {
+export const GET_USER_DETAIL = gql`
+  query user($strategy: String, $id: String) {
+    user: getUserDetail(strategy: $strategy, id: $id) {
       id
-      insertedAt
     }
   }
 `
 
-export const GET_USER_DETAIL = gql`
-  query user($id: ID) {
-    user: getUser(id: $id) {
+export const CREATE_USER = gql`
+  mutation createUser($params: CreateParams!) {
+    user: createUser(params: $params) {
+      company
+      displayName
       id
-      insertedAt
+      location
+      profileImageURL
+      uniqueName
     }
   }
 `

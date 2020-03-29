@@ -42,6 +42,7 @@ const config: Configuration = {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
+    'cookie-universal-nuxt'
   ],
 
   modules: [
@@ -94,7 +95,7 @@ const config: Configuration = {
       login: '/',
       logout: '/logout',
       callback: '/auth/callback',
-      home: '/',
+      home: '/'
     },
     strategies: {
       github: {
@@ -104,7 +105,7 @@ const config: Configuration = {
       }
     },
     watchLoggedIn: true,
-    plugins: [ '~/plugins/auth.js' ]
+    plugins: ['~/plugins/auth.js']
   },
 
   proxy: {
@@ -130,7 +131,7 @@ const config: Configuration = {
     bundleRenderer: {
       runInNewContext: false
     }
-  }
+  },
 }
 
 export default config
