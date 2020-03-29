@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
 import IndexCard from '~/components/IndexCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
 
@@ -27,7 +27,10 @@ import PersonCard from '~/components/PersonCard.vue'
     PersonCard
   }
 })
-export default class Index extends Vue {
+export default class IndexPage extends Vue {
+  mounted() {
+    console.log(process.env.GITHUB_CLIENT_ID)
+  }
 }
 </script>
 

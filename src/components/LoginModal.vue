@@ -26,7 +26,9 @@
         <!--Body-->
         <div class="flex flex-col justify-center items-center">
           <button class="bg-twitter border border-twitter rounded text-white py-2 px-3 mb-2"><i class="mdi mdi-twitter mr-1"></i>{{ $t('loginWith') }}Twitter</button>
-          <button class="bg-gray-600 border border-gray rounded text-white py-2 px-3 mb-2"><i class="mdi mdi-github mr-1"></i>{{ $t('loginWith') }}GitHub</button>
+          <button @click="loginWithGithub" class="bg-gray-600 border border-gray rounded text-white py-2 px-3 mb-2">
+            <i class="mdi mdi-github mr-1"></i>{{ $t('loginWith') }}GitHub
+          </button>
         </div>
         
       </div>
@@ -40,6 +42,10 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class LoginModal extends Vue {
   @Prop() isOpen = false
+  
+  loginWithGithub() {
+    this.$root.$emit('loginWithGithub')
+  }
 }
 </script>
 

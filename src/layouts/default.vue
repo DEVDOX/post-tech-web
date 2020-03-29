@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import Header from '~/components/Header.vue';
+import { Component, Vue } from 'nuxt-property-decorator'
+import Header from '~/components/Header.vue'
 
 @Component({
   components: {
@@ -22,12 +22,21 @@ export default class DefaultLayout extends Vue {
     this.$root.$emit('close')
   }
 
-  mounted() {
-    window.addEventListener('keydown', this.handler)
-  }
-
   beforeDestroy() {
     window.removeEventListener('keydown', this.handler)
+  }
+
+  mounted() {
+    window.addEventListener('keydown', this.handler)
+    const _this = this
+
+    this.$root.$on('loginWithGithub', async function() {
+      await _this.loginWithGithub()
+    })
+  }
+
+  async loginWithGithub() {
+    await this.$auth.loginWith('github')
   }
 }
 </script>
