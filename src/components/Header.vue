@@ -3,7 +3,7 @@
     <nav class="flex items-center justify-between flex-wrap bg-teal-500 py-3 px-8 lg:px-32 xl:px-64 mb-8">
       <div class="flex items-center flex-shrink-0 text-white mr-6">
         <n-link to="/">
-          <span class="font-semibold text-xl tracking-tight">Qalter</span>
+          <span class="font-semibold text-xl tracking-tight">Unposter</span>
         </n-link>
       </div>
       <div class="block lg:hidden">
@@ -24,7 +24,7 @@
           <div class="mr-3">
             <n-link to="/post/new" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">+ {{ $t('newPost') }}</n-link>
           </div>
-          <n-link to="/user/RikuS3n" class="inline-block"><img class="w-10 h-10 rounded-full object-cover mr-4" src="/image/pikachu.jpg" alt="avatar"></n-link>
+          <n-link to="/user/RikuS3n" class="inline-block"><img class="w-10 h-10 rounded-full object-cover mr-4" src="/image/kawaii_1.png" alt="avatar"></n-link>
         </div>
         <div v-else-if="!isSignIn">
           <button @click="openModal" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">{{ $t('login') }}</button>

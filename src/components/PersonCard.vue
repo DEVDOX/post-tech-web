@@ -1,29 +1,33 @@
 <template>
-  <div class="w-full lg:max-w-full lg:flex">
-    <n-link to="/user/RikuS3n" class="w-full border-t border-r border-b border-l border-gray-400 bg-white rounded p-4 flex flex-col justify-between leading-normal cursor-pointer hover:shadow duration-150">
-      <div class="mb-3">
-        <div class="flex justify-center items-center">
-          <img class="w-16 h-16 rounded-full object-cover mr-2" src="/image/pikachu.jpg" alt="Avatar of Jonathan Reinink">
-          <div>
-            <p class="text-gray-800 text-base leading-none">@RikuS3n</p>
-          </div>
+  <div :class="isStyle" class="w-full relative flex flex-col justify-between leading-normal">
+    <n-link v-if="link" :to="'/user/' + userName" class="stretched-link"></n-link>
+    <div>
+      <div class="flex justify-center items-center mb-4">
+        <img class="w-16 h-16 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="Avatar of Jonathan Reinink">
+        <div>
+          <p class="text-gray-800 text-lg leading-none">{{ userName }}</p>
         </div>
       </div>
-      <div class="flex justify-center items-center">
-        <div class="w-1/3 text-center">
-          <p class="text-gray-800 text-2xl font-semibold">12</p>
-          <p class="text-gray-600 text-xs">{{ $t('article') }}</p>
-        </div>
-        <div class="w-1/3 text-center">
-          <p class="text-gray-800 text-2xl font-semibold">1,354</p>
-          <p class="text-gray-600 text-xs">{{ $t('follow') }}</p>
-        </div>
-        <div class="w-1/3 text-center">
-          <p class="text-gray-800 text-2xl font-semibold">76</p>
-          <p class="text-gray-600 text-xs">{{ $t('follower') }}</p>
-        </div>
+      <p v-if="tagline" class="text-gray-600 text-lg text-center leading-none mb-5">{{ tagline }}</p>
+      <div v-for="(contact, index) in contacts" :key="index" class="flex justify-center items-center mb-5">
+        <a :href="contact.link" :class="`mdi-${contact.sns} text-${contact.sns}`" class="mdi text-xl mx-2"></a>
       </div>
-    </n-link>
+    </div>
+    <div class="flex justify-center items-center">
+      <div class="w-1/3 text-center">
+        <p class="text-gray-800 text-2xl font-semibold">12</p>
+        <p class="text-gray-600 text-xs">{{ $t('article') }}</p>
+      </div>
+      <div class="w-1/3 text-center">
+        <p class="text-gray-800 text-2xl font-semibold">1,354</p>
+        <p class="text-gray-600 text-xs">{{ $t('follow') }}</p>
+      </div>
+      <div class="w-1/3 text-center">
+        <p class="text-gray-800 text-2xl font-semibold">76</p>
+        <p class="text-gray-600 text-xs">{{ $t('follower') }}</p>
+      </div>
+    </div>
+    <slot />
   </div>
 </template>
 
@@ -32,5 +36,35 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class PersonCard extends Vue {
+  @Prop() card!: boolean
+  @Prop() hover!: boolean
+  @Prop() link!: boolean
+  @Prop() tagline!: string
+  @Prop() userName!: string
+  @Prop() contacts!: []
+
+  isStyle = {
+    'card-class': this.card,
+    'hover-class': this.hover
+  }
 }
 </script>
+
+<style scoped>
+.stretched-link::after {
+  content: "";
+  @apply z-10 absolute inset-0 bg-transparent pointer-events-auto;
+}
+
+.card-class {
+  @apply border border-gray-400 bg-white rounded p-4;
+}
+
+.hover-class {
+  @apply duration-150;
+}
+
+.hover-class:hover {
+  @apply shadow;
+}
+</style>
