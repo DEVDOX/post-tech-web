@@ -6,7 +6,6 @@ export default {
   follower: 'Follower',
   newPost: 'New Post',
   login: 'Log in',
-  register: 'Register',
   loginWith: 'Login with ',
   search: 'Search anything',
   title: 'Title',

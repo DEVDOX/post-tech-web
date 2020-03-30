@@ -20,10 +20,22 @@ module.exports = {
       spacing: {
         '14': '3.5rem',
       },
+      filter: {
+        'none': 'none',
+        'darker': 'brightness(80%)'
+      },
     },
   },
-  variants: {},
+  variants: {
+    borderWidth: ['last'],
+    textDecotation: ['group-hover'],
+    width: ['responsive', 'hover', 'focus'],
+    height: ['responsive', 'hover', 'focus'],
+    filter: ['responsive', 'hover'],
+    backdropFilter: ['responsive'],
+  },
   plugins: [
-    require('tailwindcss-rfs')
+    require('tailwindcss-rfs'),
+    require('tailwindcss-filters'),
   ],
 }

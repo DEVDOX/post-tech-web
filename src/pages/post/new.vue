@@ -1,5 +1,5 @@
 <template>
-  <div class="mavonEditor">
+  <div>
     <div class="w-full bg-white shadow-md rounded mb-8">
       <div class="p-5">
         <label class="block text-gray-700 text-base font-semibold mb-2" for="title">
@@ -19,18 +19,20 @@
     <no-ssr>
       <mavon-editor
         :toolbars="markdownOption"
-        language="en"
+        language="ja"
         v-model="content"
+        class="mavonEditor mb-32"
       />
     </no-ssr>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class NewPost extends Vue {
+  // user.language?をゲットして、mavonEditorに適用する
   content = ''
   markdownOption = {
     bold: true,
@@ -57,10 +59,10 @@ export default class NewPost extends Vue {
     undo: true,
     redo: true,
     fullscreen: true,
-    readmodel: true,
+    readmodel: false,
     htmlcode: false,
     trash: true,
-    save: true,
+    save: false,
     navigation: true,
   }
 }
@@ -69,6 +71,7 @@ export default class NewPost extends Vue {
 <style scoped>
 .mavonEditor {
   width: 100%;
-  height: 100%;
+  max-height: 500px;
+  height: 500px;
 }
 </style>

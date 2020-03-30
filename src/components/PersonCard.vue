@@ -5,12 +5,18 @@
       <div class="flex justify-center items-center mb-4">
         <img class="w-16 h-16 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="Avatar of Jonathan Reinink">
         <div>
-          <p class="text-gray-800 text-lg leading-none">{{ userName }}</p>
+          <p class="text-gray-800 text-lg leading-none">@{{ userName }}</p>
         </div>
       </div>
       <p v-if="tagline" class="text-gray-600 text-lg text-center leading-none mb-5">{{ tagline }}</p>
-      <div v-for="(contact, index) in contacts" :key="index" class="flex justify-center items-center mb-5">
-        <a :href="contact.link" :class="`mdi-${contact.sns} text-${contact.sns}`" class="mdi text-xl mx-2"></a>
+      <div class="relative z-20 flex justify-center items-center mb-5">
+        <a
+          v-for="(contact, index) in contacts"
+          :key="index"
+          :href="contact.link"
+          :class="`mdi-${contact.sns} text-${contact.sns}`"
+          class="relative mdi text-xl mx-2 hover:filter-darker duration-100"
+        ></a>
       </div>
     </div>
     <div class="flex justify-center items-center">

@@ -33,6 +33,7 @@
     "nuxt-webfontloader": "^1.1.0",
     "reflect-metadata": "^0.1.13",
     "sass-loader": "^8.0.2",
+    "tailwindcss-filters": "^3.0.0",
     "tailwindcss-rfs": "^3.0.0",
     "vue-tailwind": "^0.4.6"
   },

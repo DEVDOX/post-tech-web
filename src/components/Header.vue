@@ -20,13 +20,13 @@
             </div>
           </a>
         </div>
-        <div class="flex items-center" v-if="isSignIn">
+        <div class="flex items-center" v-if="isLogIn">
           <div class="mr-3">
             <n-link to="/post/new" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">+ {{ $t('newPost') }}</n-link>
           </div>
           <n-link to="/user/RikuS3n" class="inline-block"><img class="w-10 h-10 rounded-full object-cover mr-4" src="/image/kawaii_1.png" alt="avatar"></n-link>
         </div>
-        <div v-else-if="!isSignIn">
+        <div v-else-if="!isLogIn">
           <button @click="openModal" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">{{ $t('login') }}</button>
         </div>
       </div>
@@ -45,7 +45,7 @@ import LoginModal from '~/components/LoginModal.vue'
   }
 })
 export default class Header extends Vue {
-  @Prop() isSignIn!: boolean
+  @Prop() isLogIn!: boolean
   isOpen: boolean = false
   isModalOpen: boolean = false
 
