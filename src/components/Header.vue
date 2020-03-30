@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="flex items-center justify-between flex-wrap bg-teal-500 py-3 px-8 lg:px-32 xl:px-64 mb-8">
+    <nav class="flex items-center justify-between flex-wrap bg-teal-500 py-3 px-8 lg:px-32 xl:px-64 mb-12">
       <div class="flex items-center flex-shrink-0 text-white mr-6">
         <n-link to="/">
           <span class="font-semibold text-xl tracking-tight">Unposter</span>

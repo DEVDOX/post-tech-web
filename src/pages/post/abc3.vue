@@ -3,11 +3,15 @@
     <div class="flex flex-wrap -mx-1 xl:-mx-3">
 
       <div id="sidebar" class="w-full lg:w-1/6 xl:w-1/12 px-1 xl:px-3">
-        <div class="w-full flex flex-col justify-center items-end mt-16">
+        <div class="sticky top-0 w-full flex flex-col justify-center items-end mt-16">
           <div class="flex items-center mb-8">
-            <button class="w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 hover:shadow-sm duration-150"><i class="mdi mdi-heart-outline text-red-600 text-xl"></i></button>
-            <p class="w-12 text-xl font-bold text-center hover:underline"><n-link :to="'/post/' + post.url + '/likes'">1</n-link></p>
-        </div>
+            <button class="w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 hover:shadow-sm duration-150">
+              <LikeIcon :isLiked="true" className="text-xl"/>
+            </button>
+            <p class="w-12 text-xl font-bold text-center hover:underline">
+              <n-link :to="`/post/${post.url}/likes`">1</n-link>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -26,7 +30,7 @@
           <div>
             <n-link
               v-for="(tag, index) in post.tags"
-              :to="'/tag/' + tag"
+              :to="`/tag/${tag}`"
               :key="index"
               class="bg-gray-100 rounded hover:underline cursor-pointer px-2 py-1 m-1">
                 #{{ tag }}
@@ -37,8 +41,17 @@
             <div v-if="markdownIt" v-html="markdownIt.render(content)"></div>
           </div>
 
-          <div>
+          <hr class="my-16">
 
+          <div>
+            <PersonCard
+              :card="true"
+              :hover="true"
+              :link="true"
+              :tagline="user.tagline"
+              :contacts="user.contacts"
+              userName="RikuS3n"
+            />
           </div>
         </div>
       </div>
@@ -69,10 +82,12 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import 'highlight.js/styles/obsidian.css';
 import mavonEditor from 'mavon-editor'
 import PersonCard from '~/components/PersonCard.vue'
+import LikeIcon from '~/components/LikeIcon.vue'
 
 @Component({
   components: {
-    PersonCard
+    PersonCard,
+    LikeIcon
   }
 })
 export default class Article extends Vue {
@@ -80,13 +95,16 @@ export default class Article extends Vue {
   content = `
 
 # ここから内容
-
----
+## レベル2ヘッディング :(
+### 環境とか <3
+#### :) Lemme test this
 
 ### 環境とか <3
 VagrantのDebian9 (Windows10 Pro上)
 ただし、\`cat /etc/os-release\`をすると\`PRETTY_NAME="Debian GNU/Linux 10 (buster)"\`とでる。
 これはパッケージリストを間違ってbusterを使う設定にしてしまったので、特に気にしない。
+
+---
 
 ### (注意) 一度この記事をすべて読み進めてみてから実行してみることをおすすめします。
 一部不安定や確立しない場合がありますので、それらを考慮しつつ実行してください。
@@ -156,6 +174,9 @@ function test(thing) {
 </script>
 
 <style>
+.sticky {
+  top: 25vh;
+}
 /* purgecss start ignore */
 /* Markdown Styles */
 /* Global */
@@ -166,15 +187,19 @@ function test(thing) {
   font-family: 'Noto Sans JP', sans-serif;
 }
 /* Headers */
-.markdown h1,
-.markdown h2 {
-  @apply text-2xl mt-16 mb-6 font-bold;
+.markdown h1 {
+  @apply text-3xl mt-16 mb-4 font-bold border-b;
 }
-.markdown h3,
+.markdown h2 {
+  @apply text-2xl mt-16 mb-4 font-bold border-b;
+}
+.markdown h3 {
+  @apply text-xl mt-12 mb-3 font-semibold;
+}
 .markdown h4,
 .markdown h5,
 .markdown h6 {
-  @apply text-xl mt-12 mb-3 font-semibold;
+  @apply text-lg mt-12 mb-3 font-semibold;
 }
 /* Links */
 .markdown a {

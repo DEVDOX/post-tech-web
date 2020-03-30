@@ -17,6 +17,7 @@
           :card="true"
           :hover="true"
           :link="true"
+          :detail="true"
           userName="RikuS3n"
         />
       </div>
