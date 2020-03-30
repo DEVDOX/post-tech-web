@@ -1,38 +1,50 @@
 import { injectable } from 'inversify'
 import BaseRepository from '~/repositories/baseRepository'
 import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface'
-import { UserInterface } from '~/apollo/schemas/user'
-import { GET_USER_DETAIL, CREATE_USER } from '~/apollo/queries/user'
+// import { UserInterface } from '~/apollo/schemas/user'
+import {
+  UserDetailInterface,
+  CreatePayload,
+  LoginResultInterface
+} from '~/apollo/schemas/userDetail'
+import { GET_USER_DETAIL, CREATE_USER, LOGIN_QUERY } from '~/apollo/queries/user'
 
 @injectable()
 export default class UserRepository extends BaseRepository
-implements UserRepositoryInterface {
+  implements UserRepositoryInterface {
   public async getAuthUser(
     strategy: string,
-    id: string
-  ): Promise<UserInterface> {
-    try {
-      const { data } = await global._$app.$apollo.query({
-        query: GET_USER_DETAIL,
-        variables: { strategy, id }
-      })
+    strategyId: string
+  ): Promise<UserDetailInterface> {
+    const {
+      data: { user }
+    } = await global._$app.$apollo.query({
+      query: GET_USER_DETAIL,
+      variables: { strategy, strategyId }
+    })
 
-      return data
-    } catch (e) {
-      console.error(e)
-    }
+    return user
   }
 
-  public async createUser(params: any): Promise<UserInterface> {
-    try {
-      const { user } = await global._$app.$apollo.query({
-        query: CREATE_USER,
-        variables: { params }
-      })
+  public async getOrCreate(params: any): Promise<LoginResultInterface> {
+    const { data } = await global._$app.$apollo.mutate({
+      mutation: LOGIN_QUERY,
+      variables: { params }
+    })
 
-      return user
-    } catch (e) {
-      console.error(e)
-    }
+    console.log("asdf", data)
+
+    return data
+  }
+
+  public async createUser(params: any): Promise<CreatePayload> {
+    const {
+      data: { user }
+    } = await global._$app.$apollo.mutate({
+      mutation: CREATE_USER,
+      variables: { params }
+    })
+
+    return user
   }
 }

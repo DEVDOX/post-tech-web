@@ -1,9 +1,14 @@
 import gql from 'graphql-tag'
 
 export const GET_USER_DETAIL = gql`
-  query user($strategy: String, $id: String) {
-    user: getUserDetail(strategy: $strategy, id: $id) {
+  query user($strategy: String, $strategyId: String) {
+    user: getUserDetail(strategy: $strategy, strategyId: $strategyId) {
+      company
+      displayName
       id
+      location
+      avatar
+      uniqueName
     }
   }
 `
@@ -11,12 +16,39 @@ export const GET_USER_DETAIL = gql`
 export const CREATE_USER = gql`
   mutation createUser($params: CreateParams!) {
     user: createUser(params: $params) {
-      company
-      displayName
-      id
-      location
-      profileImageURL
-      uniqueName
+      result {
+        company
+        displayName
+        id
+        location
+        avatar
+        uniqueName
+      }
+      successful
+      messages {
+        code
+        message
+        field
+      }
+    }
+  }
+`
+
+export const LOGIN_QUERY = gql`
+  mutation login($params: LoginParams!) {
+    login(params: $params) {
+      result {
+        token
+        userDetail {
+          displayName
+        }
+      }
+      successful
+      messages {
+        code
+        message
+        field
+      }
     }
   }
 `
