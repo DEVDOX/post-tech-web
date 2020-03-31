@@ -27,7 +27,7 @@
 
           <p class="text-4xl font-semibold">{{ post.title }}</p>
 
-          <div>
+          <div class="flex flex-wrap">
             <n-link
               v-for="(tag, index) in post.tags"
               :to="`/tag/${tag}`"
