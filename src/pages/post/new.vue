@@ -16,14 +16,14 @@
       </div>
     </div>
 
-    <no-ssr>
+    <client-only>
       <mavon-editor
         :toolbars="markdownOption"
         language="ja"
         v-model="content"
         class="mavonEditor mb-32"
       />
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
