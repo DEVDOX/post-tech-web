@@ -8,4 +8,6 @@ export default {
   login: 'ログイン',
   loginWith: 'Login with ',
   search: 'キーワードで探す',
+  title: 'タイトル',
+  tags: 'タグ',
 }

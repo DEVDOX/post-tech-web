@@ -33,6 +33,10 @@ const config: Configuration = {
 
   plugins: [
     '~/plugins/tailwind-vue',
+<<<<<<< HEAD
+=======
+    { src: '@/plugins/vue-mavon-editor', ssr: false },
+>>>>>>> e4090c0093ca9a76fb8e10708aceada7ab1577d1
     '~/plugins/vue-apollo',
     '~/plugins/serviceContainer',
     '~/plugins/inject'
@@ -42,7 +46,10 @@ const config: Configuration = {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
+<<<<<<< HEAD
     'cookie-universal-nuxt'
+=======
+>>>>>>> e4090c0093ca9a76fb8e10708aceada7ab1577d1
   ],
 
   modules: [
@@ -95,17 +102,29 @@ const config: Configuration = {
       login: '/',
       logout: '/logout',
       callback: '/auth/callback',
+<<<<<<< HEAD
       home: '/'
+=======
+      home: '/',
+>>>>>>> e4090c0093ca9a76fb8e10708aceada7ab1577d1
     },
     strategies: {
       github: {
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,
+<<<<<<< HEAD
         scope: ['read:user', 'email']
       }
     },
     watchLoggedIn: true,
     plugins: ['~/plugins/auth.js']
+=======
+        scope: ['read:user']
+      }
+    },
+    watchLoggedIn: true,
+    plugins: [ '~/plugins/auth.js' ]
+>>>>>>> e4090c0093ca9a76fb8e10708aceada7ab1577d1
   },
 
   proxy: {
@@ -114,7 +133,10 @@ const config: Configuration = {
 
   webfontloader: {
     google: {
-      families: ['Source+Sans+Pro:400,700']
+      families: [
+        'Source+Sans+Pro:400,700',
+        'Noto+Sans+JP:wght@400;700',
+      ]
     }
   },
 
@@ -131,7 +153,11 @@ const config: Configuration = {
     bundleRenderer: {
       runInNewContext: false
     }
+<<<<<<< HEAD
   },
+=======
+  }
+>>>>>>> e4090c0093ca9a76fb8e10708aceada7ab1577d1
 }
 
 export default config

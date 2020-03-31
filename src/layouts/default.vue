@@ -28,7 +28,6 @@ export default class DefaultLayout extends Vue {
   async loginWithGithub() {
     await this.$auth.loginWith('github')
   }
-
 }
 </script>
 
