@@ -1,7 +1,7 @@
 <template>
-  <div class="px-1 xl:px-3">
-    <div class="flex flex-wrap -mx-1 xl:-mx-3">
-      <div id="main" class="w-full lg:w-2/3 px-1 xl:px-3 mb-3">
+  <div>
+    <div class="grid grid-cols-3 gap-6">
+      <div id="main" class="w-full col-span-3 lg:col-span-2">
         <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col leading-normal duration-150">
           <ul class="flex border-b">
             <li class="-mb-px mr-1">
@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <div id="sidebar" class="w-full lg:w-1/3 px-1 xl:px-3">
+      <div id="sidebar" class="w-full col-span-3 lg:col-span-1">
         <PersonCard
           :card="true"
           :hover="false"

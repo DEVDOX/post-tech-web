@@ -1,9 +1,6 @@
 const content = `
 
-# ここから内容
-## レベル2ヘッディング :(
-### 環境とか <3
-#### :) Lemme test this
+# ここから内容 :)
 
 ### 環境とか <3
 VagrantのDebian9 (Windows10 Pro上)

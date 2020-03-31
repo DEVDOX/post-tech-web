@@ -1,5 +1,5 @@
 <template>
-  <div :class="isStyle" class="w-full relative flex flex-col justify-between leading-normal">
+  <div :class="isStyle" class="w-full relative z-10 flex flex-col justify-between leading-normal">
     <n-link v-if="link" :to="'/user/' + userName" class="stretched-link"></n-link>
     <div class="flex justify-center items-center">
       <img class="w-16 h-16 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="Avatar of Jonathan Reinink">

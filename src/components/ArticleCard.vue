@@ -1,5 +1,5 @@
 <template>
-  <div :class="isStyle" class="main w-full relative flex flex-col justify-between leading-normal">
+  <div :class="isStyle" class="main w-full relative z-10 flex flex-col justify-between leading-normal">
     <n-link to="/post/abc3" class="stretched-link"></n-link>
     <div class="w-full flex flex-col justify-between leading-normal">
       <div class="mb-5">

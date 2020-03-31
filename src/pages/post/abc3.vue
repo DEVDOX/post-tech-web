@@ -1,21 +1,21 @@
 <template>
-  <div class="px-1 xl:px-3">
-    <div class="flex flex-wrap -mx-1 xl:-mx-3">
+  <div>
+    <div class="grid grid-cols-12 gap-6">
 
-      <div id="sidebar" class="w-full lg:w-1/6 xl:w-1/12 px-1 xl:px-3">
-        <div class="sticky top-0 w-full flex flex-col justify-center items-end mt-16">
-          <div class="flex items-center mb-8">
-            <button @click="updateLikes()" class="w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 hover:shadow-sm duration-150">
+      <div id="sidebar" class="w-full relative z-50 col-span-12 lg:col-span-2 xl:col-span-1">
+        <div class="fixed bottom-0 lg:sticky lg:top-25 lg:bottom-auto w-full flex flex-col justify-center items-end mt-16">
+          <div class="flex items-center mb-16 lg:mb-8">
+            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
               <LikeIcon :liked.sync="post.liked" className="text-xl"/>
             </button>
-            <p class="w-12 text-xl font-bold text-center hover:underline">
+            <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
               <n-link :to="`/post/${post.url}/likes`">{{ post.likes }}</n-link>
             </p>
           </div>
         </div>
       </div>
 
-      <div id="main" class="w-full lg:w-5/6 xl:w-8/12 px-1 xl:px-3 mb-16">
+      <div id="main" class="w-full col-span-12 lg:col-span-10 xl:col-span-8">
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
@@ -44,6 +44,7 @@
           <hr class="my-16">
 
           <div>
+            <p class="text-xl font-semibold mb-3">著者</p>
             <PersonCard
               :card="true"
               :hover="true"
@@ -56,7 +57,7 @@
         </div>
       </div>
 
-      <div id="toc" class="w-full lg:w-full xl:w-3/12 px-1 xl:px-3">
+      <div id="toc" class="w-full col-span-12 xl:col-span-3">
         <PersonCard
           :card="true"
           :hover="true"
@@ -145,9 +146,6 @@ export default class Article extends Vue {
 </script>
 
 <style>
-.sticky {
-  top: 25vh; 
-}
 /* purgecss start ignore */
 /* Markdown Styles */
 /* Global */
@@ -159,7 +157,7 @@ export default class Article extends Vue {
 }
 /* Headers */
 .markdown h1 {
-  @apply text-3xl mt-16 mb-4 font-bold border-b;
+  @apply text-3xl mt-16 mb-4 font-bold border-b border-gray-400;
 }
 .markdown h2 {
   @apply text-2xl mt-16 mb-4 font-bold border-b;
@@ -171,6 +169,12 @@ export default class Article extends Vue {
 .markdown h5,
 .markdown h6 {
   @apply text-lg mt-12 mb-3 font-semibold;
+}
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+
 }
 /* Links */
 .markdown a {

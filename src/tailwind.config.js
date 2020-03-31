@@ -20,6 +20,9 @@ module.exports = {
       spacing: {
         '14': '3.5rem',
       },
+      inset: {
+        '25': '25vh',
+      },
       filter: {
         'none': 'none',
         'darker': 'brightness(80%)'
@@ -31,6 +34,8 @@ module.exports = {
     textDecotation: ['group-hover'],
     width: ['responsive', 'hover', 'focus'],
     height: ['responsive', 'hover', 'focus'],
+    outline: ['focus', 'responsive', 'hover'],
+
     filter: ['responsive', 'hover'],
     backdropFilter: ['responsive'],
   },

@@ -1,8 +1,8 @@
 <template>
   <div class="all-wrapper modal-active">
     <Header :isLogIn="true" />
-    <div class="px-1 md:px-8 lg:px-32 xl:px-64">
-      <nuxt />
+    <div class="px-0 md:px-8 lg:px-32 xl:px-64">
+      <nuxt class="mx-0 lg:px-3" />
     </div>
     <Footer />
   </div>
