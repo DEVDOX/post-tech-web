@@ -5,11 +5,11 @@
       <div id="sidebar" class="w-full lg:w-1/6 xl:w-1/12 px-1 xl:px-3">
         <div class="sticky top-0 w-full flex flex-col justify-center items-end mt-16">
           <div class="flex items-center mb-8">
-            <button class="w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 hover:shadow-sm duration-150">
-              <LikeIcon :isLiked="true" className="text-xl"/>
+            <button @click="updateLikes()" class="w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 hover:shadow-sm duration-150">
+              <LikeIcon :liked.sync="post.liked" className="text-xl"/>
             </button>
             <p class="w-12 text-xl font-bold text-center hover:underline">
-              <n-link :to="`/post/${post.url}/likes`">1</n-link>
+              <n-link :to="`/post/${post.url}/likes`">{{ post.likes }}</n-link>
             </p>
           </div>
         </div>
@@ -38,7 +38,7 @@
           </div>
 
           <div class="markdown mt-16">
-            <div v-if="markdownIt" v-html="markdownIt.render(content)"></div>
+            <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
           </div>
 
           <hr class="my-16">
@@ -92,50 +92,6 @@ import LikeIcon from '~/components/LikeIcon.vue'
 })
 export default class Article extends Vue {
   markdownIt = null
-  content = `
-
-# ここから内容
-## レベル2ヘッディング :(
-### 環境とか <3
-#### :) Lemme test this
-
-### 環境とか <3
-VagrantのDebian9 (Windows10 Pro上)
-ただし、\`cat /etc/os-release\`をすると\`PRETTY_NAME="Debian GNU/Linux 10 (buster)"\`とでる。
-これはパッケージリストを間違ってbusterを使う設定にしてしまったので、特に気にしない。
-
----
-
-### (注意) 一度この記事をすべて読み進めてみてから実行してみることをおすすめします。
-一部不安定や確立しない場合がありますので、それらを考慮しつつ実行してください。
-責任は一切負いませんので、不安な方はバックアップをとるなりしてから実行してください。
-殴り書きです。
-
-\`\`\`js
-function test(thing) {
-  return thing.contains("test");
-}
-\`\`\`
-
-例えば、テストデータ形式のcsvをインポートしたときに、データが保存されない場合があります。
-入出力に問題はないです。
-
-> これはテストです。
-> 例えば、\`python -v 3.5\`と入力することで、
-> python 3.5で対話型ランタイムを実行することができます(嘘)
-
-## 解決方法
-少し長いです。
-上から2行目あたりで、\`/bin/sh: 1: mecab-config: not found\`と言われてるので、ターミナル上で\`mecab-config\`と打ってみると、
-->\`zsh: command not found: mecab-config\`
-とでるので、\`sudo apt install libmecab-dev\`と打って\`libmecab-dev\`をインストールする。
-
-\`\`\`js
-function test(thing) {
-  return thing.contains("test");
-}
-\`\`\`
-`
 
   post = {
     title: 'Windows 10でDocker-composeを実行する',
@@ -143,6 +99,8 @@ function test(thing) {
     author: 'RikuS3n',
     body: '# うんち',
     tags: ['Windows 10', 'docker', 'docker-compose'],
+    likes: 2, // likerの数をカウントするようにする
+    liked: false
   }
 
   user = {
@@ -152,7 +110,10 @@ function test(thing) {
     ]
   }
 
-  mounted() {
+  async mounted() {
+    const body = await import('~/assets/post.js')
+    this.post.body = body.default
+    
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
@@ -168,14 +129,24 @@ function test(thing) {
       }
       return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>';
     }
-    console.log(this.markdownIt)
+  }
+
+  updateLikes() {
+    if (this.post.liked) {
+      this.post.liked = false
+      this.post.likes--
+    } else {
+      this.post.liked = true
+      this.post.likes++
+    }
+    console.log(this.post.likes)
   }
 }
 </script>
 
 <style>
 .sticky {
-  top: 25vh;
+  top: 25vh; 
 }
 /* purgecss start ignore */
 /* Markdown Styles */
@@ -247,7 +218,7 @@ function test(thing) {
   @apply mb-6;
 }
 .markdown code {
-  @apply p-1 bg-gray-300 rounded;
+  @apply p-1 bg-gray-200 rounded;
 }
 .markdown pre {
   @apply text-base;
