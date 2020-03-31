@@ -1,9 +1,9 @@
 <template>
-  <div class="px-1 xl:px-3">
-    <div class="flex flex-wrap -mx-1 xl:-mx-3">
-      <div id="sidebar" class="w-full lg:w-1/6 xl:w-1/12 px-1 xl:px-3">
+  <div class="mx-5">
+    <div class="grid grid-cols-12 gap-6">
+      <div id="sidebar" class="w-full col-span-12 lg:col-span-2 xl:col-span-1">
       </div>
-      <div id="main" class="w-full lg:w-5/6 xl:w-8/12 px-1 xl:px-3">
+      <div id="main" class="w-full col-span-12 lg:col-span-10 xl:col-span-8">
         <ArticleCard
           v-for="i in 5"
           :key="i"
@@ -12,7 +12,7 @@
           class="mb-3"
         />
       </div>
-      <div id="toc" class="w-full lg:w-full xl:w-3/12 px-1 xl:px-3">
+      <div id="toc" class="w-full col-span-12 xl:col-span-3">
         <PersonCard
           :card="true"
           :hover="true"
@@ -37,8 +37,5 @@ import PersonCard from '~/components/PersonCard.vue'
   }
 })
 export default class IndexPage extends Vue {
-  mounted() {
-    console.log(process.env.GITHUB_CLIENT_ID)
-  }
 }
 </script>

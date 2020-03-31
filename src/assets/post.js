@@ -15,8 +15,17 @@ VagrantのDebian9 (Windows10 Pro上)
 殴り書きです。
 
 \`\`\`js
-function test(thing) {
-  return thing.contains("test");
+mounted() {
+  window.addEventListener('keydown', this.handler)
+  const _this = this
+
+  this.$root.$on('loginWithGithub', async function() {
+    await _this.loginWithGithub()
+  })
+}
+
+async loginWithGithub() {
+  await this.$auth.loginWith('github')
 }
 \`\`\`
 

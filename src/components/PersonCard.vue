@@ -72,4 +72,12 @@ export default class PersonCard extends Vue {
 .hover-class:hover {
   @apply shadow;
 }
+
+.hover-class:hover {
+  @apply shadow;
+}
+
+.hover-class:focus {
+  @apply shadow;
+}
 </style>
