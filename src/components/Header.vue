@@ -16,18 +16,18 @@
           <a href="#responsive-header" class="lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
             <div class="relative mx-auto text-gray-600">
               <input class="border border-gray-400 bg-white h-10 px-5 rounded text-sm focus:outline-none"
-                type="search" name="search" :placeholder="$t('search')">
+                type="search" name="search" :placeholder="$t('header.search')">
             </div>
           </a>
         </div>
         <div class="flex items-center" v-if="isLogIn">
           <div class="mr-3">
-            <n-link to="/post/new" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">+ {{ $t('newPost') }}</n-link>
+            <n-link to="/post/new" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">+ {{ $t('header.newPost') }}</n-link>
           </div>
           <n-link to="/user/RikuS3n" class="inline-block"><img class="w-10 h-10 rounded-full object-cover mr-4" src="/image/kawaii_1.png" alt="avatar"></n-link>
         </div>
         <div v-else-if="!isLogIn">
-          <button @click="openModal" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">{{ $t('login') }}</button>
+          <button @click="openModal" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white">{{ $t('user.login') }}</button>
         </div>
       </div>
     </nav>

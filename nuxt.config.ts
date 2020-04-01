@@ -33,7 +33,6 @@ const config: Configuration = {
 
   plugins: [
     '~/plugins/tailwind-vue',
-    { src: '@/plugins/vue-mavon-editor', ssr: false },
     '~/plugins/vue-apollo',
     '~/plugins/serviceContainer',
     '~/plugins/inject'

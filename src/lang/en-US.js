@@ -1,13 +1,31 @@
 export default {
-  welcome: 'Welcome',
   like: 'Like',
   article: 'Article',
-  follow: 'Follow',
-  follower: 'Follower',
-  newPost: 'New Post',
-  login: 'Log in',
-  loginWith: 'Login with ',
-  search: 'Search anything',
-  title: 'Title',
-  tags: 'Tags',
+
+  user: {
+    login: 'Log in',
+    loginWith: 'Login with ',
+    follow: 'Follow',
+    follower: 'Follower',
+  },
+  
+  post: {
+    title: 'Title',
+    tags: 'Tags',
+    state: {
+      publish: 'Publish',
+      private: 'Private',
+      draft: 'Draft',
+    },
+  },
+
+  newPost: {
+    publish: 'Publish',
+    save: 'Save',
+  },
+
+  header: {
+    search: 'Search with keyword',
+    newPost: 'New Post',
+  },
 }
