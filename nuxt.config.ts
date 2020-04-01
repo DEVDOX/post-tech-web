@@ -87,7 +87,7 @@ const config: Configuration = {
 
   apollo: {
     clientConfigs: {
-      default: '~/apollo/client-configs/default.ts'
+      default: '~/plugins/vue-apollo'
     }
   },
 
