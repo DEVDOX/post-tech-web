@@ -89,6 +89,7 @@ import LikeIcon from '~/components/LikeIcon.vue'
 
 @Component({
   components: {
+    'mavon-editor': mavonEditor.mavonEditor,
     PersonCard,
     LikeIcon
   }
@@ -109,28 +110,33 @@ export default class Article extends Vue {
   user = {
     tagline: 'Lorem ipsum roamen sit',
     contacts: [
-      { sns: 'twitter', link: 'https://twitter.com/RikuS3n'}
+      { sns: 'twitter', link: 'https://twitter.com/RikuS3n' }
     ]
   }
 
   async mounted() {
     const body = await import('~/assets/post.js')
     this.post.body = body.default
-
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
     this.markdownIt = mavonEditor.mavonEditor.getMarkdownIt()
-    // @ts-ignore
-    this.markdownIt.options.highlight = function (str: string, lang: string) {
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return '<pre class="hljs"><div class="mx-8"><code>' +
-                hljs.highlight(lang, str, true).value +
-                '</code></div></pre>';
-        } catch (__) {}
+
+    if (this.markdownIt) {
+      // @ts-ignore
+      this.markdownIt.options.highlight = function (str: string, lang: string) {
+        if (lang && hljs.getLanguage(lang)) {
+          try {
+            return '<pre class="hljs"><div class="mx-8"><code>' +
+                  hljs.highlight(lang, str, true).value +
+                  '</code></div></pre>'
+          } catch (__) {}
+        }
+
+        if (this.markdownIt) {
+          return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
+        }
       }
-      return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>';
     }
   }
 
@@ -172,11 +178,8 @@ export default class Article extends Vue {
 .markdown h6 {
   @apply text-lg mt-12 mb-3 font-semibold;
 }
-.markdown h3,
-.markdown h4,
-.markdown h5,
-.markdown h6 {
-
+.markdown hr {
+  @apply my-8;
 }
 /* Links */
 .markdown a {

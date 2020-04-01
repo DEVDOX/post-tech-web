@@ -68,10 +68,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import 'mavon-editor/dist/css/index.css'
 import mavonEditor from 'mavon-editor'
 
-type postState =
-  'publish' |
-  'private' |
-  'draft'
+type postState = 'publish' | 'private' | 'draft'
 
 @Component({
   components: {
