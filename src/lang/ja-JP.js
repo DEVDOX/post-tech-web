@@ -25,7 +25,7 @@ export default {
   },
 
   header: {
-    search: 'キーワードで探す',
+    search: '探す',
     newPost: '投稿する',
   },
 }

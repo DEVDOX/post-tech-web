@@ -1,7 +1,7 @@
 <template>
   <div class="all-wrapper modal-active">
     <Header :isLogIn="true" />
-    <div class="px-0 md:px-8 lg:px-32 xl:px-64">
+    <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-32">
       <nuxt class="mx-0 lg:px-3" />
     </div>
     <Footer />
@@ -56,8 +56,11 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #f9fafa;
+}
+
 .all-wrapper {
   min-height: 100vh;
-  background-color: #f9fafa;
 }
 </style>

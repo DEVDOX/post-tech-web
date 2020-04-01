@@ -25,7 +25,7 @@ export default {
   },
 
   header: {
-    search: 'Search with keyword',
+    search: 'Search',
     newPost: 'New Post',
   },
 }
