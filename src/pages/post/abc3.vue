@@ -49,9 +49,9 @@
             <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
           </div>
 
-          <hr class="my-16">
+          <hr class="hidden lg:block my-16">
 
-          <div>
+          <div class="hidden lg:block">
             <p class="text-xl font-semibold mb-3">著者</p>
             <PersonCard
               :card="true"
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <div id="toc" class="w-full col-span-12 xl:col-span-3">
+      <div id="user" class="w-full col-span-12 xl:col-span-3">
         <PersonCard
           :card="true"
           :hover="true"
