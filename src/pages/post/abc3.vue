@@ -116,7 +116,7 @@ export default class Article extends Vue {
   async mounted() {
     const body = await import('~/assets/post.js')
     this.post.body = body.default
-    
+
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
