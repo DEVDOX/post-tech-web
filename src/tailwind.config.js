@@ -31,7 +31,7 @@ module.exports = {
   },
   variants: {
     borderWidth: ['last'],
-    textDecotation: ['group-hover'],
+    textDecotation: ['responsive', 'hover', 'focus', 'group-hover'],
     width: ['responsive', 'hover', 'focus'],
     height: ['responsive', 'hover', 'focus'],
     outline: ['focus', 'responsive', 'hover'],

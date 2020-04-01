@@ -19,8 +19,10 @@
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
-            <img class="w-8 h-8 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="avatar">
-            <p class="text-gray-800 text-base leading-none mr-2">@RikuS3n</p>
+            <n-link :to="`/user/${post.author}`" class="flex items-center">
+              <img class="w-8 h-8 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="avatar">
+              <p class="text-gray-800 text-base leading-none mr-2 hover:underline">@RikuS3n</p>
+            </n-link>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-clock-outline"/>2020/03/30</p>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-update"/>2020/04/02</p>
           </div>
