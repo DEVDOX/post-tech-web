@@ -15,7 +15,7 @@
         <div class="text-sm my-3 lg:my-0 lg:mr-4">
           <a href="#responsive-header" class="lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
             <div class="relative mx-auto text-gray-600">
-              <input class="border border-teal-700 bg-white h-10 px-5 rounded text-sm focus:outline-none"
+              <input class="border border-gray-400 bg-white h-10 px-5 rounded text-sm focus:outline-none"
                 type="search" name="search" :placeholder="$t('search')">
             </div>
           </a>
