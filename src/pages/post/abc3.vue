@@ -5,7 +5,7 @@
       <div id="sidebar" class="w-full relative z-50 col-span-12 lg:col-span-2 xl:col-span-1">
         <div class="fixed bottom-0 lg:sticky lg:top-25 lg:bottom-auto w-full flex flex-col justify-center items-end mt-16">
           <div class="flex items-center mb-16 lg:mb-8">
-            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
+            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
               <LikeIcon :liked.sync="post.liked" className="text-xl"/>
             </button>
             <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
@@ -29,7 +29,7 @@
 
           <p class="text-4xl font-semibold">{{ post.title }}</p>
 
-          <div class="flex flex-wrap">
+          <div class="flex flex-wrap items-center">
             <n-link
               v-for="(tag, index) in post.tags"
               :to="`/tag/${tag}`"
@@ -37,6 +37,12 @@
               class="bg-gray-100 rounded hover:underline cursor-pointer px-2 py-1 m-1">
                 #{{ tag }}
             </n-link>
+            <span
+              v-for="(word, index) in post.keywords"
+              :key="index"
+              class="bg-gray-100 rounded text-gray-600 text-sm px-1 py-0 m-1">
+                {{ word }}
+            </span>
           </div>
 
           <div class="markdown mt-16">
@@ -102,7 +108,8 @@ export default class Article extends Vue {
     url: 'abc3',
     author: 'RikuS3n',
     body: '# うんち',
-    tags: ['Windows 10', 'docker', 'docker-compose'],
+    tags: ['docker', 'windows-10', 'containerd-io'],
+    keywords: ['Windows 10', 'docker', 'docker-compose'],
     likes: 2, // likerの数をカウントするようにする
     liked: false
   }
