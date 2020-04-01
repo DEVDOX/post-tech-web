@@ -11,6 +11,6 @@ interface ApiResult<T> {
   successful: boolean
 }
 
-export type PostResult = ApiResult<Post>
-export type UserResult = ApiResult<UserDetail>
+export type CreatePostResult = ApiResult<Post>
+export type CreateUserResult = ApiResult<UserDetail>
 export type LoginResult = ApiResult<TokenType>

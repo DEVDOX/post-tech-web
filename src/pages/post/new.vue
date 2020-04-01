@@ -5,35 +5,64 @@
         <label class="block text-gray-700 text-base font-semibold mb-2" for="title">
           {{ $t('title') }}
         </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500" id="title" type="text" placeholder="Example text">
+        <input
+          v-model="post.title"
+          id="title"
+          class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
+          type="text"
+          placeholder="Example text"
+        />
       </div>
 
       <div class="p-5">
         <label class="block text-gray-700 text-base font-semibold mb-2" for="title">
           {{ $t('tags') }}
         </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500" id="title" type="text" placeholder="Example text">
+        <input
+          id="title"
+          v-model="post.tags"
+          class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
+          type="text"
+          placeholder="Example text"
+        />
       </div>
     </div>
 
-    <no-ssr>
+    <button @click="createPost()">save</button>
+
+    <client-only>
       <mavon-editor
+        v-model="post.body"
         :toolbars="markdownOption"
         language="ja"
-        v-model="content"
         class="mavonEditor mb-32"
       />
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
+import { serviceContainer } from '~/dependencyInjection/container'
+
+import { TYPES } from '~/dependencyInjection/types'
+import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+
+const PostRepo = serviceContainer.get<PostRepositoryInterface>(
+  TYPES.PostRepositoryInterface
+)
 
 @Component
 export default class NewPost extends Vue {
   // user.language?をゲットして、mavonEditorに適用する
-  content = ''
+  post = {
+    title: '',
+    body: '',
+    is_public: false,
+    is_draft: false,
+    tags: [{name: "asdf"}]
+  }
+
   markdownOption = {
     bold: true,
     italic: true,
@@ -63,7 +92,12 @@ export default class NewPost extends Vue {
     htmlcode: false,
     trash: true,
     save: false,
-    navigation: true,
+    navigation: true
+  }
+
+  async createPost() {
+    const post = await PostRepo.createPost(this.post)
+    console.log(post)
   }
 }
 </script>

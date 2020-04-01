@@ -3,11 +3,10 @@ import BaseRepository from '~/repositories/baseRepository'
 import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface'
 // import { UserInterface } from '~/apollo/schemas/user'
 import {
-  UserDetailInterface,
-  CreatePayload,
-  LoginResultInterface
+  UserDetail
 } from '~/apollo/schemas/userDetail'
 import { GET_USER_DETAIL, CREATE_USER, LOGIN_QUERY } from '~/apollo/queries/user'
+import {  CreateUserResult } from '~/apollo/schemas/result'
 
 @injectable()
 export default class UserRepository extends BaseRepository
@@ -15,10 +14,10 @@ export default class UserRepository extends BaseRepository
   public async getAuthUser(
     strategy: string,
     strategyId: string
-  ): Promise<UserDetailInterface> {
+  ): Promise<UserDetail> {
     const {
       data: { user }
-    } = await global._$app.$apollo.query({
+    } = await global._$app.apolloProvider.defaultClient.query({
       query: GET_USER_DETAIL,
       variables: { strategy, strategyId }
     })
@@ -26,21 +25,22 @@ export default class UserRepository extends BaseRepository
     return user
   }
 
-  public async getOrCreate(params: any): Promise<LoginResultInterface> {
-    const { data } = await global._$app.$apollo.mutate({
+  public async getOrCreate(params: any): Promise<CreateUserResult> {
+    console.log(params)
+    const { data: { login } } = await global._$app.apolloProvider.defaultClient.mutate({
       mutation: LOGIN_QUERY,
       variables: { params }
     })
 
-    console.log("asdf", data)
+    console.log(login)
 
-    return data
+    return login
   }
 
-  public async createUser(params: any): Promise<CreatePayload> {
+  public async createUser(params: any): Promise<CreateUserResult> {
     const {
       data: { user }
-    } = await global._$app.$apollo.mutate({
+    } = await global._$app.apolloProvider.defaultClient.mutate({
       mutation: CREATE_USER,
       variables: { params }
     })

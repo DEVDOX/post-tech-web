@@ -1,5 +1,5 @@
 <template>
-  <div :class="isStyle" class="main w-full relative flex flex-col justify-between leading-normal">
+  <div :class="isStyle" class="main w-full relative z-10 flex flex-col justify-between leading-normal">
     <n-link to="/post/abc3" class="stretched-link"></n-link>
     <div class="w-full flex flex-col justify-between leading-normal">
       <div class="mb-5">
@@ -14,7 +14,7 @@
         <img class="w-10 h-10 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="Avatar of Jonathan Reinink">
         <div class="w-full flex justify-start items-center">
           <p class="text-gray-700 leading-none text-base mr-3">@RikuS3n</p>
-          <p class="text-gray-700 mr-3"><LikeIcon :isLiked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
+          <p class="text-gray-700 mr-3"><LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
           <p class="text-gray-700 text-sm ml-auto">2020/3/26</p>
         </div>
       </div>
@@ -61,6 +61,10 @@ export default class ArticleCard extends Vue {
 }
 
 .hover-class:hover {
+  @apply shadow;
+}
+
+.hover-class:focus {
   @apply shadow;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
-  <i :class="addClass()" class="mdi text-red-600"/>
+  <i :class="addClass" class="mdi text-red-600"/>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, PropSync } from 'nuxt-property-decorator'
 
 interface iconType {
   [name: string]: boolean
@@ -11,17 +11,17 @@ interface iconType {
 
 @Component
 export default class LikeIcon extends Vue {
-  @Prop({required: true}) isLiked!: boolean
+  @PropSync('liked', {required: true}) isLiked!: boolean
   @Prop() className!: string
 
-  iconType: iconType = {
-    'mdi-heart': this.isLiked,
-    'mdi-heart-outline': !this.isLiked,
-  }
-
-  addClass(): iconType {
-    if (this.className != null) { this.iconType[this.className] = true }
-    return this.iconType
+  get addClass(): iconType {
+    let iconType: iconType = {
+      'mdi-heart': this.isLiked,
+      'mdi-heart-outline': !this.isLiked,
+    }
+    
+    if (this.className != null) { iconType[this.className] = true }
+    return iconType
   }
 }
 </script>

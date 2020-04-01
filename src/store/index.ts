@@ -1,4 +1,4 @@
-import { ActionContext, ActionTree, MutationTree } from 'vuex'
+import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { TYPES } from '~/dependencyInjection/types'
 import { UserRepositoryInterface } from '~/dependencyInjection/interfaces'
@@ -9,13 +9,19 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(
 )
 
 export const state = () => ({
-  authUser: null
+  authUser: "hello"
 })
 
 export type RootState = ReturnType<typeof state>
 
 export interface Actions<S, R> extends ActionTree<S, R> {
   nuxtServerInit(context: ActionContext<S, R>): void
+}
+
+export const getters: GetterTree<RootState, RootState> = {
+  getAuthUser(state: RootState) {
+    return state.authUser
+  }
 }
 
 export const actions: Actions<RootState, RootState> = {
@@ -37,8 +43,6 @@ export const actions: Actions<RootState, RootState> = {
 
     try {
       if (currentUser && strategy) {
-        console.log("hello?")
-
         const { id, email, avatar_url, login } = currentUser
 
         const { successful, result } = await UserRepo.getOrCreate({
@@ -50,8 +54,6 @@ export const actions: Actions<RootState, RootState> = {
           displayName: login,
           uniqueName: login
         })
-
-        console.log(successful)
 
         if (successful) {
           return commit('SET_USER', result)

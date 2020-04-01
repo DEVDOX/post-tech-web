@@ -1,7 +1,7 @@
 import { injectable } from 'inversify'
 import BaseRepository from '~/repositories/baseRepository'
-import { GET_USER_DETAIL, CREATE_USER, LOGIN_QUERY } from '~/apollo/queries/user'
-import { PostResult } from '~/apollo/schemas/result'
+import { CREATE_POST_QUERY, CREATE_USER, LOGIN_QUERY } from '~/apollo/queries/post'
+import { CreatePostResult } from '~/apollo/schemas/result'
 import PostRepositoryInterface from './PostRepositoryInterface'
 import { Post } from '~/apollo/schemas/post'
 
@@ -12,38 +12,42 @@ export default class PostRepository extends BaseRepository
     const {
       data: { user }
     } = await global._$app.$apollo.query({
-      query: GET_USER_DETAIL,
+      query: null,
       variables: { }
     })
 
     return user
   }
 
-  public async createPost(params: any): Promise<PostResult> {
-    const { data } = await global._$app.$apollo.mutate({
-      mutation: LOGIN_QUERY,
-      variables: { params }
-    })
+  public async createPost(params: any): Promise<CreatePostResult> {
+    console.log(global._$app.apolloProvider.defaultClient)
+    try {
+      const { data } = await global._$app.apolloProvider.defaultClient.mutate({
+        mutation: CREATE_POST_QUERY,
+        variables: { params }
+      })
 
-    return data
+      return data
+    } catch (e) {
+    }
   }
 
-  public async updatePost(params: any): Promise<PostResult> {
+  public async updatePost(params: any): Promise<CreatePostResult> {
     const {
       data: { user }
     } = await global._$app.$apollo.mutate({
-      mutation: CREATE_USER,
+      mutation: null,
       variables: { params }
     })
 
     return user
   }
 
-  public async deletePost(params: any): Promise<PostResult> {
+  public async deletePost(params: any): Promise<CreatePostResult> {
     const {
       data: { user }
     } = await global._$app.$apollo.mutate({
-      mutation: CREATE_USER,
+      mutation: null,
       variables: { params }
     })
 

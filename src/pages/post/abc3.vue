@@ -1,33 +1,33 @@
 <template>
-  <div class="px-1 xl:px-3">
-    <div class="flex flex-wrap -mx-1 xl:-mx-3">
+  <div>
+    <div class="grid grid-cols-12 gap-6">
 
-      <div id="sidebar" class="w-full lg:w-1/6 xl:w-1/12 px-1 xl:px-3">
-        <div class="sticky top-0 w-full flex flex-col justify-center items-end mt-16">
-          <div class="flex items-center mb-8">
-            <button class="w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 hover:shadow-sm duration-150">
-              <LikeIcon :isLiked="true" className="text-xl"/>
+      <div id="sidebar" class="w-full relative z-50 col-span-12 lg:col-span-2 xl:col-span-1">
+        <div class="fixed bottom-0 lg:sticky lg:top-25 lg:bottom-auto w-full flex flex-col justify-center items-end mt-16">
+          <div class="flex items-center mb-16 lg:mb-8">
+            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
+              <LikeIcon :liked.sync="post.liked" className="text-xl"/>
             </button>
-            <p class="w-12 text-xl font-bold text-center hover:underline">
-              <n-link :to="`/post/${post.url}/likes`">1</n-link>
+            <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
+              <n-link :to="`/post/${post.url}/likes`">{{ post.likes }}</n-link>
             </p>
           </div>
         </div>
       </div>
 
-      <div id="main" class="w-full lg:w-5/6 xl:w-8/12 px-1 xl:px-3 mb-16">
+      <div id="main" class="w-full col-span-12 lg:col-span-10 xl:col-span-8">
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
             <img class="w-8 h-8 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="avatar">
             <p class="text-gray-800 text-base leading-none mr-2">@RikuS3n</p>
-            <p class="text-gray-600 text-base leading-none mr-2"><i class="mdi mdi-clock-outline"/>2020/03/30</p>
-            <p class="text-gray-600 text-base leading-none mr-2"><i class="mdi mdi-update"/>2020/04/02</p>
+            <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-clock-outline"/>2020/03/30</p>
+            <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-update"/>2020/04/02</p>
           </div>
 
           <p class="text-4xl font-semibold">{{ post.title }}</p>
 
-          <div>
+          <div class="flex flex-wrap">
             <n-link
               v-for="(tag, index) in post.tags"
               :to="`/tag/${tag}`"
@@ -38,12 +38,13 @@
           </div>
 
           <div class="markdown mt-16">
-            <div v-if="markdownIt" v-html="markdownIt.render(content)"></div>
+            <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
           </div>
 
           <hr class="my-16">
 
           <div>
+            <p class="text-xl font-semibold mb-3">著者</p>
             <PersonCard
               :card="true"
               :hover="true"
@@ -56,7 +57,7 @@
         </div>
       </div>
 
-      <div id="toc" class="w-full lg:w-full xl:w-3/12 px-1 xl:px-3">
+      <div id="toc" class="w-full col-span-12 xl:col-span-3">
         <PersonCard
           :card="true"
           :hover="true"
@@ -92,50 +93,6 @@ import LikeIcon from '~/components/LikeIcon.vue'
 })
 export default class Article extends Vue {
   markdownIt = null
-  content = `
-
-# ここから内容
-## レベル2ヘッディング :(
-### 環境とか <3
-#### :) Lemme test this
-
-### 環境とか <3
-VagrantのDebian9 (Windows10 Pro上)
-ただし、\`cat /etc/os-release\`をすると\`PRETTY_NAME="Debian GNU/Linux 10 (buster)"\`とでる。
-これはパッケージリストを間違ってbusterを使う設定にしてしまったので、特に気にしない。
-
----
-
-### (注意) 一度この記事をすべて読み進めてみてから実行してみることをおすすめします。
-一部不安定や確立しない場合がありますので、それらを考慮しつつ実行してください。
-責任は一切負いませんので、不安な方はバックアップをとるなりしてから実行してください。
-殴り書きです。
-
-\`\`\`js
-function test(thing) {
-  return thing.contains("test");
-}
-\`\`\`
-
-例えば、テストデータ形式のcsvをインポートしたときに、データが保存されない場合があります。
-入出力に問題はないです。
-
-> これはテストです。
-> 例えば、\`python -v 3.5\`と入力することで、
-> python 3.5で対話型ランタイムを実行することができます(嘘)
-
-## 解決方法
-少し長いです。
-上から2行目あたりで、\`/bin/sh: 1: mecab-config: not found\`と言われてるので、ターミナル上で\`mecab-config\`と打ってみると、
-->\`zsh: command not found: mecab-config\`
-とでるので、\`sudo apt install libmecab-dev\`と打って\`libmecab-dev\`をインストールする。
-
-\`\`\`js
-function test(thing) {
-  return thing.contains("test");
-}
-\`\`\`
-`
 
   post = {
     title: 'Windows 10でDocker-composeを実行する',
@@ -143,6 +100,8 @@ function test(thing) {
     author: 'RikuS3n',
     body: '# うんち',
     tags: ['Windows 10', 'docker', 'docker-compose'],
+    likes: 2, // likerの数をカウントするようにする
+    liked: false
   }
 
   user = {
@@ -152,7 +111,10 @@ function test(thing) {
     ]
   }
 
-  mounted() {
+  async mounted() {
+    const body = await import('~/assets/post.js')
+    this.post.body = body.default
+    
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
@@ -168,15 +130,22 @@ function test(thing) {
       }
       return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>';
     }
-    console.log(this.markdownIt)
+  }
+
+  updateLikes() {
+    if (this.post.liked) {
+      this.post.liked = false
+      this.post.likes--
+    } else {
+      this.post.liked = true
+      this.post.likes++
+    }
+    console.log(this.post.likes)
   }
 }
 </script>
 
 <style>
-.sticky {
-  top: 25vh;
-}
 /* purgecss start ignore */
 /* Markdown Styles */
 /* Global */
@@ -188,7 +157,7 @@ function test(thing) {
 }
 /* Headers */
 .markdown h1 {
-  @apply text-3xl mt-16 mb-4 font-bold border-b;
+  @apply text-3xl mt-16 mb-4 font-bold border-b border-gray-400;
 }
 .markdown h2 {
   @apply text-2xl mt-16 mb-4 font-bold border-b;
@@ -200,6 +169,12 @@ function test(thing) {
 .markdown h5,
 .markdown h6 {
   @apply text-lg mt-12 mb-3 font-semibold;
+}
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+
 }
 /* Links */
 .markdown a {
@@ -247,7 +222,7 @@ function test(thing) {
   @apply mb-6;
 }
 .markdown code {
-  @apply p-1 bg-gray-300 rounded;
+  @apply p-1 bg-gray-200 rounded;
 }
 .markdown pre {
   @apply text-base;
