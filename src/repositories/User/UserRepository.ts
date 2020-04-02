@@ -5,12 +5,22 @@ import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface
 import {
   UserDetail
 } from '~/apollo/schemas/userDetail'
-import { GET_USER_DETAIL, CREATE_USER, LOGIN_QUERY } from '~/apollo/queries/user'
+import { GET_USER_DETAIL, CREATE_USER, LOGIN_QUERY, GET_USER_DETAIL_BY_U_NAME } from '~/apollo/queries/user'
 import {  CreateUserResult } from '~/apollo/schemas/result'
 
 @injectable()
 export default class UserRepository extends BaseRepository
   implements UserRepositoryInterface {
+  async getUserByUName(uniqueName: string): Promise<UserDetail> {
+    const {
+      data: { user }
+    } = await global._$app.apolloProvider.defaultClient.query({
+      query: GET_USER_DETAIL_BY_U_NAME,
+      variables: { uniqueName }
+    })
+
+    return user
+  }
   public async getAuthUser(
     strategy: string,
     strategyId: string
@@ -32,7 +42,7 @@ export default class UserRepository extends BaseRepository
       variables: { params }
     })
 
-    console.log(login)
+    console.log("shit", login)
 
     return login
   }
