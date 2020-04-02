@@ -1,6 +1,6 @@
 <template>
   <div class="all-wrapper modal-active">
-    <Header :isLoggedIn="false" />
+    <Header :isLoggedIn="currentUser" />
     <div class="px-0 md:px-8 lg:px-32 xl:px-64">
       <nuxt class="mx-0 lg:px-3" />
     </div>
@@ -17,6 +17,10 @@ import Header from '~/components/Header.vue'
   }
 })
 export default class DefaultLayout extends Vue {
+  get currentUser() {
+    return this.$store.getters.getAuthUser || false
+  }
+
   mounted() {
     const _this = this
 

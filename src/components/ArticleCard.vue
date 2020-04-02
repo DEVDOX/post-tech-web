@@ -1,21 +1,21 @@
 <template>
-  <div :class="isStyle" class="main w-full relative z-10 flex flex-col justify-between leading-normal">
-    <n-link to="/post/abc3" class="stretched-link"></n-link>
+  <div v-if="article" :class="isStyle" class="main w-full relative z-10 flex flex-col justify-between leading-normal">
+    <n-link :to="articleUrl()" class="stretched-link"></n-link>
     <div class="w-full flex flex-col justify-between leading-normal">
       <div class="mb-5">
-        <p class="title text-gray-900 font-bold text-xl mb-2">コーヒーを飲むと開発者はパワーアップするのか？</p>
+        <p class="title text-gray-900 font-bold text-xl mb-2">{{ article.title }}</p>
         <div class="relative text-gray-900 text-base z-20">
-          <n-link to="/tag/" class="hover:underline">#lifestyle</n-link>
+          <n-link v-for="(tag, index) in article.tags" :key="index" :to="tagUrl(tag.urlName)" class="hover:underline">#{{ tag.name }}</n-link>
           <n-link to="/tag/" class="hover:underline">#nuxt</n-link>
           <n-link to="/tag/" class="hover:underline">#preffered</n-link>
         </div>
       </div>
       <div class="flex items-center">
-        <img class="w-10 h-10 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="Avatar of Jonathan Reinink">
+        <img class="w-10 h-10 rounded-full object-cover mr-2" :src="article.author.avatar" alt="Avatar of Jonathan Reinink">
         <div class="w-full flex justify-start items-center">
-          <p class="text-gray-700 leading-none text-base mr-3">@RikuS3n</p>
+          <p class="text-gray-700 leading-none text-base mr-3">@{{ article.author.uniqueName }}</p>
           <p class="text-gray-700 mr-3"><LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
-          <p class="text-gray-700 text-sm ml-auto">2020/3/26</p>
+          <p class="text-gray-700 text-sm ml-auto">{{ getDateTime() }}</p>
         </div>
       </div>
     </div>
@@ -25,6 +25,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import LikeIcon from '~/components/LikeIcon.vue'
+import { Post } from '~/apollo/schemas/post'
+import dayjs from 'dayjs'
+
+import 'dayjs/locale/ja' // load on demand
+
+dayjs.locale('ja') 
 
 @Component({
   components: {
@@ -34,10 +40,23 @@ import LikeIcon from '~/components/LikeIcon.vue'
 export default class ArticleCard extends Vue {
   @Prop() card!: boolean
   @Prop() hover!: boolean
+  @Prop() article!: Post
 
   isStyle = {
     'card-class': this.card,
     'hover-class': this.hover
+  }
+
+  getDateTime(date: string) {
+    return dayjs(this.article.insertedAt).format('YYYY年MM月DD日 dddd H:mm A')
+  }
+
+  tagUrl(urlName: string) {
+    return `/tags/${urlName}`
+  }
+
+  articleUrl() {
+    return `/post/${this.article.url}`
   }
 }
 </script>
