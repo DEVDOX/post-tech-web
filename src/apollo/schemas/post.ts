@@ -7,4 +7,6 @@ export interface Post {
   url: string
   uuid: string
   author: UserDetail
+  insertedAt: string
+  updatedAt: string
 }

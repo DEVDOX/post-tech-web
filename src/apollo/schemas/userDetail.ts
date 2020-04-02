@@ -8,6 +8,7 @@ export interface UserDetail {
   company: string
   bio: string
   uniqueName: string
+  avatar: string
 }
 
 export type TokenType = {
