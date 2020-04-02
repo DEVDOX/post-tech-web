@@ -1,6 +1,7 @@
 export default {
   like: 'Like',
   article: 'Article',
+  preview: 'Preview',
 
   user: {
     login: 'Log in',
@@ -27,5 +28,14 @@ export default {
   header: {
     search: 'Search',
     newPost: 'New Post',
+  },
+
+  options: {
+    account: 'Account',
+    security: 'Security',
+    uniqueName: 'User Name',
+    uniqueNameWarn: 'Username must be alphabet, numeric, hyphen or underscore and at least 5 characters.', // 良い文章が見つからない
+    displayName: 'Display Name',
+    tagline: 'Tagline',
   },
 }

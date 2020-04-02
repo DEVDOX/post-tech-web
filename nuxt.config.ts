@@ -115,7 +115,7 @@ const config: Configuration = {
   webfontloader: {
     google: {
       families: [
-        'Source+Sans+Pro:400,700',
+        'Source+Sans+Pro:400,600,700',
         'Noto+Sans+JP:wght@400;700',
       ]
     }

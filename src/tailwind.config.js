@@ -30,10 +30,16 @@ module.exports = {
         'none': 'none',
         'darker': 'brightness(80%)'
       },
+      borderWidth: {
+        '3': '3px',
+      },
+      minHeight: {
+        '512px': '512px',
+      },
     },
   },
   variants: {
-    borderWidth: ['last'],
+    borderWidth: ['responsive', 'hover', 'focus', 'last'],
     textDecotation: ['responsive', 'hover', 'focus', 'group-hover'],
     width: ['responsive', 'hover', 'focus'],
     height: ['responsive', 'hover', 'focus'],

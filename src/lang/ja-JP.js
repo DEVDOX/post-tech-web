@@ -1,6 +1,7 @@
 export default {
   like: 'いいね',
   article: '記事',
+  preview: 'プレビュー',
 
   user: {
     login: 'ログイン',
@@ -27,5 +28,14 @@ export default {
   header: {
     search: '探す',
     newPost: '投稿する',
+  },
+
+  options: {
+    account: 'アカウント',
+    security: 'セキュリティ',
+    uniqueName: 'ユーザーネーム',
+    uniqueNameWarn: 'ユーザーネームは、アルファベットと数字、ハイフン、アンダースコアのみで、最低でも5文字以上でなければなりません。',
+    displayName: '表示名',
+    tagline: '一言コメント',
   },
 }

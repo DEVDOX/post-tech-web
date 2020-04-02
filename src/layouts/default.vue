@@ -1,5 +1,5 @@
 <template>
-  <div class="all-wrapper modal-active">
+  <div class="universal-page-wrapper">
     <Header :isLogIn="true" />
     <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-32">
       <nuxt class="mx-0 lg:px-3" />
@@ -45,7 +45,7 @@ export default class DefaultLayout extends Vue {
 
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+  font-family: 'Source Sans Pro', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
@@ -60,7 +60,7 @@ body {
   background-color: #f9fafa;
 }
 
-.all-wrapper {
+.universal-page-wrapper {
   min-height: 100vh;
 }
 </style>
