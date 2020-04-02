@@ -1,10 +1,13 @@
 import { Context } from '@nuxt/types'
 
-export default function(context: Context) {
+export default function({ store }: Context) {
   return {
     httpEndpoint: 'http://192.168.2.104:8000/api/graphql',
     getAuth: () => {
-      return `Bearer ${context.store.getters.getAuthUser.token}`
+      console.log(store.getters.getAuthUser)
+      if (store.getters.getAuthUser) {
+        return `Bearer ${store.getters.getToken}`
+      }
     }
   }
 }
