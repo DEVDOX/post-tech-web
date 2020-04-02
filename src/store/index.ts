@@ -2,14 +2,19 @@ import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { TYPES } from '~/dependencyInjection/types'
 import { UserRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { TokenType } from '~/apollo/schemas/userDetail'
 /* import { UserInterface } from '~/apollo/schemas/user' */
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(
   TYPES.UserRepositoryInterface
 )
 
-export const state = () => ({
-  authUser: "hello"
+type State = {
+  authUser: TokenType | null
+}
+
+export const state: () => State = (): State => ({
+  authUser: null
 })
 
 export type RootState = ReturnType<typeof state>
@@ -20,7 +25,15 @@ export interface Actions<S, R> extends ActionTree<S, R> {
 
 export const getters: GetterTree<RootState, RootState> = {
   getAuthUser(state: RootState) {
-    return state.authUser
+    if (state.authUser) {
+      return state.authUser.userDetail
+    }
+  },
+
+  getToken(state: RootState) {
+    if (state.authUser) {
+      return state.authUser.token
+    }
   }
 }
 
@@ -63,7 +76,7 @@ export const actions: Actions<RootState, RootState> = {
       }
     } catch (e) {
       // raise error
-      console.log(e)
+      console.error(e)
     }
   }
 }
