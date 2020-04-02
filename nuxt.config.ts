@@ -6,6 +6,7 @@ require('dotenv').config({ path: fileName })
 const config: Configuration = {
   srcDir: 'src/',
   mode: 'universal',
+  
   head: {
     title: process.env.npm_package_name || '',
     meta: [

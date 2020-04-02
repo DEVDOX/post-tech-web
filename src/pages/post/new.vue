@@ -28,16 +28,16 @@
     </client-only>
 
     <div class="w-full fixed bg-gray-200 bottom-0 left-0 z-50">
-      <div class="flex justify-center items-center mx-16 my-4">
-        <div class="relative w-50">
+      <div class="flex flex-no-wrap justify-center items-center mx-4 lg:mx-16 my-4">
 
-          <button @click="isPublicOpen = !isPublicOpen" class="block bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center mx-2">
+        <div class="relative w-50">
+          <button @click="isPublicOpen = !isPublicOpen" class="w-32 flex justify-center items-center bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded mx-2">
             <span v-html="visibility"></span>
             <i v-if="isPublicOpen" class="mdi mdi-chevron-right"/>
             <i v-if="!isPublicOpen" class="mdi mdi-chevron-up"/>
           </button>
-          <ul v-if="isPublicOpen" class="absolute bottom-0 left-0 bg-white rounded py-2 shadow-xl ml-2 mb-12">
 
+          <ul v-if="isPublicOpen" class="absolute bottom-0 left-0 bg-white rounded py-2 shadow-xl ml-2 mb-12">
             <li @click="updateVisibilityState('publish')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
               <i class="mdi mdi-earth mr-1"/><span>{{ $t('post.state.publish') }}</span>
             </li>
@@ -49,11 +49,10 @@
             <li @click="updateVisibilityState('draft')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
               <i class="mdi mdi-file-edit-outline mr-1"/><span>{{ $t('post.state.draft') }}</span>
             </li>
-
           </ul>
         </div>
 
-        <button class="btn btn-blue mx-2">
+        <button class="w-32 btn btn-blue mx-2">
           <i :class="`mdi-${submitIcon}`" class="mdi"/>
           <span>{{ submitText }}</span>
         </button>
