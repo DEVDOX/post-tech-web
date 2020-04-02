@@ -38,7 +38,7 @@
           </button>
 
           <ul v-if="isPublicOpen" class="absolute bottom-0 left-0 bg-white rounded py-2 shadow-xl ml-2 mb-12">
-            <li @click="updateVisibilityState('publish')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
+            <li @click="updateVisibilityState('published')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
               <i class="mdi mdi-earth mr-1"/><span>{{ $t('post.state.publish') }}</span>
             </li>
 
@@ -67,7 +67,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import 'mavon-editor/dist/css/index.css'
 import mavonEditor from 'mavon-editor'
 
-type postState = 'publish' | 'private' | 'draft'
+type postState = 'published' | 'private' | 'draft'
 
 @Component({
   components: {
@@ -78,7 +78,7 @@ export default class NewPost extends Vue {
   isPublicOpen: boolean = false
   isFullscreen: boolean = false
 
-  visibilityState: postState = 'publish' // APIからデータを取る
+  visibilityState: postState = 'published' // APIからデータを取る
   submitIcon: string = 'upload' // APIからデータを取る
   submitText: string = this.$root.$tc('newPost.publish') // APIからデータを取る
   get visibility(): string {
@@ -86,7 +86,7 @@ export default class NewPost extends Vue {
     let stateIcon: string = ''
 
     switch (this.visibilityState) {
-      case 'publish':
+      case 'published':
         stateIcon = 'earth'
         this.submitIcon = 'upload'
         this.submitText = this.$root.$tc('newPost.publish')
