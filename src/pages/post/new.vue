@@ -6,7 +6,7 @@
           {{ $t('title') }}
         </label>
         <input
-          v-model="post.title"
+          v-model="newPost.title"
           id="title"
           class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
           type="text"
@@ -20,7 +20,7 @@
         </label>
         <input
           id="title"
-          v-model="post.tags"
+          v-model="newPost.tags"
           class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
           type="text"
           placeholder="Example text"
@@ -32,7 +32,7 @@
 
     <client-only>
       <mavon-editor
-        v-model="post.body"
+        v-model="newPost.body"
         :toolbars="markdownOption"
         language="ja"
         class="mavonEditor mb-32"
@@ -55,11 +55,10 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(
 @Component
 export default class NewPost extends Vue {
   // user.language?をゲットして、mavonEditorに適用する
-  post = {
+  newPost = {
     title: '',
     body: '',
-    is_public: false,
-    is_draft: false,
+    state: 'private',
     tags: [{name: "asdf"}]
   }
 
@@ -96,8 +95,7 @@ export default class NewPost extends Vue {
   }
 
   async createPost() {
-    const post = await PostRepo.createPost(this.post)
-    console.log(post)
+    const post = await PostRepo.createPost(this.newPost)
   }
 }
 </script>

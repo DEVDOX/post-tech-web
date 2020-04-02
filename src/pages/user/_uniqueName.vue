@@ -12,10 +12,11 @@
             </li>
           </ul>
           <!-- last:border-b-0 が効いてない -->
-          <div id="article">
+          <div id="articles">
             <ArticleCard
-              v-for="i in 5"
-              :key="i"
+              v-for="(article, index) in posts"
+              :article="article"
+              :key="index"
               :card="false"
               :hover="false"
               class="border-b last:border-b-0 p-4"
@@ -27,9 +28,7 @@
         <PersonCard
           :card="true"
           :hover="false"
-          :tagline="user.tagline"
-          :contacts="user.contacts"
-          userName="RikuS3n"
+          :user="user"
         >
           <hr class="my-5">
           <div class="relative z-20 flex flex-col justify-start items-start mx-3">
@@ -46,6 +45,15 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import ArticleCard from '~/components/ArticleCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
+import { serviceContainer } from '../../dependencyInjection/container'
+import PostRepository from '../../repositories/Post/PostRepository'
+import { PostRepositoryInterface, UserRepositoryInterface } from '../../dependencyInjection/interfaces'
+import { TYPES } from '../../dependencyInjection/types'
+import { Context } from '@nuxt/types'
+import { UserDetail } from '../../apollo/schemas/userDetail'
+
+const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostRepositoryInterface)
+const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 
 @Component({
   components: {
@@ -54,11 +62,16 @@ import PersonCard from '~/components/PersonCard.vue'
   }
 })
 export default class UserPage extends Vue {
-  user = {
-    tagline: "Lorem ipsum roamen sit",
-    contacts: [
-      { sns: 'twitter', link: 'https://twitter.com/RikuS3n'}
-    ]
+  private user: UserDetail | null = null
+
+  async asyncData({ params }: Context) {
+    const user = await UserRepo.getUserByUName(params.uniqueName)
+    const posts = await PostRepo.getUserPostsByUName(user.uniqueName)
+
+    return {
+      user,
+      posts
+    }
   }
 }
 </script>
