@@ -40,3 +40,7 @@ declare global {
     _$app: any
   }
 }
+
+declare module 'vue/types/vue' {
+  interface Vue {}
+}

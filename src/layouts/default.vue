@@ -1,10 +1,10 @@
 <template>
   <div class="universal-page-wrapper">
-    <Header :isLogIn="true" />
-    <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-16 lg:mt-28">
-      <nuxt class="mx-0 lg:px-3" />
-    </div>
-    <Footer />
+    <Header :currentUser="currentUser" />
+      <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-16 lg:mt-28">
+        <nuxt class="mx-0 lg:px-3" />
+      </div>
+    <Footer /> 
   </div>
 </template>
 
@@ -20,16 +20,12 @@ import Footer from '~/components/Footer.vue'
   }
 })
 export default class DefaultLayout extends Vue {
-  handler(e: any) {
-    this.$root.$emit('close')
-  }
 
-  beforeDestroy() {
-    window.removeEventListener('keydown', this.handler)
+  get currentUser() {
+    return this.$store.getters.getAuthUser
   }
 
   mounted() {
-    window.addEventListener('keydown', this.handler)
     const _this = this
 
     this.$root.$on('loginWithGithub', async function() {

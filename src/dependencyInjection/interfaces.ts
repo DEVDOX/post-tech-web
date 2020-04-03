@@ -1,1 +1,2 @@
-// export { default as xx } from '~/repositories/XX'
+export { default as UserRepositoryInterface } from '~/repositories/User/UserRepositoryInterface'
+export { default as PostRepositoryInterface } from '~/repositories/Post/PostRepositoryInterface'

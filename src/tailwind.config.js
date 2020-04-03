@@ -25,6 +25,7 @@ module.exports = {
         },
       },
       screens: {
+        //'lg': '1400px',
         'xl': '1400px',
       },
       variants: {

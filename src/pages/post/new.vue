@@ -5,23 +5,35 @@
         <label class="block text-gray-700 text-base font-semibold mb-2" for="title">
           {{ $t('post.title') }}
         </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500" id="title" type="text" placeholder="Example text">
+        <input
+          v-model="newPost.title"
+          id="title"
+          class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
+          type="text"
+          placeholder="Example text"
+        />
       </div>
 
       <div class="p-5">
         <label class="block text-gray-700 text-base font-semibold mb-2" for="title">
           {{ $t('post.tags') }}
         </label>
-        <input class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500" id="title" type="text" placeholder="Example text">
+        <input
+          id="title"
+          v-model="newPost.tags"
+          class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
+          type="text"
+          placeholder="Example text"
+        />
       </div>
     </div>
 
     <client-only>
       <mavon-editor
+        v-model="newPost.body"
         :toolbars="markdownOption"
         language="ja"
         ref="markdownEditor"
-        v-model="content"
         :class="isFullscreen ? '' : 'editor'"
         @fullScreen="updateFullscreen"
       />
@@ -52,7 +64,7 @@
           </ul>
         </div>
 
-        <button class="w-32 btn btn-blue mx-2">
+        <button @click="createPost()" class="w-32 btn btn-blue mx-2">
           <i :class="`mdi-${submitIcon}`" class="mdi"/>
           <span>{{ submitText }}</span>
         </button>
@@ -63,9 +75,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue } from 'nuxt-property-decorator'
+
 import 'mavon-editor/dist/css/index.css'
 import mavonEditor from 'mavon-editor'
+
+import { serviceContainer } from '~/dependencyInjection/container'
+
+import { TYPES } from '~/dependencyInjection/types'
+import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+
+const PostRepo = serviceContainer.get<PostRepositoryInterface>(
+  TYPES.PostRepositoryInterface
+)
 
 type postState = 'published' | 'private' | 'draft'
 
@@ -75,12 +97,22 @@ type postState = 'published' | 'private' | 'draft'
   }
 })
 export default class NewPost extends Vue {
+  // user.language?をゲットして、mavonEditorに適用する
+  newPost = {
+    title: '',
+    body: '',
+    state: 'private',
+    tags: [{name: "asdf"}]
+  }
+
   isPublicOpen: boolean = false
   isFullscreen: boolean = false
 
   visibilityState: postState = 'published' // APIからデータを取る
   submitIcon: string = 'upload' // APIからデータを取る
+
   submitText: string = this.$root.$tc('newPost.publish') // APIからデータを取る
+
   get visibility(): string {
     const localeString: string = 'post.state.' + this.visibilityState
     let stateIcon: string = ''
@@ -104,6 +136,7 @@ export default class NewPost extends Vue {
     }
     return `<i class="mdi mdi-${stateIcon} mr-1"></i><span>${this.$t(localeString)}</span>`
   }
+
   updateVisibilityState(state: postState) {
     this.visibilityState = state
     this.isPublicOpen = false
@@ -145,7 +178,12 @@ export default class NewPost extends Vue {
     htmlcode: false,
     trash: true,
     save: false,
-    navigation: true,
+    navigation: true
+  }
+
+  async createPost() {
+    this.newPost.state = this.visibilityState
+    const post = await PostRepo.createPost(this.newPost)
   }
 }
 </script>

@@ -1,12 +1,13 @@
 import { Context } from '@nuxt/types'
 
-export default (
-  { app }: Context,
-  inject: (key: string, value: any) => void
-) => {
-  if (app.apolloProvider === undefined || '$apollo' in app) {
-    return
-  } else {
-    /* inject('apollo', app.apolloProvider.defaultClient) */
+export default function({ store }: Context) {
+  return {
+    httpEndpoint: `${process.env.DOMAIN_NAME}/api/graphql`,
+    getAuth: () => {
+      console.log(store.getters.getAuthUser)
+      if (store.getters.getAuthUser) {
+        return `Bearer ${store.getters.getToken}`
+      }
+    }
   }
 }

@@ -43,6 +43,7 @@ const config: Configuration = {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
+    'cookie-universal-nuxt'
   ],
 
   modules: [
@@ -86,7 +87,7 @@ const config: Configuration = {
 
   apollo: {
     clientConfigs: {
-      default: '~/apollo/client-configs/default.ts'
+      default: '~/plugins/vue-apollo'
     }
   },
 
@@ -95,17 +96,17 @@ const config: Configuration = {
       login: '/',
       logout: '/logout',
       callback: '/auth/callback',
-      home: '/',
+      home: '/'
     },
     strategies: {
       github: {
         client_id: process.env.GITHUB_CLIENT_ID,
         client_secret: process.env.GITHUB_CLIENT_SECRET,
-        scope: ['read:user']
+        scope: ['read:user', 'email']
       }
     },
     watchLoggedIn: true,
-    plugins: [ '~/plugins/auth.js' ]
+    plugins: ['~/plugins/auth.js']
   },
 
   proxy: {
@@ -134,7 +135,7 @@ const config: Configuration = {
     bundleRenderer: {
       runInNewContext: false
     }
-  }
+  },
 }
 
 export default config
