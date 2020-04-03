@@ -1,6 +1,7 @@
 export default {
   like: 'Like',
   article: 'Article',
+  preview: 'Preview',
 
   user: {
     login: 'Log in',
@@ -13,7 +14,7 @@ export default {
     title: 'Title',
     tags: 'Tags',
     state: {
-      publish: 'Publish',
+      published: 'Publish',
       private: 'Private',
       draft: 'Draft',
     },
@@ -27,5 +28,22 @@ export default {
   header: {
     search: 'Search',
     newPost: 'New Post',
+  },
+
+  options: {
+    save: 'Save',
+    profile: 'Profile',
+    account: 'Account',
+    preference: 'Preference',
+    uniqueName: 'User Name',
+    uniqueNameWarn: 'Username must be alphabet, numeric, hyphen or underscore and at least 5 characters.', // 良い文章が見つからない
+    displayName: 'Display Name',
+    tagline: 'Tagline',
+    webSiteUrl: 'Website / Blog URL',
+    location: 'Location',
+    email: 'Email',
+    link: 'Link',
+    linked: 'Linked',
+    language: 'Language',
   },
 }

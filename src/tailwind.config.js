@@ -2,7 +2,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        twitter: '#1da1f2'
+        // http://scg.ar-ch.org/
+        twitter: {
+          default: '#1da1f2',
+          darker: '#0c85d0' // 10% darker
+        },
+        discord: {
+          default: '#7289DA',
+        },
+        github: {
+          default: '#333333',
+          darker: '#1a1a1a', // 10% darker
+        },
+        gitlab: {
+          default: '#fca326',
+        },
+        qiita: {
+          default: '#55c500',
+        },
+        youtube: {
+          default: '#FF0000',
+        },
       },
       screens: {
         //'lg': '1400px',
@@ -26,10 +46,16 @@ module.exports = {
         'none': 'none',
         'darker': 'brightness(80%)'
       },
+      borderWidth: {
+        '3': '3px',
+      },
+      minHeight: {
+        '512px': '512px',
+      },
     },
   },
   variants: {
-    borderWidth: ['last'],
+    borderWidth: ['responsive', 'hover', 'focus', 'last'],
     textDecotation: ['responsive', 'hover', 'focus', 'group-hover'],
     width: ['responsive', 'hover', 'focus'],
     height: ['responsive', 'hover', 'focus'],
