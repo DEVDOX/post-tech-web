@@ -1,11 +1,11 @@
 <template>
-  <div class="all-wrapper modal-active">
+  <div class="universal-page-wrapper">
     <Header :currentUser="currentUser" />
-    <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-32">
-      <nuxt class="mx-0 lg:px-3" />
-    </div>
-   <Footer /> 
+      <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-16 lg:mt-28">
+        <nuxt class="mx-0 lg:px-3" />
       </div>
+    <Footer /> 
+  </div>
 </template>
 
 <script lang="ts">

@@ -217,7 +217,7 @@ export default class Article extends Vue {
 }
 /* Blockquotes */
 .markdown blockquote {
-  @apply px-2 py-1 mx-6 bg-gray-100 my-4 border-l-4 border-gray-400;
+  @apply px-2 py-1 bg-gray-100 my-4 border-l-4 border-gray-400;
 }
 .markdown blockquote > p {
   @apply mb-0;

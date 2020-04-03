@@ -43,7 +43,7 @@
       <div class="flex flex-no-wrap justify-center items-center mx-4 lg:mx-16 my-4">
 
         <div class="relative w-50">
-          <button @click="isPublicOpen = !isPublicOpen" class="w-32 flex justify-center items-center bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded mx-2">
+          <button @click.stop="isPublicOpen = !isPublicOpen" class="w-32 flex justify-center items-center bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded mx-2">
             <span v-html="visibility"></span>
             <i v-if="isPublicOpen" class="mdi mdi-chevron-right"/>
             <i v-if="!isPublicOpen" class="mdi mdi-chevron-up"/>
