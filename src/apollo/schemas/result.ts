@@ -12,5 +12,5 @@ interface ApiResult<T> {
 }
 
 export type CreatePostResult = ApiResult<Post>
-export type CreateUserResult = ApiResult<UserDetail>
+export type CreateUserResult = ApiResult<UserDetail & TokenType>
 export type LoginResult = ApiResult<TokenType>

@@ -10,6 +10,8 @@ export const GET_POST_BY_URL = gql`
         urlName
       }
       body
+      insertedAt
+      updatedAt
       author: userDetail {
         id
         uniqueName
