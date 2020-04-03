@@ -2,12 +2,27 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        twitter: '#1da1f2',
-        discord: '#7289DA',
-        github: '#333333',
-        gitlab: '#fca326',
-        qiita: '#55c500',
-        youtube: '#FF0000',
+        // http://scg.ar-ch.org/
+        twitter: {
+          default: '#1da1f2',
+          darker: '#0c85d0' // 10% darker
+        },
+        discord: {
+          default: '#7289DA',
+        },
+        github: {
+          default: '#333333',
+          darker: '#1a1a1a', // 10% darker
+        },
+        gitlab: {
+          default: '#fca326',
+        },
+        qiita: {
+          default: '#55c500',
+        },
+        youtube: {
+          default: '#FF0000',
+        },
       },
       screens: {
         'xl': '1400px',

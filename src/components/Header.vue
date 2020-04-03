@@ -6,7 +6,7 @@
       <n-link to="/" class="font-semibold text-xl text-white tracking-tight mr-2">Unposter</n-link>
       <input class="border border-gray-400 bg-white w-32 lg:w-48 h-10 p-2 rounded text-sm focus:outline-none text-gray-600 ml-auto" type="search" name="search" :placeholder="$t('header.search')">
       <div class="flex items-center" v-if="isLogIn">
-        <n-link to="/post/new" class="inline-block text-sm px-2 lg:px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white ml-1 lg:ml-4 mr-2 lg:mr-3">+ {{ $t('header.newPost') }}</n-link>
+        <n-link to="/post/new" class="inline-block text-sm px-2 lg:px-4 py-3 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white ml-1 lg:ml-4 mr-2 lg:mr-3">+ {{ $t('header.newPost') }}</n-link>
         <n-link to="/user/RikuS3n"><img class="w-10 h-10 rounded-full object-cover" src="/image/kawaii_1.png" alt="avatar"></n-link>
       </div>
       <div v-else-if="!isLogIn">

@@ -1,52 +1,160 @@
 <template>
-  <div class="mx-64">
+  <div class="mx-3 lg:mx-64">
     <div class="grid grid-cols-4 col-gap-8">
-
-      <div id="sidebar" class="col-span-1">
-        <div class="w-full card min-h-512px py-3">
-          <ul class="">
-            <li v-for="(item, index) in menuNames" :key="index" class="flex items-center border-l-3 border-transparent hover:border-teal-500 hover:bg-gray-100 cursor-pointer py-2 pl-4 pr-2 my-1 duration-100">
-              <i :class="`mdi-${item.icon}`" class="mdi text-xl mr-2 lg:mr-4"/>
+      <div id="sidebar" class="col-span-4 lg:col-span-1 mb-4">
+        <button class="w-full btn btn-blue mb-5">{{ $t('options.save') }}</button>
+        <div class="w-full card lg:min-h-512px py-3">
+          <ul class>
+            <li
+              v-for="item in menuNames"
+              :key="item.id"
+              class="sidebar-item flex items-center py-2 pl-4 pr-2 my-1"
+              :class="item.id == tabId ? 'active' : ''"
+              @click="updateTabId(item.id)"
+            >
+              <i :class="`mdi-${item.icon}`" class="mdi text-xl mr-2 lg:mr-4" />
               <span class="font-semibold text-gray-700">{{ item.name }}</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <div id="main" class="col-span-3 card p-8">
+      <div id="main" class="col-span-4 lg:col-span-3 card p-8">
+        <div v-if="tabId == 'profile'">
           <div class="flex justify-center">
             <div class="w-96 mb-8">
               <PersonCard
                 :card="true"
                 :detail="true"
-                :userName="name"
-                :tagline="tagline"
-                :contacts="contacts"
+                :userName="user.uniqueName"
+                :tagline="user.tagline"
+                :contacts="user.contacts"
               />
               <p class="text-center my-2">{{ $t('preview') }}</p>
             </div>
           </div>
-          <div class="mb-5">
-            <label class="text-gray-700" for="unique-name">{{ $t('options.uniqueName') }}</label>
-            <input id="unique-name" class="w-full m-input text-gray-800" type="text" placeholder="Jane Doe" :aria-label="$t('options.uniqueName')">
+          <div class="mb-6">
+            <label class="text-sm text-gray-700" for="unique-name">{{ $t('options.uniqueName') }}</label>
+            <input
+              id="unique-name"
+              v-model="user.uniqueName"
+              class="w-full m-input text-gray-800"
+              type="text"
+              placeholder="Jane Doe"
+              :aria-label="$t('options.uniqueName')"
+            />
             <small class="text-xs text-gray-600">{{ $t('options.uniqueNameWarn') }}</small>
           </div>
-          <div class="mb-5">
-            <label class="text-gray-700" for="display-name">{{ $t('options.displayName') }}</label>
-            <input id="display-name" class="w-full m-input text-gray-800" type="text" placeholder="JaneDoe" :aria-label="$t('options.displayName')">
+          <div class="mb-6">
+            <label class="text-sm text-gray-700" for="display-name">{{ $t('options.displayName') }}</label>
+            <input
+              id="display-name"
+              v-model="user.displayName"
+              class="w-full m-input text-gray-800"
+              type="text"
+              placeholder="JaneDoe"
+              :aria-label="$t('options.displayName')"
+            />
           </div>
-          <div class="mb-5">
-            <label class="text-gray-700" for="tagline">{{ $t('options.tagline') }}</label>
-            <input id="tagline" class="w-full m-input text-gray-800" type="text" placeholder="Lorem ipsum dolor sit amet" :aria-label="$t('options.tagline')">
+          <div class="mb-6">
+            <label class="text-sm text-gray-700" for="tagline">{{ $t('options.tagline') }}</label>
+            <input
+              id="tagline"
+              v-model="user.tagline"
+              class="w-full m-input text-gray-800"
+              type="text"
+              placeholder="Lorem ipsum dolor sit amet"
+              :aria-label="$t('options.tagline')"
+            />
           </div>
-          <div class="mb-5">
-            <label class="text-gray-700" for="web-site-url">{{ $t('options.webSiteUrl') }}</label>
-            <input id="web-site-url" class="w-full m-input text-gray-800" type="text" :placeholder="getDomainName()" :aria-label="$t('options.webSiteUrl')">
+          <div class="mb-6">
+            <label class="text-sm text-gray-700" for="web-site-url">{{ $t('options.webSiteUrl') }}</label>
+            <input
+              id="web-site-url"
+              v-model="user.websiteUrl"
+              class="w-full m-input text-gray-800"
+              type="text"
+              :placeholder="getDomainName()"
+              :aria-label="$t('options.webSiteUrl')"
+            />
           </div>
-          <button class="btn btn-blue">{{ $t('options.save') }}</button>
+          <div class="mb-6">
+            <label class="text-sm text-gray-700" for="location">{{ $t('options.location') }}</label>
+            <input
+              id="location"
+              v-model="user.location"
+              class="w-full m-input text-gray-800"
+              type="text"
+              placeholder="Tokyo"
+              :aria-label="$t('options.location')"
+            />
+          </div>
+        </div>
+
+        <div v-if="tabId == 'account'">
+          <div class="mb-6">
+            <label class="text-sm text-gray-700" for="email">{{ $t('options.email') }}</label>
+            <input
+              id="email"
+              v-model="user.email"
+              class="w-full m-input text-gray-800"
+              type="text"
+              placeholder="user@example.com"
+              :aria-label="$t('options.email')"
+            />
+          </div>
+          <div class="flex flex-col mb-6">
+            <div class="mb-3">
+              <button class="w-32 btn btn-twitter mr-3">
+                <i class="mdi mdi-twitter"/>
+                <span>Twitter</span>
+              </button>
+              <span>{{ $t('options.link') }}</span>
+            </div>
+            <div class="mb-3">
+              <button class="w-32 btn btn-github mr-3">
+                <i class="mdi mdi-github"/>
+                <span>GitHub</span>
+              </button>
+              <span>{{ $t('options.linked') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="tabId == 'preference'">
+          <div class="mb-6">
+            <label class="text-sm text-gray-700">{{ $t('options.language') }}</label>
+            <div class="flex items-center m-3">
+              <input
+                id="japanese"
+                name="language"
+                type="radio"
+                value="ja"
+                class="mr-2"
+                :checked="user.language_code == 'ja'"
+              >
+              <label for="japanese">
+                日本語
+                <small class="text-sm ml-1">(Japanese)</small>
+              </label>
+            </div>
+            <div class="flex items-center m-3">
+              <input
+                id="english"
+                name="language"
+                type="radio"
+                value="en"
+                class="mr-2"
+                :checked="user.language_code == 'en'"
+              >
+              <label for="english">
+                English
+                <small class="text-sm ml-1">(English)</small>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
@@ -54,35 +162,73 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import PersonCard from '~/components/PersonCard.vue'
+import DropdownButton from '~/components/DropdownButton.vue'
+
+type tabType = 'profile' | 'account' | 'preference'
+interface tabInterface {
+  id: tabType
+  icon: string
+  name: string
+}
 
 @Component({
   components: {
-    PersonCard
+    PersonCard,
+    DropdownButton
   }
 })
 export default class Settings extends Vue {
-  menuNames: object[] = [
-    { icon: 'account-details-outline', name: this.$root.$t('options.profile') },
-    { icon: 'account-outline', name: this.$root.$t('options.account') },
-    { icon: 'security', name: this.$root.$t('options.security') },
+  isTwitterLinked: boolean = false
+  isGithubLinked: boolean = false
+
+  menuNames: tabInterface[] = [
+    {
+      id: 'profile',
+      icon: 'account-details-outline',
+      name: this.$root.$tc('options.profile')
+    },
+    {
+      id: 'account',
+      icon: 'account-outline',
+      name: this.$root.$tc('options.account')
+    },
+    {
+      id: 'preference',
+      icon: 'tune',
+      name: this.$root.$tc('options.preference')
+    },
   ]
 
   user = {
-    name: 'RikuS3n',
+    uniqueName: 'RikuS3n',
+    displayName: 'rikusen0335',
+    location: 'Hokkaido',
     tagline: 'Lorem ipsum roamen sit',
-    contacts: [
-      { sns: 'twitter', link: 'https://twitter.com/RikuS3n' }
-    ]
+    contacts: [{ type: 'twitter', url: 'https://twitter.com/RikuS3n' }],
+    email: 'rikusen0335@gmail.com',
+    language_code: 'ja'
   }
 
+  tabId: tabType = 'profile'
+
   getDomainName(): string {
-    if (process.env.DOMAIN_NAME) { return process.env.DOMAIN_NAME }
+    if (process.env.DOMAIN_NAME) {
+      return process.env.DOMAIN_NAME
+    }
     return ''
   }
 
-  get name() { return this.user.name }
-  get tagline() { return this.user.tagline }
-  get contacts() { return this.user.contacts }
+  addContactInput() {
+    this.user.contacts.push({type: '', url: ''})
+  }
+
+  updateTabId(tabId: tabType) {
+    this.tabId = tabId
+  }
+
+  get currentTab() {
+    return this.tabId
+  }
 }
 </script>
 
@@ -96,7 +242,25 @@ export default class Settings extends Vue {
 .m-input:focus {
   @apply outline-none border-teal-500;
 }
-li.active {
+.sidebar-item {
+  @apply border-l-3 border-transparent cursor-pointer py-2 pl-4 pr-2 my-1 duration-100;
+}
+.sidebar-item:hover {
+  @apply border-teal-500 bg-gray-100;
+}
+.sidebar-item.active {
   @apply border-teal-700 bg-gray-200;
+}
+.v-leave-active {
+  position: absolute;
+}
+.v-enter {
+  transform: translateX(-100%);
+}
+.v-leave-to {
+  transform: translateX(100%);
+}
+.disable {
+  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed !important;
 }
 </style>

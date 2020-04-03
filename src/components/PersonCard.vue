@@ -13,8 +13,8 @@
         v-for="(contact, index) in contacts"
         :key="index"
         :href="contact.link"
-        :class="`mdi-${contact.sns} text-${contact.sns}`"
-        class="relative mdi text-xl mx-2 hover:filter-darker duration-100"
+        :class="`mdi-${contact.sns} text-${contact.sns} hover:text-${contact.sns}-darker`"
+        class="relative mdi text-xl mx-2 duration-100"
       ></a>
     </div>
     <div v-if="detail" class="flex justify-center items-center mt-5">

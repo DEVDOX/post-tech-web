@@ -39,7 +39,7 @@
 
           <ul v-if="isPublicOpen" class="absolute bottom-0 left-0 bg-white rounded py-2 shadow-xl ml-2 mb-12">
             <li @click="updateVisibilityState('published')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
-              <i class="mdi mdi-earth mr-1"/><span>{{ $t('post.state.publish') }}</span>
+              <i class="mdi mdi-earth mr-1"/><span>{{ $t('post.state.published') }}</span>
             </li>
 
             <li @click="updateVisibilityState('private')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
