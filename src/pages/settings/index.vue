@@ -29,7 +29,7 @@
           <div class="mb-5">
             <label class="text-gray-700" for="unique-name">{{ $t('options.uniqueName') }}</label>
             <input id="unique-name" class="w-full m-input text-gray-800" type="text" placeholder="Jane Doe" :aria-label="$t('options.uniqueName')">
-            <small class="text-xs">{{ $t('options.uniqueNameWarn') }}</small>
+            <small class="text-xs text-gray-600">{{ $t('options.uniqueNameWarn') }}</small>
           </div>
           <div class="mb-5">
             <label class="text-gray-700" for="display-name">{{ $t('options.displayName') }}</label>
@@ -37,8 +37,13 @@
           </div>
           <div class="mb-5">
             <label class="text-gray-700" for="tagline">{{ $t('options.tagline') }}</label>
-            <input id="tagline" class="w-full m-input text-gray-800" type="text" placeholder="Jane Doe" :aria-label="$t('options.tagline')">
+            <input id="tagline" class="w-full m-input text-gray-800" type="text" placeholder="Lorem ipsum dolor sit amet" :aria-label="$t('options.tagline')">
           </div>
+          <div class="mb-5">
+            <label class="text-gray-700" for="web-site-url">{{ $t('options.webSiteUrl') }}</label>
+            <input id="web-site-url" class="w-full m-input text-gray-800" type="text" :placeholder="getDomainName()" :aria-label="$t('options.webSiteUrl')">
+          </div>
+          <button class="btn btn-blue">{{ $t('options.save') }}</button>
         </div>
       </div>
 
@@ -57,8 +62,9 @@ import PersonCard from '~/components/PersonCard.vue'
 })
 export default class Settings extends Vue {
   menuNames: object[] = [
-    { icon: 'account-outline', name: this.$root.$t('options.account')},
-    { icon: 'security', name: this.$root.$t('options.security')},
+    { icon: 'account-details-outline', name: this.$root.$t('options.profile') },
+    { icon: 'account-outline', name: this.$root.$t('options.account') },
+    { icon: 'security', name: this.$root.$t('options.security') },
   ]
 
   user = {
@@ -67,6 +73,11 @@ export default class Settings extends Vue {
     contacts: [
       { sns: 'twitter', link: 'https://twitter.com/RikuS3n' }
     ]
+  }
+
+  getDomainName(): string {
+    if (process.env.DOMAIN_NAME) { return process.env.DOMAIN_NAME }
+    return ''
   }
 
   get name() { return this.user.name }

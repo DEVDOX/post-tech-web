@@ -31,11 +31,14 @@ export default {
   },
 
   options: {
+    save: 'Save',
+    profile: 'Profile',
     account: 'Account',
     security: 'Security',
     uniqueName: 'User Name',
     uniqueNameWarn: 'Username must be alphabet, numeric, hyphen or underscore and at least 5 characters.', // 良い文章が見つからない
     displayName: 'Display Name',
     tagline: 'Tagline',
+    webSiteUrl: 'Website / Blog URL',
   },
 }
