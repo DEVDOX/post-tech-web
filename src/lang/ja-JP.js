@@ -2,6 +2,7 @@ export default {
   like: 'いいね',
   article: '記事',
   preview: 'プレビュー',
+  areYouSure: '本当にページから移動しても良いですか？',
 
   user: {
     login: 'ログイン',

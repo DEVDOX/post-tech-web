@@ -2,6 +2,7 @@ export default {
   like: 'Like',
   article: 'Article',
   preview: 'Preview',
+  areYouSure: 'Are you sure you want to exit?',
 
   user: {
     login: 'Log in',
@@ -39,7 +40,7 @@ export default {
     account: 'Account',
     preference: 'Preference',
     uniqueName: 'User Name',
-    uniqueNameWarn: 'Username must be alphabet, numeric, hyphen or underscore and at least 5 characters.', // 良い文章が見つからない
+    uniqueNameWarn: 'Username must be alphabetical, numeric or hyphen and at least 5 characters.', // 良い文章が見つからない
     displayName: 'Display Name',
     tagline: 'Tagline',
     webSiteUrl: 'Website / Blog URL',

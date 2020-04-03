@@ -61,6 +61,9 @@ import { UserDetail } from '../apollo/schemas/userDetail'
 export default class Header extends Vue {
   @Prop() currentUser!: UserDetail
 
+  protected blockUnloadMessage: string = this.$root.$tc('areYouSure')
+  protected isBlockUnload: boolean = false;
+
   isOpen: boolean = false
   isModalOpen: boolean = false
 
