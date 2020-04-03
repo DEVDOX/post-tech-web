@@ -1,4 +1,4 @@
-export interface UserDetailInterface {
+export interface UserDetail {
   id: string
   userId: number
   displayName: string
@@ -8,4 +8,10 @@ export interface UserDetailInterface {
   company: string
   bio: string
   uniqueName: string
+  avatar: string
+}
+
+export type TokenType = {
+  token: string
+  userDetail: UserDetail
 }

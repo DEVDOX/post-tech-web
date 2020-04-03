@@ -1,13 +1,13 @@
 <template>
-  <div :class="isStyle" class="w-full relative z-10 flex flex-col justify-between leading-normal">
-    <n-link v-if="link" :to="'/user/' + userName" class="stretched-link"></n-link>
+  <div v-if="user" :class="isStyle" class="w-full relative z-10 flex flex-col justify-between leading-normal">
+    <n-link v-if="link" :to="'/user/' + user.uniqueName" class="stretched-link"></n-link>
     <div class="flex justify-center items-center">
-      <img class="w-16 h-16 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="Avatar of Jonathan Reinink">
+      <img class="w-16 h-16 rounded-full object-cover mr-2" :src="user.avatar" alt="Avatar of Jonathan Reinink">
       <div>
-        <p class="text-gray-800 text-lg leading-none">@{{ userName }}</p>
+        <p class="text-gray-800 text-lg leading-none">@{{ user.uniqueName }}</p>
       </div>
     </div>
-    <p v-if="tagline" class="text-gray-600 text-lg text-center leading-none mt-4">{{ tagline }}</p>
+    <p v-if="tagline" class="text-gray-600 text-lg text-center leading-none mt-4">タグライン？</p>
     <div v-if="contacts" class="relative z-20 flex justify-center items-center mt-5">
       <a
         v-for="(contact, index) in contacts"
@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { UserDetail } from '~/apollo/schemas/userDetail'
 
 @Component
 export default class PersonCard extends Vue {
@@ -44,13 +45,21 @@ export default class PersonCard extends Vue {
   @Prop() hover!: boolean
   @Prop() link!: boolean
   @Prop() detail!: boolean
-  @Prop() tagline!: string
-  @Prop() userName!: string
-  @Prop() contacts!: []
+  @Prop() user!: UserDetail
 
   isStyle = {
     'card-class': this.card,
     'hover-class': this.hover
+  }
+
+  get contacts() {
+    // return this.user.contacts
+    return ["twitter.com"]
+  }
+
+  get tagline() {
+    // return this.user.contacts
+    return ""
   }
 }
 </script>
