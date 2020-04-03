@@ -1,0 +1,49 @@
+/* purgecss start ignore */
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+/* purgecss end ignore */
+@import 'tailwindcss/utilities';
+
+.btn {
+  @apply font-bold py-2 px-4 rounded duration-150;
+}
+.btn:focus {
+  @apply outline-none;
+}
+
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+  @apply bg-blue-700;
+}
+
+.btn-white {
+  @apply bg-white text-gray-700;
+}
+.btn-white:hover {
+  @apply bg-gray-200;
+}
+
+.btn-gray {
+  @apply bg-gray-400 text-gray-800;
+}
+.btn-gray:hover {
+  @apply bg-gray-500;
+}
+
+.btn-twitter {
+  @apply bg-twitter text-white;
+}
+.btn-twitter:hover {
+  @apply bg-twitter-darker;
+}
+
+.btn-github {
+  @apply bg-github text-white;
+}
+.btn-github:hover {
+  @apply bg-github-darker;
+}
