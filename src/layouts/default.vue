@@ -1,10 +1,12 @@
 <template>
-  <div class="universal-page-wrapper">
-    <Header :currentUser="currentUser" />
-      <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-16 lg:mt-28">
+  <div>
+    <div class="universal-page-wrapper">
+      <Header :currentUser="currentUser" />
+      <div class="flex-1 px-0 md:px-8 lg:px-32 xl:px-64 mt-16 lg:mt-28">
         <nuxt class="mx-0 lg:px-3" />
       </div>
-    <Footer /> 
+      <Footer />
+    </div>
   </div>
 </template>
 
@@ -57,6 +59,9 @@ body {
 }
 
 .universal-page-wrapper {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  /* Footer height + Footer top margin */
 }
 </style>
