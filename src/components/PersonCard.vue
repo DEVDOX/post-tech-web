@@ -24,11 +24,11 @@
       </div>
       <div class="w-1/3 text-center">
         <p class="text-gray-800 text-2xl font-semibold">1,354</p>
-        <p class="text-gray-600 text-xs">{{ $t('follow') }}</p>
+        <p class="text-gray-600 text-xs">{{ $t('user.follow') }}</p>
       </div>
       <div class="w-1/3 text-center">
         <p class="text-gray-800 text-2xl font-semibold">76</p>
-        <p class="text-gray-600 text-xs">{{ $t('follower') }}</p>
+        <p class="text-gray-600 text-xs">{{ $t('user.follower') }}</p>
       </div>
     </div>
     <slot />

@@ -1,24 +1,27 @@
 <template>
   <div class="all-wrapper modal-active">
-    <Header :isLoggedIn="currentUser" />
-    <div class="px-0 md:px-8 lg:px-32 xl:px-64">
+    <Header :isLoggedIn="isLoggedIn" />
+    <div class="px-0 md:px-8 lg:px-32 xl:px-64 mt-32">
       <nuxt class="mx-0 lg:px-3" />
     </div>
-  </div>
+   <Footer /> 
+      </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import Header from '~/components/Header.vue'
+import Footer from '~/components/Footer.vue'
 
 @Component({
   components: {
-    Header
+    Header,
+    Footer
   }
 })
 export default class DefaultLayout extends Vue {
-  get currentUser() {
-    return this.$store.getters.getAuthUser || false
+  get isLoggedIn() {
+    return this.$auth.loggedIn
   }
 
   mounted() {
@@ -48,8 +51,11 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  background-color: #f9fafa;
+}
+
 .all-wrapper {
   min-height: 100vh;
-  background-color: #f9fafa;
 }
 </style>

@@ -5,7 +5,7 @@
       <div id="sidebar" class="w-full relative z-50 col-span-12 lg:col-span-2 xl:col-span-1">
         <div class="fixed bottom-0 lg:sticky lg:top-25 lg:bottom-auto w-full flex flex-col justify-center items-end mt-16">
           <div class="flex items-center mb-16 lg:mb-8">
-            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
+            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
               <LikeIcon :liked.sync="post.liked" className="text-xl"/>
             </button>
             <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
@@ -19,15 +19,17 @@
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
-            <img class="w-8 h-8 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="avatar">
-            <p class="text-gray-800 text-base leading-none mr-2">@RikuS3n</p>
+            <n-link :to="`/user/${post.author}`" class="flex items-center">
+              <img class="w-8 h-8 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="avatar">
+              <p class="text-gray-800 text-base leading-none mr-2 hover:underline">@RikuS3n</p>
+            </n-link>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-clock-outline"/>2020/03/30</p>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-update"/>2020/04/02</p>
           </div>
 
           <p class="text-4xl font-semibold">{{ post.title }}</p>
 
-          <div class="flex flex-wrap">
+          <div class="flex flex-wrap items-center">
             <n-link
               v-for="(tag, index) in post.tags"
               :to="`/tag/${tag}`"
@@ -35,15 +37,21 @@
               class="bg-gray-100 rounded hover:underline cursor-pointer px-2 py-1 m-1">
                 #{{ tag }}
             </n-link>
+            <span
+              v-for="(word, index) in post.keywords"
+              :key="index"
+              class="bg-gray-100 rounded text-gray-600 text-sm px-1 py-0 m-1">
+                {{ word }}
+            </span>
           </div>
 
           <div class="markdown mt-16">
             <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
           </div>
 
-          <hr class="my-16">
+          <hr class="hidden lg:block my-16">
 
-          <div>
+          <div class="hidden lg:block">
             <p class="text-xl font-semibold mb-3">著者</p>
             <PersonCard
               :card="true"
@@ -57,7 +65,7 @@
         </div>
       </div>
 
-      <div id="toc" class="w-full col-span-12 xl:col-span-3">
+      <div id="user" class="w-full col-span-12 xl:col-span-3">
         <PersonCard
           :card="true"
           :hover="true"
@@ -87,6 +95,7 @@ import LikeIcon from '~/components/LikeIcon.vue'
 
 @Component({
   components: {
+    'mavon-editor': mavonEditor.mavonEditor,
     PersonCard,
     LikeIcon
   }
@@ -99,7 +108,8 @@ export default class Article extends Vue {
     url: 'abc3',
     author: 'RikuS3n',
     body: '# うんち',
-    tags: ['Windows 10', 'docker', 'docker-compose'],
+    tags: ['docker', 'windows-10', 'containerd-io'],
+    keywords: ['Windows 10', 'docker', 'docker-compose'],
     likes: 2, // likerの数をカウントするようにする
     liked: false
   }
@@ -107,28 +117,33 @@ export default class Article extends Vue {
   user = {
     tagline: 'Lorem ipsum roamen sit',
     contacts: [
-      { sns: 'twitter', link: 'https://twitter.com/RikuS3n'}
+      { sns: 'twitter', link: 'https://twitter.com/RikuS3n' }
     ]
   }
 
   async mounted() {
     const body = await import('~/assets/post.js')
     this.post.body = body.default
-    
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
     this.markdownIt = mavonEditor.mavonEditor.getMarkdownIt()
-    // @ts-ignore
-    this.markdownIt.options.highlight = function (str: string, lang: string) {
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return '<pre class="hljs"><div class="mx-8"><code>' +
-                hljs.highlight(lang, str, true).value +
-                '</code></div></pre>';
-        } catch (__) {}
+
+    if (this.markdownIt) {
+      // @ts-ignore
+      this.markdownIt.options.highlight = function (str: string, lang: string) {
+        if (lang && hljs.getLanguage(lang)) {
+          try {
+            return '<pre class="hljs"><div class="mx-8"><code>' +
+                  hljs.highlight(lang, str, true).value +
+                  '</code></div></pre>'
+          } catch (__) {}
+        }
+
+        if (this.markdownIt) {
+          return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
+        }
       }
-      return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>';
     }
   }
 
@@ -170,11 +185,8 @@ export default class Article extends Vue {
 .markdown h6 {
   @apply text-lg mt-12 mb-3 font-semibold;
 }
-.markdown h3,
-.markdown h4,
-.markdown h5,
-.markdown h6 {
-
+.markdown hr {
+  @apply my-8;
 }
 /* Links */
 .markdown a {

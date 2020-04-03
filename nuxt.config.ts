@@ -6,6 +6,7 @@ require('dotenv').config({ path: fileName })
 const config: Configuration = {
   srcDir: 'src/',
   mode: 'universal',
+  
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -33,7 +34,6 @@ const config: Configuration = {
 
   plugins: [
     '~/plugins/tailwind-vue',
-    { src: '@/plugins/vue-mavon-editor', ssr: false },
     '~/plugins/vue-apollo',
     '~/plugins/serviceContainer',
     '~/plugins/inject'

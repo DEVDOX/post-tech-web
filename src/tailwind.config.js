@@ -15,6 +15,9 @@ module.exports = {
       },
       spacing: {
         '14': '3.5rem',
+        '72': '18rem',
+        '84': '21rem',
+        '96': '24rem',
       },
       inset: {
         '25': '25vh',
@@ -27,7 +30,7 @@ module.exports = {
   },
   variants: {
     borderWidth: ['last'],
-    textDecotation: ['group-hover'],
+    textDecotation: ['responsive', 'hover', 'focus', 'group-hover'],
     width: ['responsive', 'hover', 'focus'],
     height: ['responsive', 'hover', 'focus'],
     outline: ['focus', 'responsive', 'hover'],
