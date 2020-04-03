@@ -43,13 +43,16 @@
       <div class="flex flex-no-wrap justify-center items-center mx-4 lg:mx-16 my-4">
 
         <div class="relative w-50">
-          <button @click.stop="isPublicOpen = !isPublicOpen" class="w-32 flex justify-center items-center bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded mx-2">
+          <button
+            @click="toggleDropDown()"
+            class="w-32 flex justify-center items-center bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded mx-2"
+          >
             <span v-html="visibility"></span>
             <i v-if="isPublicOpen" class="mdi mdi-chevron-right"/>
             <i v-if="!isPublicOpen" class="mdi mdi-chevron-up"/>
           </button>
 
-          <ul v-if="isPublicOpen" class="absolute bottom-0 left-0 bg-white rounded py-2 shadow-xl ml-2 mb-12">
+          <ul v-on-clickaway="closeDropDown" v-if="isPublicOpen" class="absolute bottom-0 left-0 bg-white rounded py-2 shadow-xl ml-2 mb-12">
             <li @click="updateVisibilityState('published')" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
               <i class="mdi mdi-earth mr-1"/><span>{{ $t('post.state.published') }}</span>
             </li>
@@ -79,6 +82,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 import 'mavon-editor/dist/css/index.css'
 import mavonEditor from 'mavon-editor'
+import { directive as onClickaway } from 'vue-clickaway';
 
 import { serviceContainer } from '~/dependencyInjection/container'
 
@@ -92,6 +96,9 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(
 type postState = 'published' | 'private' | 'draft'
 
 @Component({
+  directives: {
+    onClickaway: onClickaway,
+  },
   components: {
     'mavon-editor': mavonEditor.mavonEditor
   }
@@ -108,9 +115,8 @@ export default class NewPost extends Vue {
   isPublicOpen: boolean = false
   isFullscreen: boolean = false
 
-  visibilityState: postState = 'published' // APIからデータを取る
+  visibilityState: postState = 'private' // APIからデータを取る
   submitIcon: string = 'upload' // APIからデータを取る
-
   submitText: string = this.$root.$tc('newPost.publish') // APIからデータを取る
 
   get visibility(): string {
@@ -144,6 +150,14 @@ export default class NewPost extends Vue {
 
   updateFullscreen(payload: boolean) {
     this.isFullscreen = payload
+  }
+
+  toggleDropDown() {
+    this.isPublicOpen = !this.isPublicOpen
+  }
+
+  closeDropDown() {
+    this.isPublicOpen = false
   }
 
   content = ''

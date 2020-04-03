@@ -6,6 +6,7 @@ export const GET_USER_DETAIL = gql`
       company
       displayName
       id
+      tagline
       location
       avatar
       uniqueName
@@ -19,6 +20,7 @@ export const GET_USER_DETAIL_BY_U_NAME = gql`
       company
       displayName
       id
+      tagline
       location
       avatar
       uniqueName
@@ -33,6 +35,7 @@ export const CREATE_USER = gql`
         company
         displayName
         id
+        tagline
         location
         avatar
         uniqueName

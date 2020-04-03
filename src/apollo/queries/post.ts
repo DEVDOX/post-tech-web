@@ -15,6 +15,7 @@ export const GET_POST_BY_URL = gql`
       author: userDetail {
         id
         uniqueName
+        tagline
         avatar
         displayName
       }
@@ -35,6 +36,7 @@ export const GET_USER_POSTS_BY_ID = gql`
       author: userDetail {
         id
         uniqueName
+        tagline
         avatar
         displayName
       }
@@ -55,6 +57,7 @@ export const GET_PUBLIC_POSTS = gql`
       author: userDetail {
         id
         uniqueName
+        tagline
         avatar
         displayName
       }
@@ -75,6 +78,7 @@ export const GET_USER_POSTS_BY_U_NAME = gql`
       author: userDetail {
         id
         uniqueName
+        tagline
         avatar
         displayName
       }
@@ -88,6 +92,7 @@ export const GET_USER_DETAIL = gql`
       company
       displayName
       id
+      tagline
       location
       avatar
       uniqueName

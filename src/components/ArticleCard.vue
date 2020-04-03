@@ -14,7 +14,8 @@
           <p class="text-gray-700 leading-none no-underline hover:underline text-base mr-3">{{ article.author.uniqueName }}</p>
         </n-link>
         <p class="text-gray-700 mr-3"><LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
-        <p class="text-gray-700 text-sm ml-auto">{{ getDateTime(article.insertedAt) }}</p>
+        <p class="text-gray-700 text-sm ml-auto"><i class="mdi mdi-clock-outline"/>{{ getDate(article.insertedAt) }}</p>
+        <p class="text-gray-700 text-sm ml-2"><i class="mdi mdi-update"/>{{ getDate(article.updatedAt) }}</p>
       </div>
     </div>
   </div>
@@ -27,7 +28,7 @@ import { Post } from '~/apollo/schemas/post'
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/ja' // load on demand
-dayjs.locale('ja') 
+dayjs.locale('ja')
 
 @Component({
   components: {
@@ -46,8 +47,8 @@ export default class ArticleCard extends Vue {
     'hover-class': this.hover
   }
 
-  getDateTime(date: string) {
-    return dayjs(this.article.insertedAt).format('YYYY年MM月DD日 dddd H:mm A')
+  getDate(date: string) {
+    return dayjs(this.article.insertedAt).format('YYYY/MM/DD')
   }
 
   tagUrl(urlName: string) {

@@ -162,7 +162,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import PersonCard from '~/components/PersonCard.vue'
-import DropdownButton from '~/components/DropdownButton.vue'
 
 type tabType = 'profile' | 'account' | 'preference'
 interface tabInterface {
@@ -173,8 +172,7 @@ interface tabInterface {
 
 @Component({
   components: {
-    PersonCard,
-    DropdownButton
+    PersonCard
   }
 })
 export default class Settings extends Vue {

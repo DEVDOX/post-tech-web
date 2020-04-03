@@ -20,12 +20,12 @@
 
           <div class="flex items-center mb-2">
             <img class="w-8 h-8 rounded-full object-cover mr-2" :src="post.author.avatar" alt="avatar">
-            <p class="text-gray-800 text-base leading-none mr-2">{{ post.author.uniqueName }}</p>
+            <p class="text-gray-800 text-base leading-none mr-2">@{{ post.author.uniqueName }}</p>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
-              <i class="mdi mdi-clock-outline"/>{{ post.insertedAt }}
+              <i class="mdi mdi-clock-outline"/>{{ getDate(post.insertedAt) }}
             </p>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
-              <i class="mdi mdi-update"/>{{ post.updatedAt }}
+              <i class="mdi mdi-update"/>{{ getDate(post.updatedAt) }}
             </p>
           </div>
 
@@ -142,8 +142,8 @@ export default class Article extends Vue {
     }
   }
 
-  getDateTime(date: string) {
-    return dayjs(date).format('YYYY年MM月DD日 dddd H:mm A')
+  getDate(date: string) {
+    return dayjs(date).format('YYYY/MM/DD')
   }
 
   updateLikes() {
@@ -186,12 +186,6 @@ export default class Article extends Vue {
 .markdown h6 {
   @apply text-lg mt-12 mb-3 font-semibold;
 }
-.markdown h3,
-.markdown h4,
-.markdown h5,
-.markdown h6 {
-
-}
 /* Links */
 .markdown a {
   @apply text-blue-600;
@@ -221,7 +215,7 @@ export default class Article extends Vue {
 }
 /* Blockquotes */
 .markdown blockquote {
-  @apply px-2 py-1 mx-6 bg-gray-100 my-4 border-l-4 border-gray-400;
+  @apply px-2 py-1 bg-gray-100 my-4 border-l-4 border-gray-400;
 }
 .markdown blockquote > p {
   @apply mb-0;
