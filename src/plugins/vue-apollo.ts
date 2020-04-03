@@ -2,7 +2,7 @@ import { Context } from '@nuxt/types'
 
 export default function({ store }: Context) {
   return {
-    httpEndpoint: 'http://192.168.2.104:8000/api/graphql',
+    httpEndpoint: `${process.env.DOMAIN_NAME}/api/graphql`,
     getAuth: () => {
       console.log(store.getters.getAuthUser)
       if (store.getters.getAuthUser) {
