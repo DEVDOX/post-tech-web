@@ -29,7 +29,8 @@
       "nuxt-i18n",
       "vue-apollo/types",
       "@nuxtjs/auth",
-      "@types/nuxtjs__auth"
+      "@types/nuxtjs__auth",
+      "@types/vue-clickaway"
     ],
     "emitDecoratorMetadata": true
   },

@@ -6,6 +6,7 @@ export default {
   user: {
     login: 'Log in',
     loginWith: 'Login with ',
+    logout: 'Log out',
     follow: 'Follow',
     follower: 'Follower',
   },
@@ -28,6 +29,8 @@ export default {
   header: {
     search: 'Search',
     newPost: 'New Post',
+    settings: 'Settings',
+    myPage: 'My page',
   },
 
   options: {

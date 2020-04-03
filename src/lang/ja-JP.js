@@ -6,6 +6,7 @@ export default {
   user: {
     login: 'ログイン',
     loginWith: 'Login with ',
+    logout: 'ログアウト',
     follow: 'フォロー',
     follower: 'フォロワー',
   },
@@ -28,6 +29,8 @@ export default {
   header: {
     search: '探す',
     newPost: '投稿する',
+    settings: '設定',
+    myPage: 'マイページ',
   },
 
   options: {

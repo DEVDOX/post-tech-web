@@ -82,7 +82,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 import 'mavon-editor/dist/css/index.css'
 import mavonEditor from 'mavon-editor'
-import { directive as onClickaway } from 'vue-clickaway';
+import { directive as onClickaway } from 'vue-clickaway'
 
 import { serviceContainer } from '~/dependencyInjection/container'
 
