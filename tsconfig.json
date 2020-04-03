@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
     "lib": [
@@ -17,21 +17,17 @@
     "baseUrl": ".",
     "paths": {
       "~/*": [
-        "./src/*"
+        "./*"
       ],
       "@/*": [
-        "./src/*"
+        "./*"
       ]
     },
     "types": [
       "@types/node",
       "@nuxt/types",
-      "nuxt-i18n",
-      "vue-apollo/types",
-      "@nuxtjs/auth",
-      "@types/nuxtjs__auth"
-    ],
-    "emitDecoratorMetadata": true
+      "nuxt-i18n"
+    ]
   },
   "exclude": [
     "node_modules",
