@@ -54,7 +54,7 @@ export default class PersonCard extends Vue {
 
   get contacts() {
     // return this.user.contacts
-    return []
+    return ["twitter.com"]
   }
 
   get tagline() {

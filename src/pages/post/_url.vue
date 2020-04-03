@@ -19,10 +19,14 @@
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
-            <img class="w-8 h-8 rounded-full object-cover mr-2" src="/image/kawaii_1.png" alt="avatar">
-            <p class="text-gray-800 text-base leading-none mr-2">@RikuS3n</p>
-            <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-clock-outline"/>2020/03/30</p>
-            <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2"><i class="mdi mdi-update"/>2020/04/02</p>
+            <img class="w-8 h-8 rounded-full object-cover mr-2" :src="post.author.avatar" alt="avatar">
+            <p class="text-gray-800 text-base leading-none mr-2">{{ post.author.uniqueName }}</p>
+            <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
+              <i class="mdi mdi-clock-outline"/>{{ post.insertedAt }}
+            </p>
+            <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
+              <i class="mdi mdi-update"/>{{ post.updatedAt }}
+            </p>
           </div>
 
           <p class="text-4xl font-semibold">{{ post.title }}</p>
@@ -33,12 +37,12 @@
               :to="`/tag/${tag}`"
               :key="index"
               class="bg-gray-100 rounded hover:underline cursor-pointer px-2 py-1 m-1">
-                #{{ tag }}
+                #{{ tag.urlName }}
             </n-link>
           </div>
 
           <div class="markdown mt-16">
-            <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
+            <div v-if="markdownIt" v-html="markdownIt.render(getEspacedBody)"></div>
           </div>
 
           <hr class="my-16">
@@ -76,15 +80,19 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import 'highlight.js/styles/obsidian.css';
+import 'highlight.js/styles/obsidian.css'
+
 import mavonEditor from 'mavon-editor'
 import PersonCard from '~/components/PersonCard.vue'
 import LikeIcon from '~/components/LikeIcon.vue'
-import { Context } from '@nuxt/types';
-import { serviceContainer } from '~/dependencyInjection/container';
-import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces';
-import { TYPES } from '~/dependencyInjection/types';
-import { Post } from '../../apollo/schemas/post';
+import { Context } from '@nuxt/types'
+import { serviceContainer } from '~/dependencyInjection/container'
+import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { TYPES } from '~/dependencyInjection/types'
+import { Post } from '../../apollo/schemas/post'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ja' // load on demand
+dayjs.locale('ja') 
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostRepositoryInterface)
@@ -123,11 +131,23 @@ export default class Article extends Vue {
                 '</code></div></pre>';
         } catch (__) {}
       }
-      return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>';
+      return this.markdownIt ? '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>' : ''
     }
   }
 
+  get getEspacedBody () {
+    if (this.markdownIt !== null && this.post) {
+      //return sanitizeHtml(this.post.body)
+      return this.post.body
+    }
+  }
+
+  getDateTime(date: string) {
+    return dayjs(date).format('YYYY年MM月DD日 dddd H:mm A')
+  }
+
   updateLikes() {
+    /*
     if (this.post.liked) {
       this.post.liked = false
       this.post.likes--
@@ -136,6 +156,7 @@ export default class Article extends Vue {
       this.post.likes++
     }
     console.log(this.post.likes)
+    */
   }
 }
 </script>

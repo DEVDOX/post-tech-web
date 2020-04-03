@@ -2,7 +2,7 @@ import { GetterTree, ActionContext, ActionTree, MutationTree } from 'vuex'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { TYPES } from '~/dependencyInjection/types'
 import { UserRepositoryInterface } from '~/dependencyInjection/interfaces'
-import { TokenType } from '~/apollo/schemas/userDetail'
+import { TokenType, UserDetail } from '~/apollo/schemas/userDetail'
 /* import { UserInterface } from '~/apollo/schemas/user' */
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(
@@ -10,11 +10,13 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(
 )
 
 type State = {
-  authUser: TokenType | null
+  authUser: UserDetail | null
+  token: null
 }
 
 export const state: () => State = (): State => ({
-  authUser: null
+  authUser: null,
+  token: null
 })
 
 export type RootState = ReturnType<typeof state>
@@ -26,13 +28,13 @@ export interface Actions<S, R> extends ActionTree<S, R> {
 export const getters: GetterTree<RootState, RootState> = {
   getAuthUser(state: RootState) {
     if (state.authUser) {
-      return state.authUser.userDetail
+      return state.authUser
     }
   },
 
   getToken(state: RootState) {
     if (state.authUser) {
-      return state.authUser.token
+      return state.token
     }
   }
 }
@@ -68,8 +70,11 @@ export const actions: Actions<RootState, RootState> = {
           uniqueName: login
         })
 
+        console.log(result)
+
         if (successful) {
-          return commit('SET_USER', result)
+          commit('SET_USER', result.userDetail)
+          commit('SET_TOKEN', result.token)
         } else {
           // raise error
         }
@@ -84,5 +89,9 @@ export const actions: Actions<RootState, RootState> = {
 export const mutations: MutationTree<RootState> = {
   SET_USER: (state: any, user: any) => {
     state.authUser = user
+  },
+
+  SET_TOKEN: (state: any, token: string) => {
+    state.token = token
   }
 }
