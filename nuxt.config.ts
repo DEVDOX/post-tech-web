@@ -6,7 +6,6 @@ require('dotenv').config({ path: fileName })
 const config: Configuration = {
   srcDir: 'src/',
   mode: 'universal',
-  
   head: {
     title: process.env.npm_package_name || '',
     meta: [
@@ -19,11 +18,6 @@ const config: Configuration = {
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
-  },
-
-  server: {
-    port: 8000,
-    host: '0.0.0.0'
   },
 
   loading: { color: '#fff' },
@@ -116,7 +110,7 @@ const config: Configuration = {
   // },
 
   proxy: {
-    '/api/': 'http://localhost:4000'
+    '/api/': process.env.SSR_API_URL
   },
 
   webfontloader: {
