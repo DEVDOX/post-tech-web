@@ -10,7 +10,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { Context } from '@nuxt/types';
 
 @Component
-export default class Header extends Vue {
+export default class Logout extends Vue {
   asyncData({ redirect }: Context) {
     redirect('/')
   }

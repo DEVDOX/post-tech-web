@@ -2,7 +2,7 @@
   <div v-if="user" :class="isStyle" class="w-full relative z-10 flex flex-col justify-between leading-normal">
     <n-link v-if="link" :to="'/user/' + user.uniqueName" class="stretched-link"></n-link>
     <div class="flex justify-center items-center">
-      <img class="w-16 h-16 rounded-full object-cover mr-2" :src="user.avatar" alt="Avatar of Jonathan Reinink">
+      <img class="w-16 h-16 rounded-full object-cover mr-2" :src="user.avatar" alt="avatar">
       <div>
         <p class="text-gray-800 text-lg leading-none">@{{ user.uniqueName }}</p>
       </div>

@@ -26,9 +26,7 @@
               <PersonCard
                 :card="true"
                 :detail="true"
-                :userName="user.uniqueName"
-                :tagline="user.tagline"
-                :contacts="user.contacts"
+                :user="user"
               />
               <p class="text-center my-2">{{ $t('preview') }}</p>
             </div>
@@ -163,6 +161,15 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import PersonCard from '~/components/PersonCard.vue'
 
+import { serviceContainer } from '~/dependencyInjection/container'
+
+import { TYPES } from '~/dependencyInjection/types'
+import { UserRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { Context } from '@nuxt/types'
+import { UserDetail } from '../apollo/schemas/userDetail'
+
+const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
+
 type tabType = 'profile' | 'account' | 'preference'
 interface tabInterface {
   id: tabType
@@ -178,6 +185,12 @@ interface tabInterface {
 export default class Settings extends Vue {
   isTwitterLinked: boolean = false
   isGithubLinked: boolean = false
+
+  user = null
+
+  private userData = {
+    uniqueName: this.user.uniqueName
+  }
 
   menuNames: tabInterface[] = [
     {
@@ -197,15 +210,14 @@ export default class Settings extends Vue {
     },
   ]
 
-  user = {
+  /* user = {
     uniqueName: 'RikuS3n',
     displayName: 'rikusen0335',
     location: 'Hokkaido',
     tagline: 'Lorem ipsum roamen sit',
     contacts: [{ type: 'twitter', url: 'https://twitter.com/RikuS3n' }],
-    email: 'rikusen0335@gmail.com',
-    language_code: 'ja'
-  }
+    languageCode: 'ja'
+  } */
 
   tabId: tabType = 'profile'
 
@@ -226,6 +238,23 @@ export default class Settings extends Vue {
 
   get currentTab() {
     return this.tabId
+  }
+
+  async asyncData({ store, app: { $auth } }: Context) {
+    const uniqueName = store.getters.getAuthUser.uniqueName
+    const user = UserRepo.getUserByUName(uniqueName)
+
+    return {
+      user
+    }
+  }
+
+  uniqueNameValidation() { //uniqueNameって大文字含められる？
+
+  }
+
+  async updateUser() {
+    console.log(this.user)
   }
 }
 </script>

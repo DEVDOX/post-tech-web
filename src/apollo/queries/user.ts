@@ -5,6 +5,7 @@ export const GET_USER_DETAIL = gql`
     user: getUserDetail(strategy: $strategy, strategyId: $strategyId) {
       company
       displayName
+      uniqueName
       id
       tagline
       location
@@ -57,6 +58,7 @@ export const LOGIN_QUERY = gql`
         token
         userDetail {
           displayName
+          uniqueName
         }
       }
       successful
