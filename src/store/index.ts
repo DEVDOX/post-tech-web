@@ -49,8 +49,9 @@ export const actions: Actions<RootState, RootState> = {
 
     // @ts-ignore
     let token: string | undefined = this.$cookies.get('auth._token.' + strategy)
-
-    if (token !== null && token !== undefined) {
+    
+    // @ts-ignore
+    if (token !== null && token !== undefined && this.$auth.loggedIn) {
       token = token.split(' ').slice(1)[0]
     } else {
       // raise error

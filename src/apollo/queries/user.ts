@@ -29,9 +29,33 @@ export const GET_USER_DETAIL_BY_U_NAME = gql`
   }
 `
 
+
 export const CREATE_USER = gql`
   mutation createUser($params: CreateParams!) {
     user: createUser(params: $params) {
+      result {
+        company
+        displayName
+        id
+        tagline
+        location
+        avatar
+        uniqueName
+      }
+      successful
+      messages {
+        code
+        message
+        field
+      }
+    }
+  }
+`
+
+// WIP
+export const UPDATE_USER = gql`
+  mutation updateUser($params: UpdateParams!) {
+    user: updateUser(params: $params) {
       result {
         company
         displayName

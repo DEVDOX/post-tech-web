@@ -36,7 +36,8 @@ const config: Configuration = {
     '~/plugins/tailwind-vue',
     '~/plugins/vue-apollo',
     '~/plugins/serviceContainer',
-    '~/plugins/inject'
+    '~/plugins/inject',
+    '~/plugins/i18n'
   ],
 
   buildModules: [
@@ -49,9 +50,12 @@ const config: Configuration = {
   modules: [
     '@nuxtjs/dotenv',
     '@nuxtjs/pwa',
-    'nuxt-webfontloader',
     '@nuxtjs/proxy',
     '@nuxtjs/apollo',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    // 'nuxt-validate',
+    'nuxt-webfontloader',
     ['nuxt-i18n', {
       locales: [
         {
@@ -81,8 +85,6 @@ const config: Configuration = {
       },
       ignoreNotFoundWarnings: false
     }],
-    '@nuxtjs/axios',
-    '@nuxtjs/auth',
   ],
 
   apollo: {
@@ -109,6 +111,10 @@ const config: Configuration = {
     plugins: ['~/plugins/auth.js']
   },
 
+  // nuxtValidate: {
+  //   nuxti18n: true
+  // },
+
   proxy: {
     '/api/': 'http://localhost:4000'
   },
@@ -128,6 +134,9 @@ const config: Configuration = {
   },
 
   build: {
+    transpile: [
+      "vee-validate/dist/rules"
+    ],
     extend(_config, _ctx) {}
   },
 

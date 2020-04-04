@@ -1,159 +1,185 @@
 <template>
   <div class="mx-3 lg:mx-64">
-    <div class="grid grid-cols-4 col-gap-8">
-      <div id="sidebar" class="col-span-4 lg:col-span-1 mb-4">
-        <button class="w-full btn btn-blue mb-5">{{ $t('options.save') }}</button>
-        <div class="w-full card lg:min-h-512px py-3">
-          <ul class>
-            <li
-              v-for="item in menuNames"
-              :key="item.id"
-              class="sidebar-item flex items-center py-2 pl-4 pr-2 my-1"
-              :class="item.id == tabId ? 'active' : ''"
-              @click="updateTabId(item.id)"
-            >
-              <i :class="`mdi-${item.icon}`" class="mdi text-xl mr-2 lg:mr-4" />
-              <span class="font-semibold text-gray-700">{{ item.name }}</span>
-            </li>
-          </ul>
+    <ValidationObserver v-slot="{ invalid }">
+      <div class="grid grid-cols-4 col-gap-8">
+        <div id="sidebar" class="col-span-4 lg:col-span-1 mb-4">
+          <button
+            class="w-full btn btn-blue mb-5"
+            :class="invalid ? 'disabled' : ''"
+            :disabled="invalid"
+          >
+            {{ $t('options.save') }}
+          </button>
+          <div class="w-full card lg:min-h-512px py-3">
+            <ul class>
+              <li
+                v-for="item in menuNames"
+                :key="item.id"
+                class="sidebar-item flex items-center py-2 pl-4 pr-2 my-1"
+                :class="item.id == tabId ? 'active' : ''"
+                @click="updateTabId(item.id)"
+              >
+                <i :class="`mdi-${item.icon}`" class="mdi text-xl mr-2 lg:mr-4" />
+                <span class="font-semibold text-gray-700">{{ item.name }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="main" class="col-span-4 lg:col-span-3 card p-8">
+          <div :class="tabId == 'profile' ? 'block' : 'hidden'">
+            <div class="flex justify-center">
+              <div class="w-96 mb-8">
+                <PersonCard
+                  :card="true"
+                  :detail="true"
+                  :user="updatedUser"
+                />
+                <p class="text-center my-2">{{ $t('preview') }}</p>
+              </div>
+            </div>
+            <div class="mb-6">
+              <label class="text-sm text-gray-700" for="unique-name">{{ $t('options.uniqueName') }}</label>
+              <ValidationProvider rules="required|uniqueName|min:5|max:15" v-slot="{ invalid, errors }">
+                <input
+                  id="unique-name"
+                  v-model="updatedUser.uniqueName"
+                  maxlength="15"
+                  class="w-full m-input text-gray-800"
+                  :class="invalid ? 'input-invalid' : ''"
+                  type="text"
+                  placeholder="Jane Doe"
+                  :aria-label="$t('options.uniqueName')"
+                >
+                <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
+              </ValidationProvider>
+              <small class="text-xs text-gray-600">{{ $t('options.uniqueNameWarn') }}</small>
+            </div>
+            <div class="mb-6">
+              <label class="text-sm text-gray-700" for="display-name">{{ $t('options.displayName') }}</label>
+              <ValidationProvider rules="required|min:5|max:15" v-slot="{ invalid, errors }">
+                <input
+                  id="display-name"
+                  v-model="updatedUser.displayName"
+                  maxlength="15"
+                  class="w-full m-input"
+                  :class="invalid ? 'input-invalid' : ''"
+                  type="text"
+                  placeholder="JaneDoe"
+                  :aria-label="$t('options.displayName')"
+                >
+                <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
+              </ValidationProvider>
+            </div>
+            <div class="mb-6">
+              <label class="text-sm text-gray-700" for="tagline">{{ $t('options.tagline') }}</label>
+              <ValidationProvider rules="max:150" v-slot="{ invalid, errors }">
+                <input
+                  id="tagline"
+                  v-model="updatedUser.tagline"
+                  maxlength="150"
+                  class="w-full m-input"
+                  type="text"
+                  placeholder="Lorem ipsum dolor sit amet"
+                  :aria-label="$t('options.tagline')"
+                >
+                <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
+              </ValidationProvider>
+            </div>
+            <div class="mb-6">
+              <label class="text-sm text-gray-700" for="web-site-url">{{ $t('options.webSiteUrl') }}</label>
+              <input
+                id="web-site-url"
+                v-model="updatedUser.websiteUrl"
+                class="w-full m-input text-gray-800"
+                type="text"
+                :placeholder="getDomainName()"
+                :aria-label="$t('options.webSiteUrl')"
+              >
+            </div>
+            <div class="mb-6">
+              <label class="text-sm text-gray-700" for="location">{{ $t('options.location') }}</label>
+              <input
+                id="location"
+                v-model="updatedUser.location"
+                class="w-full m-input text-gray-800"
+                type="text"
+                placeholder="Tokyo"
+                :aria-label="$t('options.location')"
+              >
+            </div>
+          </div>
+
+          <div :class="tabId == 'account' ? 'block' : 'hidden'">
+            <div class="mb-6">
+              <label class="text-sm text-gray-700" for="email">{{ $t('options.email') }}</label>
+              <ValidationProvider rules="required|email" v-slot="{ invalid, errors }">
+                <input
+                  id="email"
+                  v-model="updatedUser.email"
+                  class="w-full m-input text-gray-800"
+                  :class="invalid ? 'input-invalid' : ''"
+                  type="text"
+                  placeholder="user@example.com"
+                  :aria-label="$t('options.email')"
+                >
+                <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
+              </ValidationProvider>
+            </div>
+            <div class="flex flex-col mb-6">
+              <div class="mb-3">
+                <button class="w-32 btn btn-twitter mr-3">
+                  <i class="mdi mdi-twitter"/>
+                  <span>Twitter</span>
+                </button>
+                <span>{{ $t('options.link') }}</span>
+              </div>
+              <div class="mb-3">
+                <button class="w-32 btn btn-github mr-3">
+                  <i class="mdi mdi-github"/>
+                  <span>GitHub</span>
+                </button>
+                <span>{{ $t('options.linked') }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div :class="tabId == 'preference' ? 'block' : 'hidden'">
+            <div class="mb-6">
+              <label class="text-sm text-gray-700">{{ $t('options.language') }}</label>
+              <div class="flex items-center m-3">
+                <input
+                  id="japanese"
+                  name="language"
+                  type="radio"
+                  value="ja"
+                  class="mr-2"
+                  :checked="updatedUser.languageCode == 'ja'"
+                >
+                <label for="japanese">
+                  日本語
+                  <small class="text-sm ml-1">(Japanese)</small>
+                </label>
+              </div>
+              <div class="flex items-center m-3">
+                <input
+                  id="english"
+                  name="language"
+                  type="radio"
+                  value="en"
+                  class="mr-2"
+                  :checked="updatedUser.languageCode == 'en'"
+                >
+                <label for="english">
+                  English
+                  <small class="text-sm ml-1">(English)</small>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div id="main" class="col-span-4 lg:col-span-3 card p-8">
-        <div v-if="tabId == 'profile'">
-          <div class="flex justify-center">
-            <div class="w-96 mb-8">
-              <PersonCard
-                :card="true"
-                :detail="true"
-                :user="user"
-              />
-              <p class="text-center my-2">{{ $t('preview') }}</p>
-            </div>
-          </div>
-          <div class="mb-6">
-            <label class="text-sm text-gray-700" for="unique-name">{{ $t('options.uniqueName') }}</label>
-            <input
-              id="unique-name"
-              v-model="user.uniqueName"
-              class="w-full m-input text-gray-800"
-              type="text"
-              placeholder="Jane Doe"
-              :aria-label="$t('options.uniqueName')"
-            />
-            <small class="text-xs text-gray-600">{{ $t('options.uniqueNameWarn') }}</small>
-          </div>
-          <div class="mb-6">
-            <label class="text-sm text-gray-700" for="display-name">{{ $t('options.displayName') }}</label>
-            <input
-              id="display-name"
-              v-model="user.displayName"
-              class="w-full m-input text-gray-800"
-              type="text"
-              placeholder="JaneDoe"
-              :aria-label="$t('options.displayName')"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="text-sm text-gray-700" for="tagline">{{ $t('options.tagline') }}</label>
-            <input
-              id="tagline"
-              v-model="user.tagline"
-              class="w-full m-input text-gray-800"
-              type="text"
-              placeholder="Lorem ipsum dolor sit amet"
-              :aria-label="$t('options.tagline')"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="text-sm text-gray-700" for="web-site-url">{{ $t('options.webSiteUrl') }}</label>
-            <input
-              id="web-site-url"
-              v-model="user.websiteUrl"
-              class="w-full m-input text-gray-800"
-              type="text"
-              :placeholder="getDomainName()"
-              :aria-label="$t('options.webSiteUrl')"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="text-sm text-gray-700" for="location">{{ $t('options.location') }}</label>
-            <input
-              id="location"
-              v-model="user.location"
-              class="w-full m-input text-gray-800"
-              type="text"
-              placeholder="Tokyo"
-              :aria-label="$t('options.location')"
-            />
-          </div>
-        </div>
-
-        <div v-if="tabId == 'account'">
-          <div class="mb-6">
-            <label class="text-sm text-gray-700" for="email">{{ $t('options.email') }}</label>
-            <input
-              id="email"
-              v-model="user.email"
-              class="w-full m-input text-gray-800"
-              type="text"
-              placeholder="user@example.com"
-              :aria-label="$t('options.email')"
-            />
-          </div>
-          <div class="flex flex-col mb-6">
-            <div class="mb-3">
-              <button class="w-32 btn btn-twitter mr-3">
-                <i class="mdi mdi-twitter"/>
-                <span>Twitter</span>
-              </button>
-              <span>{{ $t('options.link') }}</span>
-            </div>
-            <div class="mb-3">
-              <button class="w-32 btn btn-github mr-3">
-                <i class="mdi mdi-github"/>
-                <span>GitHub</span>
-              </button>
-              <span>{{ $t('options.linked') }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="tabId == 'preference'">
-          <div class="mb-6">
-            <label class="text-sm text-gray-700">{{ $t('options.language') }}</label>
-            <div class="flex items-center m-3">
-              <input
-                id="japanese"
-                name="language"
-                type="radio"
-                value="ja"
-                class="mr-2"
-                :checked="user.language_code == 'ja'"
-              >
-              <label for="japanese">
-                日本語
-                <small class="text-sm ml-1">(Japanese)</small>
-              </label>
-            </div>
-            <div class="flex items-center m-3">
-              <input
-                id="english"
-                name="language"
-                type="radio"
-                value="en"
-                class="mr-2"
-                :checked="user.language_code == 'en'"
-              >
-              <label for="english">
-                English
-                <small class="text-sm ml-1">(English)</small>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </ValidationObserver>
   </div>
 </template>
 
@@ -162,6 +188,9 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import PersonCard from '~/components/PersonCard.vue'
 
 import { serviceContainer } from '~/dependencyInjection/container'
+
+import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
+import { required, email, min, max } from 'vee-validate/dist/rules'
 
 import { TYPES } from '~/dependencyInjection/types'
 import { UserRepositoryInterface } from '~/dependencyInjection/interfaces'
@@ -177,20 +206,27 @@ interface tabInterface {
   name: string
 }
 
+extend('uniqueName', {
+  validate: value => /^([a-z0-9\-\_]+)$/.test(value)
+})
+extend('required', required)
+extend('email', email)
+extend('min', min)
+extend('max', max)
+
+
 @Component({
   components: {
-    PersonCard
+    PersonCard,
+    ValidationObserver,
+    ValidationProvider
   }
 })
 export default class Settings extends Vue {
   isTwitterLinked: boolean = false
   isGithubLinked: boolean = false
 
-  user = null
-
-  private userData = {
-    uniqueName: this.user.uniqueName
-  }
+  user: UserDetail | null = null
 
   menuNames: tabInterface[] = [
     {
@@ -210,15 +246,6 @@ export default class Settings extends Vue {
     },
   ]
 
-  /* user = {
-    uniqueName: 'RikuS3n',
-    displayName: 'rikusen0335',
-    location: 'Hokkaido',
-    tagline: 'Lorem ipsum roamen sit',
-    contacts: [{ type: 'twitter', url: 'https://twitter.com/RikuS3n' }],
-    languageCode: 'ja'
-  } */
-
   tabId: tabType = 'profile'
 
   getDomainName(): string {
@@ -226,10 +253,6 @@ export default class Settings extends Vue {
       return process.env.DOMAIN_NAME
     }
     return ''
-  }
-
-  addContactInput() {
-    this.user.contacts.push({type: '', url: ''})
   }
 
   updateTabId(tabId: tabType) {
@@ -240,22 +263,20 @@ export default class Settings extends Vue {
     return this.tabId
   }
 
-  async asyncData({ store, app: { $auth } }: Context) {
+  async asyncData({ store }: Context) {
     const uniqueName = store.getters.getAuthUser.uniqueName
-    const user = UserRepo.getUserByUName(uniqueName)
+    const user = await UserRepo.getUserByUName(uniqueName)
 
     return {
-      user
+      user: user
     }
   }
 
-  uniqueNameValidation() { //uniqueNameって大文字含められる？
-
-  }
-
   async updateUser() {
-    console.log(this.user)
+    const updatedUser = await UserRepo.updateUser(this.updatedUser)
   }
+
+  get updatedUser() { return this.user }
 }
 </script>
 
@@ -287,7 +308,13 @@ export default class Settings extends Vue {
 .v-leave-to {
   transform: translateX(100%);
 }
-.disable {
-  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed !important;
+.disabled {
+  @apply bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed;
+}
+.input-invalid {
+  @apply border-red-500;
+}
+.input-invalid:focus {
+  @apply border-red-500;
 }
 </style>

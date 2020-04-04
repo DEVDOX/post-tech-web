@@ -42,7 +42,7 @@ export default {
     account: 'Account',
     preference: 'Preference',
     uniqueName: 'User Name',
-    uniqueNameWarn: 'Username must be alphabetical, numeric or hyphen and at least 5 characters.', // 良い文章が見つからない
+    uniqueNameWarn: 'Username must be alphabetical, numeric or hyphen and at least 5 characters.',
     displayName: 'Display Name',
     tagline: 'Tagline',
     webSiteUrl: 'Website / Blog URL',
@@ -51,5 +51,13 @@ export default {
     link: 'Link',
     linked: 'Linked',
     language: 'Language',
+  },
+
+  validation: {
+    uniqueName: 'Please enter your username according to the conditions.', // あってんのかこれ
+    required: 'This field is required',
+    email: '{_value_} is not in the form of an email address.',
+    max: '{_value_} is too long. It should be less than {length} characters.',
+    min: '{_value_} is too short. It should be at least {length} characters.',
   },
 }

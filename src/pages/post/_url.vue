@@ -65,13 +65,7 @@
           :hover="true"
           :link="true"
           :user="post.author"
-        >
-          <hr class="my-5">
-          <div class="relative z-20 flex flex-col justify-start items-start mx-3">
-            <span class="text-center text-gray-700 mb-2"><i class="mdi mdi-web mr-1"></i><a class="hover:underline" href="https://devmia.net">https://devmia.net</a></span>
-            <span class="text-center text-gray-700 mb-2"><i class="mdi mdi-map-marker mr-1"></i>北海道</span>
-          </div>
-        </PersonCard>
+        />
       </div>
 
     </div>

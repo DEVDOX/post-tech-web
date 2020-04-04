@@ -106,8 +106,8 @@ export default class Header extends Vue {
   }
 
   logout() {
-    this.$auth.logout()
     this.$store.commit('DELETE_USER')
+    this.$auth.logout()
   }
 
   handleScroll(){

@@ -57,4 +57,15 @@ export default class UserRepository extends BaseRepository
 
     return user
   }
+
+  public async updateUser(params: any): Promise<UserDetail> {
+    const {
+      data: { user }
+    } = await global._$app.apolloProvider.defaultClient.mutate({
+      mutation: UPDATE_USER,
+      variables: { params }
+    })
+
+    return user
+  }
 }

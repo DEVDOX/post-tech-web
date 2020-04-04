@@ -4,11 +4,12 @@
     <div class="flex justify-center items-center">
       <img class="w-16 h-16 rounded-full object-cover mr-2" :src="user.avatar" alt="avatar">
       <div>
-        <p class="text-gray-800 text-lg leading-none">@{{ user.uniqueName }}</p>
+        <p class="text-gray-800 text-lg leading-none mb-1">{{ user.displayName }}</p>
+        <p class="text-gray-600 text-sm leading-none">@{{ user.uniqueName }}</p>
       </div>
     </div>
-    <p v-if="tagline" class="text-gray-600 text-lg text-center leading-none mt-4">タグライン？</p>
-    <div v-if="contacts" class="relative z-20 flex justify-center items-center mt-5">
+    <p v-if="user.tagline" class="text-gray-600 text-sm text-center mt-4">{{ user.tagline }}</p>
+    <div v-if="user.contacts" class="relative z-20 flex justify-center items-center mt-5">
       <a
         v-for="(contact, index) in contacts"
         :key="index"
@@ -17,7 +18,7 @@
         class="relative mdi text-xl mx-2 duration-100"
       ></a>
     </div>
-    <div v-if="detail" class="flex justify-center items-center mt-5">
+    <div v-if="user.details" class="flex justify-center items-center mt-5">
       <div class="w-1/3 text-center">
         <p class="text-gray-800 text-2xl font-semibold">12</p>
         <p class="text-gray-600 text-xs">{{ $t('article') }}</p>
@@ -31,7 +32,13 @@
         <p class="text-gray-600 text-xs">{{ $t('user.follower') }}</p>
       </div>
     </div>
-    <slot />
+
+    <hr v-if="user.websiteUrl || user.location" class="my-5">
+
+    <div class="relative z-20 flex flex-col justify-start items-start mx-3">
+      <span v-if="user.websiteUrl" class="text-center text-gray-700 mb-2"><i class="mdi mdi-web mr-1"></i><a class="hover:underline" :href="user.websiteUrl">{{ user.websiteUrl }}</a></span>
+      <span v-if="user.location" class="text-center text-gray-700 mb-2"><i class="mdi mdi-map-marker mr-1"></i>{{ user.location }}</span>
+    </div>
   </div>
 </template>
 
