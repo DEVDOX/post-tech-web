@@ -1,0 +1,43 @@
+version: '3.2'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_USER: 'postgres'
+      TZ: 'Asia/Tokyo'
+      PGTZ: 'Asia/Tokyo'
+    ports:
+      - 5432:5432
+  nuxt:
+    build: .
+    tty: true
+    volumes:
+      - ./:/app
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8000
+    restart: always
+    ports:
+      - 8000:8000
+    command: yarn dev
+  api:
+    build: api/.
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./api/:/opt/app
+    ports:
+      - 4000:4000
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    command: iex -S mix phx.server
+    environment:
+      POSTGRES_DB: 'app_dev'
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      TZ: 'Asia/Tokyo'
