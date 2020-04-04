@@ -26,7 +26,7 @@
               </li>
             </n-link>
 
-            <li @click="this.$auth.logout()" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
+            <li @click="logout()" class="block px-4 py-2 text-gray-800 hover:bg-gray-300 cursor-pointer">
               <i class="mdi mdi-logout text-lg mr-1"/><span>{{ $t('user.logout') }}</span>
             </li>
           </ul>
@@ -103,6 +103,11 @@ export default class Header extends Vue {
 
   closeModal() {
     this.isModalOpen = false
+  }
+
+  logout() {
+    this.$auth.logout()
+    this.$store.commit('DELETE_USER')
   }
 
   handleScroll(){

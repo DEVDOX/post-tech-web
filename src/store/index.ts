@@ -93,5 +93,10 @@ export const mutations: MutationTree<RootState> = {
 
   SET_TOKEN: (state: any, token: string) => {
     state.token = token
-  }
+  },
+
+  DELETE_USER: (state: any) => {
+    state.authUser = null
+    state.token = null
+  },
 }
