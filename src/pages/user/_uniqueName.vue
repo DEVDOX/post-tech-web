@@ -3,16 +3,26 @@
     <div class="grid grid-cols-3 gap-6">
       <div id="main" class="w-full col-span-3 lg:col-span-2">
         <div class="w-full border border-gray-400 bg-white rounded p-4 flex flex-col leading-normal duration-150">
-          <ul class="flex border-b">
-            <li class="-mb-px mr-1">
-              <a class="bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold" href="#">自分の記事</a>
-            </li>
-            <li class="mr-1">
-              <a class="bg-white inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" href="#">いいねした記事</a>
-            </li>
-          </ul>
+          <div class="bg-white">
+            <nav class="flex flex-col sm:flex-row">
+              <button
+                @click="updateTab('mine')"
+                class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none border-b-2 border-transparent"
+                :class="currentTab == 'mine' ? 'active' : ''"
+              >
+                {{ $t('myPosts') }}
+              </button>
+              <button
+                @click="updateTab('liked')"
+                class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none border-b-2 border-transparent"
+                :class="currentTab == 'liked' ? 'active' : ''"
+              >
+                {{ $t('likedPosts') }}
+              </button>
+            </nav>
+          </div>
           <!-- last:border-b-0 が効いてない -->
-          <div id="articles">
+          <div v-if="currentTab == 'mine'">
             <ArticleCard
               v-for="(article, index) in posts"
               :article="article"
@@ -21,6 +31,9 @@
               :hover="false"
               class="border-b last:border-b-0 p-4"
             />
+          </div>
+          <div v-if="currentTab == 'liked'">
+            <p>TEST</p>
           </div>
         </div>
       </div>
@@ -52,6 +65,8 @@ import { TYPES } from '../../dependencyInjection/types'
 import { Context } from '@nuxt/types'
 import { UserDetail } from '../../apollo/schemas/userDetail'
 
+type articleType = 'mine' | 'liked'
+
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostRepositoryInterface)
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 
@@ -63,6 +78,15 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserReposit
 })
 export default class UserPage extends Vue {
   private user: UserDetail | null = null
+  tab: articleType = 'mine'
+  
+  get currentTab() {
+    return this.tab
+  }
+
+  updateTab(type: articleType) {
+    this.tab = type
+  }
 
   async asyncData({ params }: Context) {
     const user = await UserRepo.getUserByUName(params.uniqueName)
@@ -80,9 +104,11 @@ export default class UserPage extends Vue {
 #article:hover #title {
   text-decoration: underline;
 }
-
 .stretched-link::after {
   content: "";
   @apply z-10 absolute inset-0 bg-transparent pointer-events-auto;
+}
+.active {
+  @apply text-blue-500 font-medium border-blue-500;
 }
 </style>

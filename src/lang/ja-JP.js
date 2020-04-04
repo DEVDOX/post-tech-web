@@ -3,6 +3,8 @@ export default {
   article: '記事',
   preview: 'プレビュー',
   areYouSure: '本当にページから移動しても良いですか？',
+  myPosts: '自分の記事',
+  likedPosts: 'いいねした記事',
 
   user: {
     login: 'ログイン',

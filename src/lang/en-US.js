@@ -3,6 +3,8 @@ export default {
   article: 'Article',
   preview: 'Preview',
   areYouSure: 'Are you sure you want to exit?',
+  myPosts: 'My Posts',
+  likedPosts: 'Liked Posts',
 
   user: {
     login: 'Log in',
