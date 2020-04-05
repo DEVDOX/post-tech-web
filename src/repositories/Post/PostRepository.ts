@@ -1,8 +1,8 @@
 import { injectable } from 'inversify'
 import BaseRepository from '~/repositories/baseRepository'
 import { CREATE_POST_QUERY, GET_USER_POSTS_BY_U_NAME, GET_USER_POSTS_BY_ID, GET_PUBLIC_POSTS, GET_POST_BY_URL } from '~/apollo/queries/post'
-import { CreatePostResult } from '~/apollo/schemas/result'
-import PostRepositoryInterface, { IErrorResult } from './PostRepositoryInterface'
+import { CreatePostResult, PaginatedResult, Metadata } from '~/apollo/schemas/result'
+import PostRepositoryInterface from './PostRepositoryInterface'
 import { Post } from '~/apollo/schemas/post'
 
 @injectable()
@@ -19,56 +19,49 @@ export default class PostRepository extends BaseRepository
     return post
   }
 
-  public async getUserPostsById(userId: number): Promise<Post[]> {
+  async getUserPostsById(userId: number): Promise<PaginatedResult<Post[]>> {
     const {
-      data: { user }
+      data: { result }
     } = await global._$app.apolloProvider.defaultClient.query({
       query: GET_USER_POSTS_BY_ID,
       variables: { userId }
     })
 
-    return user
+    return result
   }
 
-  public async getUserPostsByUName(uniqueName: string): Promise<Post[]> {
+  async getUserPostsByUName(uniqueName: string, metadata = <Metadata>{}): Promise<PaginatedResult<Post[]>> {
     const {
-      data: { posts }
+      data: { result }
     } = await global._$app.apolloProvider.defaultClient.query({
       query: GET_USER_POSTS_BY_U_NAME,
-      variables: { uniqueName }
+      variables: { uniqueName, metadata: metadata}
     })
 
-    return posts
+    return result
   }
 
-  public async getPublicPosts(): Promise<Post[]> {
+  async getPublicPosts(metadata = <Metadata>{}): Promise<PaginatedResult<Post[]>> {
     const {
-      data: { posts }
+      data: { result }
     } = await global._$app.apolloProvider.defaultClient.query({
       query: GET_PUBLIC_POSTS,
-      variables: { after: "", before: "" }
+      variables: { after: "", before: "" , metadata: metadata}
     })
 
-    return posts
+    return result
   }
 
-  public async createPost(params: any): Promise<CreatePostResult | IErrorResult> {
-    try {
+  async createPost(params: any): Promise<CreatePostResult> {
       const { data } = await global._$app.apolloProvider.defaultClient.mutate({
         mutation: CREATE_POST_QUERY,
         variables: { params }
       })
 
       return data
-    } catch (e) {
-      return {
-        status: 500,
-        message: "blah" 
-      }
-    }
   }
 
-  public async updatePost(params: any): Promise<CreatePostResult | IErrorResult> {
+  async updatePost(params: any): Promise<CreatePostResult> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.mutate({
@@ -79,7 +72,7 @@ export default class PostRepository extends BaseRepository
     return user
   }
 
-  public async deletePost(params: any): Promise<CreatePostResult | IErrorResult> {
+  async deletePost(params: any): Promise<CreatePostResult> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.mutate({

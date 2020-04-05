@@ -15,6 +15,7 @@
     "noEmit": true,
     "experimentalDecorators": true,
     "baseUrl": ".",
+    "rootDir": "./src",
     "paths": {
       "~/*": [
         "./src/*"
@@ -30,7 +31,8 @@
       "vue-apollo/types",
       "@nuxtjs/auth",
       "@types/nuxtjs__auth",
-      "@types/vue-clickaway"
+      "@types/vue-clickaway",
+      "reflect-metadata"
     ],
     "emitDecoratorMetadata": true
   },

@@ -1,4 +1,5 @@
 import { NuxtApp } from '@nuxt/types/app'
+import {Container} from 'inversify'
 
 // fix a error
 export {}
@@ -43,4 +44,28 @@ declare global {
 
 declare module 'vue/types/vue' {
   interface Vue {}
+}
+
+declare module '@nuxt/types' {
+  interface Context {
+    $container: Container
+  }
+}
+
+declare module 'vue/types/vue' {
+  interface Vue {
+    $container: Container
+  }
+}
+
+declare module '@nuxt/types' {
+  interface NuxtAppOptions {
+    $container: Container
+  }
+}
+
+declare module 'vuex/types/index' {
+  interface Store<S> {
+    $container: Container
+  }
 }

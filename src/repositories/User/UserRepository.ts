@@ -1,4 +1,4 @@
-import { injectable } from 'inversify'
+import { injectable } from 'inversify-props'
 import BaseRepository from '~/repositories/baseRepository'
 import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface'
 // import { UserInterface } from '~/apollo/schemas/user'
@@ -11,7 +11,7 @@ import {  CreateUserResult } from '~/apollo/schemas/result'
 @injectable()
 export default class UserRepository extends BaseRepository
   implements UserRepositoryInterface {
-  async getUserByUName(uniqueName: string): Promise<UserDetail> {
+  public async getUserByUName(uniqueName: string): Promise<UserDetail> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.query({
@@ -36,13 +36,10 @@ export default class UserRepository extends BaseRepository
   }
 
   public async getOrCreate(params: any): Promise<CreateUserResult> {
-    console.log(params)
     const { data: { login } } = await global._$app.apolloProvider.defaultClient.mutate({
       mutation: LOGIN_QUERY,
       variables: { params }
     })
-
-    console.log("shit", login)
 
     return login
   }

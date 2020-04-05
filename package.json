@@ -32,6 +32,7 @@
     "express": "^4.16.4",
     "graphql-tag": "^2.10.3",
     "inversify": "^5.0.1",
+    "inversify-props": "^2.0.1",
     "mavon-editor": "^2.7.7",
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.7.0",
@@ -43,7 +44,8 @@
     "tailwindcss-rfs": "^3.0.0",
     "vee-validate": "^3.2.5",
     "vue-clickaway": "^2.2.2",
-    "vue-tailwind": "^0.4.6"
+    "vue-tailwind": "^0.4.6",
+    "vuex-module-decorators": "^0.16.1"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.13.1",

@@ -1,7 +1,7 @@
 import { TokenType, UserDetail } from "./userDetail"
 import { Post } from "./post"
 
-interface ApiResult<T> {
+export interface ApiResult<T> {
   messages?: {
     field?: string
     message?: string
@@ -9,6 +9,26 @@ interface ApiResult<T> {
   }
   result: T
   successful: boolean
+}
+
+export interface IErrorResult {
+  message: string
+  status: number
+}
+
+export type PaginatedPostResult = PaginatedResult<Post[]>
+
+export interface Metadata {
+  after?: string
+  before?: string
+  limit?: number
+  totalCountCapExceeded?: boolean
+  totalCount?: number
+}
+
+export interface PaginatedResult<T> {
+  metadata: Metadata
+  entries: T
 }
 
 export type CreatePostResult = ApiResult<Post>

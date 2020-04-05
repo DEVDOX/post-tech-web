@@ -1,5 +1,9 @@
 import gql from 'graphql-tag'
 
+/*
+ * Gets a single Post by the given url
+ * returns Post
+ */
 export const GET_POST_BY_URL = gql`
   query getPostByUrl($url: String) {
     post: getPostByUrl(url: $url) {
@@ -23,69 +27,92 @@ export const GET_POST_BY_URL = gql`
   }
 `
 
+/*
+ * Get a paginated post object for a specific user
+ */
 export const GET_USER_POSTS_BY_ID = gql`
-  query getUserPostsById($userId: Integer) {
-    posts: getUserPostsById(userId: $userId) {
-      title
-      url
-      tags {
-        name
-        urlName
+  query getUserPostsById($userId: Integer, $metadata: MetadataInput) {
+    result: getUserPostsById(userId: $userId, metadata: $metadata) {
+      metadata {
+        after
+        before
       }
-      body
-      author: userDetail {
-        id
-        uniqueName
-        tagline
-        avatar
-        displayName
+      entries {
+        title
+        url
+        tags {
+          name
+          urlName
+        }
+        body
+        author: userDetail {
+          id
+          uniqueName
+          tagline
+          avatar
+          displayName
+        }
       }
     }
   }
 `
 
 export const GET_PUBLIC_POSTS = gql`
-  query getPublicPosts($after: String, $before: String) {
-    posts: getPublicPosts(after: $after, before: $before) {
-      title
-      url
-      tags {
-        name
-        urlName
+  query getPublicPosts($metadata: MetadataInput) {
+    result: getPublicPosts(metadata: $metadata) {
+      metadata {
+        after
+        before
+        limit
       }
-      body
-      author: userDetail {
-        id
-        uniqueName
-        tagline
-        avatar
-        displayName
+      entries {
+        title
+        url
+        tags {
+          name
+          urlName
+        }
+        body
+        author: userDetail {
+          id
+          uniqueName
+          tagline
+          avatar
+          displayName
+        }
       }
     }
   }
 `
 
 export const GET_USER_POSTS_BY_U_NAME = gql`
-  query getUserPostsByUName($uniqueName: String!) {
-    posts: getUserPostsByUName(uniqueName: $uniqueName) {
-      title
-      url
-      tags {
-        name
-        urlName
+  query getUserPostsByUName($uniqueName: String!, $metadata: MetadataInput) {
+    result: getUserPostsByUName(uniqueName: $uniqueName, metadata: $metadata) {
+      metadata {
+        after
+        before
       }
-      body
-      author: userDetail {
-        id
-        uniqueName
-        tagline
-        avatar
-        displayName
+      entries {
+        title
+        url
+        tags {
+          name
+          urlName
+        }
+        body
+        author: userDetail {
+          id
+          uniqueName
+          tagline
+          avatar
+          displayName
+        }
       }
     }
   }
 `
 
+/* Mutations */
 export const GET_USER_DETAIL = gql`
   query user($strategy: String, $strategyId: String) {
     user: getUserDetail(strategy: $strategy, strategyId: $strategyId) {

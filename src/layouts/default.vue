@@ -22,7 +22,6 @@ import Footer from '~/components/Footer.vue'
   }
 })
 export default class DefaultLayout extends Vue {
-
   get currentUser() {
     return this.$store.getters.getAuthUser
   }
@@ -35,8 +34,8 @@ export default class DefaultLayout extends Vue {
     })
   }
 
-  async loginWithGithub() {
-    await this.$auth.loginWith('github')
+  loginWithGithub() {
+    this.$auth.loginWith('github')
   }
 }
 </script>
