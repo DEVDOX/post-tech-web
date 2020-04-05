@@ -5,7 +5,7 @@ import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface
 import {
   UserDetail
 } from '~/apollo/schemas/userDetail'
-import { GET_USER_DETAIL, CREATE_USER, LOGIN_QUERY, GET_USER_DETAIL_BY_U_NAME } from '~/apollo/queries/user'
+import { GET_USER_DETAIL, CREATE_USER, UPDATE_USER, LOGIN_QUERY, GET_USER_DETAIL_BY_U_NAME } from '~/apollo/queries/user'
 import {  CreateUserResult } from '~/apollo/schemas/result'
 
 @injectable()
