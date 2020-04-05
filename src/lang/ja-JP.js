@@ -57,6 +57,7 @@ export default {
     uniqueName: '条件に従ったユーザーネームを入力してください。',
     required: 'このフィールドは必須です。',
     email: '{_value_}はメールアドレスの形式にあっていません。',
+    url: 'このフィールドはhttp://もしくはhttps://が必要です。',
     max: '{_value_}は長すぎます。{length}文字以下にしてください。',
     min: '{_value_}は短すぎます。{length}文字以上にしてください。',
   },

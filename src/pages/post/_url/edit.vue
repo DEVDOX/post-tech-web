@@ -1,12 +1,12 @@
 <template>
-  <div class="mt-8 lg:mt-0">
+  <div v-if="post" class="mt-8 lg:mt-0">
     <div class="w-full bg-white shadow-md rounded mb-8">
       <div class="p-5">
         <label class="block text-gray-700 text-base font-semibold mb-2" for="title">
           {{ $t('post.title') }}
         </label>
         <input
-          v-model="newPost.title"
+          v-model="post.title"
           id="title"
           class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
           type="text"
@@ -20,7 +20,7 @@
         </label>
         <input
           id="title"
-          v-model="newPost.tags"
+          v-model="getTags"
           class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
           type="text"
           placeholder="Example text"
@@ -30,7 +30,7 @@
 
     <client-only>
       <mavon-editor
-        v-model="newPost.body"
+        v-model="post.body"
         :toolbars="markdownOption"
         language="ja"
         ref="markdownEditor"
@@ -71,7 +71,7 @@
           <i :class="`mdi-${submitIcon}`" class="mdi"/>
           <span>{{ submitText }}</span>
         </button>
-        
+
       </div>
     </div>
   </div>
@@ -79,6 +79,7 @@
 
 <script lang="ts">
 import { Component, Vue, mixins } from 'nuxt-property-decorator'
+import { Context } from '@nuxt/types'
 
 import BlockUnloadMixin from "~/mixins/BlockUnloadMixin"
 
@@ -91,33 +92,40 @@ import { serviceContainer } from '~/dependencyInjection/container'
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
 
+import { Post, postState } from '~/apollo/schemas/post'
+import { Tag } from '../../../apollo/schemas/tag'
+
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(
   TYPES.PostRepositoryInterface
 )
 
-type postState = 'published' | 'private' | 'draft'
-
-@Component<NewPost>({
+@Component({
   directives: {
     onClickaway: onClickaway,
   },
   components: {
     'mavon-editor': mavonEditor.mavonEditor
-  },
-})
-export default class NewPost extends mixins(BlockUnloadMixin) {
-  // user.language?をゲットして、mavonEditorに適用する
-  newPost = {
-    title: '',
-    body: '',
-    state: 'private',
-    tags: [{name: "asdf"}]
   }
+})
+export default class EditPost extends mixins(BlockUnloadMixin) {
+  async asyncData({ params: { url } }: Context) {
+    const post = await PostRepo.getUserPostByUrl(url)
+
+    console.log(post)
+
+    return {
+      post,
+      visibilityState: post.state
+    }
+  }
+
+  // user.language?をゲットして、mavonEditorに適用する
+  private post: Post = <Post> {}
+  private visibilityState: postState = 'private'
 
   isPublicOpen: boolean = false
   isFullscreen: boolean = false
 
-  visibilityState: postState = 'private' // APIからデータを取る
   submitIcon: string = 'upload' // APIからデータを取る
   submitText: string = this.$root.$tc('newPost.publish') // APIからデータを取る
 
@@ -150,10 +158,25 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     this.isPublicOpen = false
   }
 
-  updateFullscreen(payload: boolean) { this.isFullscreen = payload }
-  toggleDropDown() { this.isPublicOpen = !this.isPublicOpen }
-  closeDropDown() { this.isPublicOpen = false }
+  updateFullscreen(payload: boolean) {
+    this.isFullscreen = payload
+  }
 
+  toggleDropDown() {
+    this.isPublicOpen = !this.isPublicOpen
+  }
+
+  closeDropDown() {
+    this.isPublicOpen = false
+  }
+
+  get getTags(): string {
+    let tag = 'test'
+    for (let item of this.post.tags) {
+      tag = `${item.name}, ${tag}`
+    }
+    return tag
+  }
 
   mounted() {
     window.addEventListener('keypress', () => this.isBlockUnload = true)
@@ -194,9 +217,9 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     navigation: true
   }
 
-  async createPost() {
-    this.newPost.state = this.visibilityState
-    const post = await PostRepo.createPost(this.newPost)
+  async updatePost() {
+    this.post.state = this.visibilityState
+    const updatedPost = await PostRepo.updatePost(this.post)
   }
 }
 </script>

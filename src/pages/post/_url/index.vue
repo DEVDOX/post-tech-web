@@ -42,7 +42,7 @@
           </div>
 
           <div class="markdown mt-16">
-            <div v-if="markdownIt" v-html="markdownIt.render(getEspacedBody)"></div>
+            <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
           </div>
 
           <hr class="my-16">
@@ -83,10 +83,10 @@ import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
 import { TYPES } from '~/dependencyInjection/types'
-import { Post } from '../../apollo/schemas/post'
+import { Post } from '~/apollo/schemas/post'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ja' // load on demand
-dayjs.locale('ja') 
+dayjs.locale('ja')
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostRepositoryInterface)
@@ -99,6 +99,7 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostReposit
 })
 export default class Article extends Vue {
   markdownIt = null
+
   private post: Post | null = null
 
   async asyncData({ params: { url } }: Context) {
@@ -116,23 +117,22 @@ export default class Article extends Vue {
     const hljs = require('highlight.js')
     // @ts-ignore
     this.markdownIt = mavonEditor.mavonEditor.getMarkdownIt()
-    // @ts-ignore
-    this.markdownIt.options.highlight = function (str: string, lang: string) {
-      if (lang && hljs.getLanguage(lang)) {
-        try {
-          return '<pre class="hljs"><div class="mx-8"><code>' +
-                hljs.highlight(lang, str, true).value +
-                '</code></div></pre>';
-        } catch (__) {}
-      }
-      return this.markdownIt ? '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>' : ''
-    }
-  }
 
-  get getEspacedBody () {
-    if (this.markdownIt !== null && this.post) {
-      //return sanitizeHtml(this.post.body)
-      return this.post.body
+    if (this.markdownIt) {
+      // @ts-ignore
+      this.markdownIt.options.highlight = function (str: string, lang: string) {
+        if (lang && hljs.getLanguage(lang)) {
+          try {
+            return '<pre class="hljs"><div class="mx-8"><code>' +
+                  hljs.highlight(lang, str, true).value +
+                  '</code></div></pre>'
+          } catch (__) {}
+        }
+
+        if (this.markdownIt) {
+          return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
+        }
+      }
     }
   }
 
@@ -160,7 +160,7 @@ export default class Article extends Vue {
 /* Markdown Styles */
 /* Global */
 .markdown {
-  @apply leading-loose text-lg;
+  @apply leading-loose text-base;
 }
 .markdown {
   font-family: 'Noto Sans JP', sans-serif;

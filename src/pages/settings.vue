@@ -88,14 +88,17 @@
             </div>
             <div class="mb-6">
               <label class="text-sm text-gray-700" for="web-site-url">{{ $t('options.webSiteUrl') }}</label>
-              <input
-                id="web-site-url"
-                v-model="updatedUser.websiteUrl"
-                class="w-full m-input text-gray-800"
-                type="text"
-                :placeholder="getDomainName()"
-                :aria-label="$t('options.webSiteUrl')"
-              >
+              <ValidationProvider rules="url" v-slot="{ invalid, errors }">
+                <input
+                  id="web-site-url"
+                  v-model="updatedUser.websiteUrl"
+                  class="w-full m-input text-gray-800"
+                  type="text"
+                  :placeholder="getDomainName()"
+                  :aria-label="$t('options.webSiteUrl')"
+                >
+                <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
+              </ValidationProvider>
             </div>
             <div class="mb-6">
               <label class="text-sm text-gray-700" for="location">{{ $t('options.location') }}</label>
@@ -209,6 +212,9 @@ interface tabInterface {
 extend('uniqueName', {
   validate: value => /^([a-z0-9\-\_]+)$/.test(value)
 })
+extend('url', {
+  validate: value => /^(http|https):\/\//.test(value)
+})
 extend('required', required)
 extend('email', email)
 extend('min', min)
@@ -249,8 +255,8 @@ export default class Settings extends Vue {
   tabId: tabType = 'profile'
 
   getDomainName(): string {
-    if (process.env.DOMAIN_NAME) {
-      return process.env.DOMAIN_NAME
+    if (process.env.BASE_URL) {
+      return process.env.BASE_URL
     }
     return ''
   }

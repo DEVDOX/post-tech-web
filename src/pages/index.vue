@@ -11,8 +11,9 @@
                   :to="`/tag/${tag}`"
                   v-for="(tag, index) in tags"
                   :key="index"
-                  class="hover:underline p-1 m-1">
-                    #{{ tag }}
+                  class="hover:underline p-1 m-1"
+                >
+                  #{{ tag }}
                 </n-link>
               </div>
             </div>

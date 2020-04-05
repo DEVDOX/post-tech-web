@@ -5,6 +5,7 @@ export const GET_POST_BY_URL = gql`
     post: getPostByUrl(url: $url) {
       title
       url
+      state
       tags {
         name
         urlName
@@ -28,6 +29,7 @@ export const GET_USER_POSTS_BY_ID = gql`
     posts: getUserPostsById(userId: $userId) {
       title
       url
+      state
       tags {
         name
         urlName
