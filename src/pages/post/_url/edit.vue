@@ -111,8 +111,6 @@ export default class EditPost extends mixins(BlockUnloadMixin) {
   async asyncData({ params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
 
-    console.log(post)
-
     return {
       post,
       visibilityState: post.state

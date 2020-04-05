@@ -108,8 +108,6 @@ import { serviceContainer } from '~/dependencyInjection/container'
 
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
-import { CreatePostResult } from '../../apollo/schemas/result'
-import { IErrorResult } from '../../repositories/Post/PostRepositoryInterface'
 
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(
   TYPES.PostRepositoryInterface
