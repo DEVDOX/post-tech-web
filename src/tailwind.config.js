@@ -45,9 +45,8 @@ module.exports = {
       inset: {
         '25': '25vh',
       },
-      filter: {
-        'none': 'none',
-        'darker': 'brightness(80%)'
+      transitionDuration: {
+        '50': '50ms',
       },
       borderWidth: {
         '3': '3px',

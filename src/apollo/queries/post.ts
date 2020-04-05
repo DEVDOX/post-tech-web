@@ -104,7 +104,7 @@ export const GET_USER_DETAIL = gql`
 
 export const CREATE_POST_QUERY = gql`
   mutation createPost($params: CreatePostParams!) {
-    createPost(params: $params) {
+    post: createPost(params: $params) {
       result {
         state
         url

@@ -52,23 +52,16 @@ export default class PostRepository extends BaseRepository
     return posts
   }
 
-  public async createPost(params: any): Promise<CreatePostResult | IErrorResult> {
-    try {
-      const { data } = await global._$app.apolloProvider.defaultClient.mutate({
-        mutation: CREATE_POST_QUERY,
-        variables: { params }
-      })
-
-      return data
-    } catch (e) {
-      return {
-        status: 500,
-        message: "blah" 
-      }
-    }
+  public async createPost(params: any): Promise<CreatePostResult> {
+    const { data: { post } } = await global._$app.apolloProvider.defaultClient.mutate({
+      mutation: CREATE_POST_QUERY,
+      variables: { params }
+    })
+    
+    return post
   }
 
-  public async updatePost(params: any): Promise<CreatePostResult | IErrorResult> {
+  public async updatePost(params: any): Promise<CreatePostResult> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.mutate({
@@ -79,7 +72,7 @@ export default class PostRepository extends BaseRepository
     return user
   }
 
-  public async deletePost(params: any): Promise<CreatePostResult | IErrorResult> {
+  public async deletePost(params: any): Promise<CreatePostResult> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.mutate({

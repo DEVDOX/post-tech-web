@@ -5,6 +5,7 @@ export default {
   areYouSure: '本当にページから移動しても良いですか？',
   myPosts: '自分の記事',
   likedPosts: 'いいねした記事',
+  error: '原因不明のエラーが起きました。管理人にコンタクトを行ってください。',
 
   user: {
     login: 'ログイン',
@@ -21,6 +22,11 @@ export default {
       published: '公開',
       private: '非公開',
       draft: '下書き',
+    },
+    successful: '記事を公開しました！',
+    failed: {
+      title: 'タイトルは必須です。',
+      body: '本文は必須です。'
     },
   },
 

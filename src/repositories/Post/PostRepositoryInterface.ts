@@ -11,7 +11,7 @@ export default interface PostRepositoryInterface {
   getUserPostsById(userId: number): Promise<Post[]>
   getUserPostsByUName(uniqueName: string): Promise<Post[]>
   getPublicPosts(): Promise<Post[]>
-  createPost(params: any): Promise<CreatePostResult | IErrorResult>
-  updatePost(params: any): Promise<CreatePostResult | IErrorResult>
-  deletePost(params: any): Promise<CreatePostResult | IErrorResult>
+  createPost(params: any): Promise<CreatePostResult>
+  updatePost(params: any): Promise<CreatePostResult>
+  deletePost(params: any): Promise<CreatePostResult>
 }

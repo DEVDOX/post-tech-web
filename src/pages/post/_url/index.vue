@@ -68,6 +68,14 @@
         />
       </div>
 
+      <FloatingAlertBox
+        @close="successful = false"
+        v-if="successful"
+        bgColor="bg-green-500"
+        textColor="text-white"
+        :message="$t('post.successful')"
+      />
+
     </div>
   </div>
 </template>
@@ -79,6 +87,8 @@ import 'highlight.js/styles/obsidian.css'
 import mavonEditor from 'mavon-editor'
 import PersonCard from '~/components/PersonCard.vue'
 import LikeIcon from '~/components/LikeIcon.vue'
+import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
+
 import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
@@ -94,11 +104,13 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostReposit
 @Component({
   components: {
     PersonCard,
-    LikeIcon
+    LikeIcon,
+    FloatingAlertBox
   }
 })
 export default class Article extends Vue {
   markdownIt = null
+  successful: boolean = false
 
   private post: Post | null = null
 
@@ -113,6 +125,8 @@ export default class Article extends Vue {
   }
 
   async mounted() {
+    this.successful = this.$store.getters['getPostSuccessful']
+    console.warn(this.successful)
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
