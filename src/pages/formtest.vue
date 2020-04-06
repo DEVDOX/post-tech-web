@@ -38,6 +38,15 @@
       </tags-input>
     </client-only>
 
+    <button @click="successful = true" class="btn btn-blue">Let's go bois</button>
+    <FloatingAlertBox
+      @close="successful = false"
+      :isShow="isSuccessful"
+      bgColor="bg-blue-500"
+      textColor="text-white"
+      message="うんちぶり！ｗ"
+    />
+
   </div>
 </template>
 
@@ -48,10 +57,13 @@ import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required, min, max } from "vee-validate/dist/rules"
 import '@voerro/vue-tagsinput/dist/style.css'
 
+import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
+
 @Component({
   components: {
     ValidationObserver,
-    ValidationProvider
+    ValidationProvider,
+    FloatingAlertBox
   }
 })
 export default class Settings extends Vue {
@@ -60,6 +72,8 @@ export default class Settings extends Vue {
     nottest: ''
   }
 
+  successful: boolean = false
+  get isSuccessful(): boolean { return this.successful }
   selectedTags = null
 
   submit() {
