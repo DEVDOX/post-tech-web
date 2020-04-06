@@ -46,6 +46,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
 import { required, min, max } from "vee-validate/dist/rules"
+import '@voerro/vue-tagsinput/dist/style.css'
 
 @Component({
   components: {
