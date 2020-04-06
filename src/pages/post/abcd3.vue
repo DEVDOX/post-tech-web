@@ -155,7 +155,6 @@ export default class Article extends Vue {
       this.post.liked = true
       this.post.likes++
     }
-    console.log(this.post.likes)
   }
 }
 </script>

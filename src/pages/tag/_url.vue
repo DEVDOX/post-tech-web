@@ -33,8 +33,8 @@
       </div>
 
       <div v-if="currentUser" id="toc" class="w-full col-span-12 xl:col-span-3">
-        <!-- Current loggedIn user -->
         <PersonCard
+          v-if="user"
           :card="true"
           :hover="true"
           :link="true"
@@ -54,7 +54,7 @@ import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
 import { TYPES } from '~/dependencyInjection/types'
-import { UserDetail } from '../apollo/schemas/userDetail'
+import { UserDetail } from '~/apollo/schemas/userDetail'
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostRepositoryInterface)
@@ -74,8 +74,14 @@ export default class IndexPage extends Vue {
     'graphql', 'rest-api', 'webassembly', 'elm', 'vscode',
   ]
 
-  async asyncData({ store, app: { $auth } }: Context) {
-    const { metadata, entries } = await PostRepo.getPublicPosts({})
+  async asyncData({ params, store, app: { $auth } }: Context) {
+    const { user } = $auth.$state
+    if (user) {
+      const { id, login } = user
+    }
+
+    const { metadata, entries } = await PostRepo.getPostsByTag(params.url, {})
+
     return {
       publicPosts: entries
     }

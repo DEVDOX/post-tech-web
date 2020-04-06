@@ -31,7 +31,8 @@ const config: Configuration = {
     '~/plugins/vue-apollo',
     '~/plugins/serviceContainer',
     '~/plugins/inject',
-    '~/plugins/i18n'
+    '~/plugins/i18n',
+    { src: '~/plugins/voerro-tags-input', ssr: false },
   ],
 
   buildModules: [

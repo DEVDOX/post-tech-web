@@ -9,6 +9,7 @@ export const GET_POST_BY_URL = gql`
     post: getPostByUrl(url: $url) {
       title
       url
+      state
       tags {
         name
         urlName
@@ -26,16 +27,46 @@ export const GET_POST_BY_URL = gql`
     }
   }
 `
+export const GET_POSTS_BY_TAG = gql`
+  query getPostsByTag($url: String, $metadata: MetadataInput) {
+    result: getPostsByTag(url: $url, metadata: $metadata) {
+      metadata {
+        after
+        before
+        limit
+      }
+      entries {
+        title
+        url
+        tags {
+          name
+          urlName
+        }
+        body
+        author: userDetail {
+          id
+          uniqueName
+          tagline
+          avatar
+          displayName
+        }
+      }
+    }
+  }
+`
 
 /*
  * Get a paginated post object for a specific user
  */
 export const GET_USER_POSTS_BY_ID = gql`
-  query getUserPostsById($userId: Integer, $metadata: MetadataInput) {
-    result: getUserPostsById(userId: $userId, metadata: $metadata) {
-      metadata {
-        after
-        before
+  query getUserPostsById($userId: Integer) {
+    posts: getUserPostsById(userId: $userId) {
+      title
+      url
+      state
+      tags {
+        name
+        urlName
       }
       entries {
         title
@@ -129,7 +160,7 @@ export const GET_USER_DETAIL = gql`
 
 export const CREATE_POST_QUERY = gql`
   mutation createPost($params: CreatePostParams!) {
-    createPost(params: $params) {
+    post: createPost(params: $params) {
       result {
         state
         url

@@ -77,9 +77,9 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserReposit
   }
 })
 export default class UserPage extends Vue {
-  private user: UserDetail | null = null
+  private user!: UserDetail
   tab: articleType = 'mine'
-  
+
   get currentTab() {
     return this.tab
   }
@@ -90,11 +90,11 @@ export default class UserPage extends Vue {
 
   async asyncData({ params }: Context) {
     const user = await UserRepo.getUserByUName(params.uniqueName)
-    const posts = await PostRepo.getUserPostsByUName(user.uniqueName)
+    const { entries, metadata } = await PostRepo.getUserPostsByUName(user.uniqueName, {})
 
     return {
       user,
-      posts
+      posts: entries
     }
   }
 }

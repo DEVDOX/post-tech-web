@@ -5,6 +5,7 @@ export default {
   areYouSure: 'Are you sure you want to exit?',
   myPosts: 'My Posts',
   likedPosts: 'Liked Posts',
+  error: 'An error occured. Please contact to administrator',
 
   user: {
     login: 'Log in',
@@ -21,6 +22,11 @@ export default {
       published: 'Publish',
       private: 'Private',
       draft: 'Draft',
+    },
+    successful: 'Post has been successfully created!',
+    failed: {
+      title: 'Title is required',
+      body: 'Body is required'
     },
   },
 
@@ -57,6 +63,7 @@ export default {
     uniqueName: 'Please enter your username according to the conditions.', // あってんのかこれ
     required: 'This field is required',
     email: '{_value_} is not in the form of an email address.',
+    url: 'This field require "http://" or "https://".',
     max: '{_value_} is too long. It should be less than {length} characters.',
     min: '{_value_} is too short. It should be at least {length} characters.',
   },

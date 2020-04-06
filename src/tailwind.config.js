@@ -39,13 +39,14 @@ module.exports = {
         '72': '18rem',
         '84': '21rem',
         '96': '24rem',
+        '108': '27rem',
+        '120': '30rem',
       },
       inset: {
         '25': '25vh',
       },
-      filter: {
-        'none': 'none',
-        'darker': 'brightness(80%)'
+      transitionDuration: {
+        '50': '50ms',
       },
       borderWidth: {
         '3': '3px',

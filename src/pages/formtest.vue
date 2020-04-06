@@ -25,6 +25,19 @@
         </p>
       </ValidationProvider>
     </ValidationObserver>
+
+    <client-only>
+      <tags-input element-id="tags"
+        v-model="selectedTags"
+        :existing-tags="[
+            { key: 'web-development', value: 'Web Development' },
+            { key: 'php', value: 'PHP' },
+            { key: 'javascript', value: 'JavaScript' },
+        ]"
+        :typeahead="true">
+      </tags-input>
+    </client-only>
+
   </div>
 </template>
 
@@ -45,6 +58,8 @@ export default class Settings extends Vue {
     text: '',
     nottest: ''
   }
+
+  selectedTags = null
 
   submit() {
     console.log('example')

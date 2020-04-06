@@ -83,6 +83,7 @@ export const LOGIN_QUERY = gql`
         userDetail {
           displayName
           uniqueName
+          avatar
         }
       }
       successful

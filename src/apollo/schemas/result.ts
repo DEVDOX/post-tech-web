@@ -6,7 +6,7 @@ export interface ApiResult<T> {
     field?: string
     message?: string
     code?: string
-  }
+  }[]
   result: T
   successful: boolean
 }
