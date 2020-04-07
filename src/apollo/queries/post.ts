@@ -10,6 +10,9 @@ export const GET_POST_BY_URL = gql`
       title
       url
       state
+      likes {
+        id
+      }
       tags {
         name
         urlName
@@ -189,6 +192,25 @@ export const LOGIN_QUERY = gql`
         userDetail {
           displayName
         }
+      }
+      successful
+      messages {
+        code
+        message
+        field
+      }
+    }
+  }
+`
+
+export const UPDATE_POST_QUERY = gql`
+  mutation updatePost($params: UpdatePostParams!) {
+    updatePost(params: $params) {
+      result {
+        title
+        body
+        tags
+        state
       }
       successful
       messages {
