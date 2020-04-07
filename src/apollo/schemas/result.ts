@@ -1,14 +1,16 @@
 import { TokenType, UserDetail } from "./userDetail"
-import { Post } from "./post"
+import { Post, Like } from "./post"
 
-export interface ApiResult<T> {
-  messages?: {
+export type ResultMessage = {
     field?: string
     message?: string
     code?: string
-  }[]
-  result: T
-  successful: boolean
+}
+
+export interface ApiResult<T> {
+  messages?: Array<ResultMessage>
+  result?: T
+  successful?: boolean
 }
 
 export interface IErrorResult {
@@ -31,6 +33,7 @@ export interface PaginatedResult<T> {
   entries: T
 }
 
+export type MutateLikeResult = ApiResult<Like>
 export type CreatePostResult = ApiResult<Post>
 export type CreateUserResult = ApiResult<UserDetail & TokenType>
 export type LoginResult = ApiResult<TokenType>
