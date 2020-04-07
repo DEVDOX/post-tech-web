@@ -26,12 +26,24 @@
       </ValidationProvider>
     </ValidationObserver>
 
+    <tags-input element-id="tags"
+      v-model="selectedTags"
+      class="my-5"
+      :existing-tags="[
+          { key: 'web-development', value: 'Web Development' },
+          { key: 'php', value: 'PHP' },
+          { key: 'javascript', value: 'JavaScript' },
+      ]"
+      :typeahead="true">
+    </tags-input>
+
 
     <div class="my-5">
       <ValidationObserver v-slot="{ invalid }" ref="parentObserver">
         <ValidationProvider rules="tag" v-slot="{ errors }">
           <TagsInputCompletion
-            :state="inputResult"
+            :validate="inputResult"
+            :existTags="searchResults"
             @inputChanged="checkValidation"
           />
           <p v-show="errors">{{ errors[0] }}</p>
@@ -71,9 +83,10 @@ import TagsInputCompletion from '~/components/TagsInputCompletion.vue'
 
 import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
 
-interface tag {
-  value: string
-}
+type Tags = Array<{
+  id?: number
+  name: string
+}>
 
 @Component({
   components: {
@@ -85,29 +98,45 @@ interface tag {
   }
 })
 export default class Settings extends Vue {
-  @Watch('tagInput')
-  onTagsChange(value: any, oldValue: any) {
-    console.error(value)
-  }
-
   test = {
     text: '',
     nottest: ''
   }
 
+  queryData: Tags = [
+    {name: 'java'},
+    {name: 'javascript'},
+    {name: 'json'},
+    {name: 'test'},
+    {name: 'typescript'},
+    {name: 'webdevelopment'},
+    {name: 'window10'},
+  ]
+
+  searchResults: Tags = []
+
   inputResult: boolean = false
   successful: boolean = false
   get isSuccessful(): boolean { return this.successful }
-  selectedTags: tag[] = []
+  selectedTags: Tags = []
 
-  checkValidation(value: any) {
-    validate(value, 'tag').then(result => {
+  checkValidation(value: string) {
+    this.sendQuery(value)
+    return validate(value, 'tag').then(result => {
       if (result.valid) {
         this.inputResult = true
       } else {
         this.inputResult = false
       }
     })
+    // @ts-ignore
+    this.$refs.parentObserver.validate({silent: false})
+  }
+
+  async sendQuery(char: string) {
+    const data = this.queryData // await PostRepo.searchTagsByCharacter(char)
+
+    return { searchResults: data }
   }
 
   testFunc(value: any) {
