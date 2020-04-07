@@ -26,27 +26,14 @@
       </ValidationProvider>
     </ValidationObserver>
 
+
     <div class="my-5">
       <ValidationObserver v-slot="{ invalid }" ref="parentObserver">
         <ValidationProvider rules="tag" v-slot="{ errors }">
-          <div>
-            <CustomTagInput element-id="tags"
-              ref="tagsInput"
-              v-model="selectedTags"
-              @keydown.enter="validateInput"
-              :validate="validateInput"
-              :limit="10"
-              :add-tags-on-comma="true"
-              :existing-tags="[
-                  { value: 'webdevelopment' },
-                  { value: 'php' },
-                  { value: 'javaScript' },
-              ]"
-              :typeahead="true"
-              typeahead-style="dropdown"
-            >
-            </CustomTagInput>
-          </div>
+          <TagsInputCompletion
+            :state="inputResult"
+            @inputChanged="checkValidation"
+          />
           <p v-show="errors">{{ errors[0] }}</p>
         </ValidationProvider>
         <button
@@ -58,18 +45,10 @@
           Validate?
         </button>
       </ValidationObserver>
-      <p>{{ selectedTags }}</p>
     </div>
 
-    <div class="my-8">
-      <TagsInputCompletion
-        :state="inputResult"
-        @inputChanged="checkValidation"
-      />
-    </div>
-
-    <button @click="successful = true" class="btn btn-blue">Let's go bois</button>
-    <!-- <FloatingAlertBox
+    <!-- <button @click="successful = true" class="btn btn-blue">Let's go bois</button>
+    <FloatingAlertBox
       @close="successful = false"
       :isShow="isSuccessful"
       bgColor="bg-blue-500"
@@ -121,29 +100,19 @@ export default class Settings extends Vue {
   get isSuccessful(): boolean { return this.successful }
   selectedTags: tag[] = []
 
-  validateInput(value: string) {
-    console.log('validating')
-    validate(value, 'tag').then(result => {
-      console.log('isValid: ', result.valid)
-      if (result.valid) {
-        this.selectedTags.push({ value })
-        // @ts-ignore
-        this.$refs.tagsInput.clearInput()
-      }
-    })
-  }
-
   checkValidation(value: any) {
-    console.warn(value)
     validate(value, 'tag').then(result => {
       if (result.valid) {
         this.inputResult = true
+      } else {
+        this.inputResult = false
       }
     })
   }
 
   testFunc(value: any) {
     console.log(value)
+    // @ts-ignore
     const result = this.$refs.parentObserver.validate({silent: false})
   }
 
@@ -159,9 +128,8 @@ export default class Settings extends Vue {
       message: 'all of characters must be lowercase.'
     })
     extend('tag', {
-      validate: value => {
-        return /^([a-z0-9]+)$/.test(value)
-      }
+      validate: value => /^([a-z0-9]+)$/.test(value),
+      message: 'test'
     })
     extend('required', required)
     extend('min', min)
