@@ -5,11 +5,12 @@
       <div id="sidebar" class="w-full relative z-50 col-span-12 lg:col-span-2 xl:col-span-1">
         <div class="fixed bottom-0 lg:sticky lg:top-25 lg:bottom-auto w-full flex flex-col justify-center items-end mt-16">
           <div class="flex items-center mb-16 lg:mb-8">
-            <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
+            <button @click="updateLikes()"
+              class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
               <LikeIcon :liked.sync="post.liked" className="text-xl"/>
             </button>
             <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
-              <n-link :to="`/post/${post.url}/likes`">{{ post.likes }}</n-link>
+              <n-link :to="`/post/${post.url}/likes`">{{ likeCount }}</n-link>
             </p>
           </div>
         </div>
@@ -113,14 +114,17 @@ export default class Article extends Vue {
   successful: boolean = false
 
   private post: Post | null = null
+  private likeCount = 0
+  private isLiked = false
 
   async asyncData({ params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
-
-    console.log(post)
+    const likeCount = post.likes.length
 
     return {
-      post
+      post,
+      likeCount,
+      isLiked: post.liked
     }
   }
 
@@ -154,16 +158,9 @@ export default class Article extends Vue {
   }
 
   updateLikes() {
-    /*
-    if (this.post.liked) {
-      this.post.liked = false
-      this.post.likes--
-    } else {
-      this.post.liked = true
-      this.post.likes++
-    }
-    console.log(this.post.likes)
-    */
+    this.isLiked = !this.isLiked
+    this.isLiked ? this.likeCount-- : this.likeCount++;
+    PostRepo.updateLikes()
   }
 }
 </script>
