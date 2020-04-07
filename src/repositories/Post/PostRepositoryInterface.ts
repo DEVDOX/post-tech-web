@@ -1,5 +1,5 @@
-import { Post } from '~/apollo/schemas/post'
-import { CreatePostResult, Metadata, PaginatedPostResult } from '~/apollo/schemas/result'
+import {Post} from '~/apollo/schemas/post'
+import {CreatePostResult, Metadata, MutateLikeResult, PaginatedPostResult} from '~/apollo/schemas/result'
 
 
 export default interface PostRepositoryInterface {
@@ -11,4 +11,8 @@ export default interface PostRepositoryInterface {
   createPost(params: any): Promise<CreatePostResult>
   updatePost(params: any): Promise<CreatePostResult>
   deletePost(params: any): Promise<CreatePostResult>
+
+  /* Mutations for Likes */
+  addLike(postUrl: string): Promise<MutateLikeResult>
+  deleteLike(postUrl: string, likeId: number): Promise<MutateLikeResult>
 }

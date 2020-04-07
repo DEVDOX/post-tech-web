@@ -1,15 +1,25 @@
 import { injectable } from 'inversify'
 import BaseRepository from '~/repositories/baseRepository'
-import { CREATE_POST_QUERY, GET_USER_POSTS_BY_U_NAME, GET_USER_POSTS_BY_ID, GET_PUBLIC_POSTS, GET_POST_BY_URL, GET_POSTS_BY_TAG } from '~/apollo/queries/post'
-import { CreatePostResult, PaginatedResult, Metadata, PaginatedPostResult } from '~/apollo/schemas/result'
+import {
+  CREATE_POST_QUERY,
+  GET_USER_POSTS_BY_U_NAME,
+  GET_USER_POSTS_BY_ID,
+  GET_PUBLIC_POSTS,
+  GET_POST_BY_URL,
+  GET_POSTS_BY_TAG,
+  UPDATE_POST_QUERY
+} from '~/apollo/queries/post'
+import {
+  CreatePostResult,
+  Metadata,
+  PaginatedPostResult
+} from '~/apollo/schemas/result'
 import PostRepositoryInterface from './PostRepositoryInterface'
 import { Post } from '~/apollo/schemas/post'
 
 @injectable()
 export default class PostRepository extends BaseRepository
   implements PostRepositoryInterface {
-
-
   async getUserPostByUrl(url: string): Promise<Post> {
     const {
       data: { post }
@@ -71,19 +81,19 @@ export default class PostRepository extends BaseRepository
       mutation: CREATE_POST_QUERY,
       variables: { params }
     })
-    
+
     return post
   }
 
   public async updatePost(params: any): Promise<CreatePostResult> {
     const {
-      data: { user }
+      data: { updatePost }
     } = await global._$app.apolloProvider.defaultClient.mutate({
-      mutation: null,
+      mutation: UPDATE_POST_QUERY,
       variables: { params }
     })
 
-    return user
+    return updatePost
   }
 
   async deletePost(params: any): Promise<CreatePostResult> {
@@ -96,4 +106,7 @@ export default class PostRepository extends BaseRepository
 
     return user
   }
+
+  async addLike(){}
+  async deleteLike(){}
 }
