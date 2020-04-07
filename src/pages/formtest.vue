@@ -26,55 +26,126 @@
       </ValidationProvider>
     </ValidationObserver>
 
-    <client-only>
-      <tags-input element-id="tags"
-        v-model="selectedTags"
-        :existing-tags="[
-            { key: 'web-development', value: 'Web Development' },
-            { key: 'php', value: 'PHP' },
-            { key: 'javascript', value: 'JavaScript' },
-        ]"
-        :typeahead="true">
-      </tags-input>
-    </client-only>
+    <div class="my-5">
+      <ValidationObserver v-slot="{ invalid }" ref="parentObserver">
+        <ValidationProvider rules="tag" v-slot="{ errors }">
+          <div>
+            <CustomTagInput element-id="tags"
+              ref="tagsInput"
+              v-model="selectedTags"
+              @keydown.enter="validateInput"
+              :validate="validateInput"
+              :limit="10"
+              :add-tags-on-comma="true"
+              :existing-tags="[
+                  { value: 'webdevelopment' },
+                  { value: 'php' },
+                  { value: 'javaScript' },
+              ]"
+              :typeahead="true"
+              typeahead-style="dropdown"
+            >
+            </CustomTagInput>
+          </div>
+          <p v-show="errors">{{ errors[0] }}</p>
+        </ValidationProvider>
+        <button
+          @click="submit()"
+          class="btn btn-blue"
+          :class="invalid ? 'disabled' : ''"
+          :disabled="invalid"
+        >
+          Validate?
+        </button>
+      </ValidationObserver>
+      <p>{{ selectedTags }}</p>
+    </div>
+
+    <div class="my-8">
+      <TagsInputCompletion
+        :state="inputResult"
+        @inputChanged="checkValidation"
+      />
+    </div>
 
     <button @click="successful = true" class="btn btn-blue">Let's go bois</button>
-    <FloatingAlertBox
+    <!-- <FloatingAlertBox
       @close="successful = false"
       :isShow="isSuccessful"
       bgColor="bg-blue-500"
       textColor="text-white"
       message="うんちぶり！ｗ"
-    />
+    /> -->
 
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 
-import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
+import { ValidationObserver, ValidationProvider, extend, validate } from 'vee-validate'
 import { required, min, max } from "vee-validate/dist/rules"
 import '@voerro/vue-tagsinput/dist/style.css'
+import TagInput from '~/components/TagInput.vue'
+import TagsInputCompletion from '~/components/TagsInputCompletion.vue'
+
 
 import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
+
+interface tag {
+  value: string
+}
 
 @Component({
   components: {
     ValidationObserver,
     ValidationProvider,
-    FloatingAlertBox
+    FloatingAlertBox,
+    'CustomTagInput': TagInput,
+    TagsInputCompletion
   }
 })
 export default class Settings extends Vue {
+  @Watch('tagInput')
+  onTagsChange(value: any, oldValue: any) {
+    console.error(value)
+  }
+
   test = {
     text: '',
     nottest: ''
   }
 
+  inputResult: boolean = false
   successful: boolean = false
   get isSuccessful(): boolean { return this.successful }
-  selectedTags = null
+  selectedTags: tag[] = []
+
+  validateInput(value: string) {
+    console.log('validating')
+    validate(value, 'tag').then(result => {
+      console.log('isValid: ', result.valid)
+      if (result.valid) {
+        this.selectedTags.push({ value })
+        // @ts-ignore
+        this.$refs.tagsInput.clearInput()
+      }
+    })
+  }
+
+  checkValidation(value: any) {
+    console.warn(value)
+    validate(value, 'tag').then(result => {
+      if (result.valid) {
+        this.inputResult = true
+      }
+    })
+  }
+
+  testFunc(value: any) {
+    console.log(value)
+    const result = this.$refs.parentObserver.validate({silent: false})
+  }
 
   submit() {
     console.log('example')
@@ -82,9 +153,15 @@ export default class Settings extends Vue {
   }
 
   mounted() {
+    console.warn(this.$refs.tagsInput)
     extend('lowercase', {
       validate: value => /^([a-z0-9\-\_]+)$/.test(value),
       message: 'all of characters must be lowercase.'
+    })
+    extend('tag', {
+      validate: value => {
+        return /^([a-z0-9]+)$/.test(value)
+      }
     })
     extend('required', required)
     extend('min', min)
@@ -101,5 +178,14 @@ export default class Settings extends Vue {
 }
 .error {
   @apply border-red-500;
+}
+</style>
+
+<style>
+.tags-input-wrapper-default.active {
+  @apply border-teal-500 shadow-none;
+}
+.tags-input-badge {
+  @apply text-sm;
 }
 </style>
