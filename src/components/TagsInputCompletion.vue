@@ -94,9 +94,9 @@ export default class TagsInputCompletion extends Vue {
       this.$nextTick(() => {
         this.input = ''
       })
-    } /*else {
+    } else {
       console.log('validation failed')
-    }*/
+    }
   }
 
   removeLastTag() {
@@ -168,9 +168,9 @@ export default class TagsInputCompletion extends Vue {
     this.clearSearchResults()
     this.addTag({ name: tag })
 
-    this.$nextTick(() => {
+    /* this.$nextTick(() => {
       this.input = ''
-    })
+    }) */
   }
 
   tagFromInput(ignoreSearchResults = false) {
@@ -178,7 +178,7 @@ export default class TagsInputCompletion extends Vue {
     if (this.searchResults.length && this.searchSelection >= 0) {
       this.tagFromSearch(this.searchResults[this.searchSelection].name)
 
-      this.input = ''
+      //this.input = ''
     } else {
       // If we're adding an unexisting tag
       let text = this.input.trim()
@@ -192,18 +192,6 @@ export default class TagsInputCompletion extends Vue {
         // Array
         let newTag: Tag = {
           name: text
-        }
-
-        const searchQuery = this.escapeRegExp(newTag.name.toLowerCase())
-
-        for (let tag of this.existTags) {
-          const compareable = tag.name.toLowerCase()
-
-          if (searchQuery === compareable) {
-            newTag = Object.assign({}, tag)
-
-            break
-          }
         }
 
         this.addTag(newTag)

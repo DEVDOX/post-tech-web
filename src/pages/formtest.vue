@@ -110,7 +110,7 @@ export default class Settings extends Vue {
 
   checkValidation(value: string) {
     this.sendQuery(value)
-    return validate(value, 'tag').then(result => {
+    return validate(value.toLowerCase(), 'tag').then(result => {
       if (result.valid) {
         this.inputResult = true
       } else {
