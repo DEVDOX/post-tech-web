@@ -110,7 +110,7 @@ export default class Settings extends Vue {
 
   checkValidation(value: string) {
     this.sendQuery(value)
-    return validate(value.toLowerCase(), 'tag').then(result => {
+    const result = validate(value, 'tag').then(result => {
       if (result.valid) {
         this.inputResult = true
       } else {
@@ -118,7 +118,10 @@ export default class Settings extends Vue {
       }
     })
     // @ts-ignore
-    this.$refs.parentObserver.validate({silent: false})
+    const validation = this.$refs.parentObserver.validate({silent: false})
+    console.log('validation', validation)
+
+    return result
   }
 
   async sendQuery(char: string) {

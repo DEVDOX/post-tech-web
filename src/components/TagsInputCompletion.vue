@@ -70,8 +70,6 @@ export default class TagsInputCompletion extends Vue {
   searchResults: Tags = []
   searchSelection: number = 0
   input: string = ''
-  oldInput: string = ''
-  hiddenInput: string = 'DATA'
   isActive: boolean = false
 
   @Watch('input')
@@ -83,19 +81,17 @@ export default class TagsInputCompletion extends Vue {
   }
 
   addTag(tag: Tag) {
-    if (this.validate === true) {
-      console.log('adding: ', tag)
-
-      // prohibit duplicates
-      if (!this.tagSelected(tag)) {
-        this.tags.push(tag)
-      }
-
+    console.log(this.searchResults.length)
+    // this.searchResults.lengthが1以上なら、補完がある
+    if (this.validate == false && this.searchResults.length == 0) {
+      return false
+    }
+    // prohibit duplicates
+    if (!this.tagSelected(tag)) {
+      this.tags.push(tag)
       this.$nextTick(() => {
         this.input = ''
       })
-    } else {
-      console.log('validation failed')
     }
   }
 
@@ -165,8 +161,8 @@ export default class TagsInputCompletion extends Vue {
   }
 
   tagFromSearch(tag: string) {
-    this.clearSearchResults()
     this.addTag({ name: tag })
+    this.clearSearchResults()
 
     /* this.$nextTick(() => {
       this.input = ''
