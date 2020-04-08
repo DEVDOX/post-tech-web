@@ -251,5 +251,11 @@ export default class Article extends Vue {
 .markdown pre code {
   @apply p-0 bg-transparent;
 }
+.markdown .hljs-center {
+  @apply text-center;
+}
+.markdown .hljs-right {
+  @apply text-right;
+}
 /* purgecss end ignore */
 </style>
