@@ -117,7 +117,7 @@ export default class Article extends Vue {
   async asyncData({ params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
 
-    console.log(post)
+    //console.log(post)
 
     return {
       post
@@ -126,7 +126,7 @@ export default class Article extends Vue {
 
   async mounted() {
     this.successful = this.$store.getters['getPostSuccessful']
-    console.warn(this.successful)
+    //console.warn(this.successful)
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
