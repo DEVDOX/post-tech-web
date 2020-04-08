@@ -26,18 +26,6 @@
       </ValidationProvider>
     </ValidationObserver>
 
-    <tags-input element-id="tags"
-      v-model="selectedTags"
-      class="my-5"
-      :existing-tags="[
-          { key: 'web-development', value: 'Web Development' },
-          { key: 'php', value: 'PHP' },
-          { key: 'javascript', value: 'JavaScript' },
-      ]"
-      :typeahead="true">
-    </tags-input>
-
-
     <div class="my-5">
       <ValidationObserver v-slot="{ invalid }" ref="parentObserver">
         <ValidationProvider rules="tag" v-slot="{ errors }">
@@ -77,7 +65,6 @@ import { Component, Vue, Watch } from 'nuxt-property-decorator'
 
 import { ValidationObserver, ValidationProvider, extend, validate } from 'vee-validate'
 import { required, min, max } from "vee-validate/dist/rules"
-import '@voerro/vue-tagsinput/dist/style.css'
 import TagInput from '~/components/TagInput.vue'
 import TagsInputCompletion from '~/components/TagsInputCompletion.vue'
 
@@ -94,7 +81,7 @@ type Tags = Array<{
     ValidationObserver,
     ValidationProvider,
     FloatingAlertBox,
-    'CustomTagInput': TagInput,
+    //'CustomTagInput': TagInput,
     TagsInputCompletion
   }
 })
@@ -181,14 +168,5 @@ export default class Settings extends Vue {
 }
 .error {
   @apply border-red-500;
-}
-</style>
-
-<style>
-.tags-input-wrapper-default.active {
-  @apply border-teal-500 shadow-none;
-}
-.tags-input-badge {
-  @apply text-sm;
 }
 </style>

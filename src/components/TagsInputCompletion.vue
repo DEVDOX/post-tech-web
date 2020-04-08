@@ -1,46 +1,45 @@
 <template>
   <div class="relative tags-input-root">
-    <transition>
-      <div class="tags-input-wrapper-default tags-input" :class="isActive ? 'active' : ''">
+    <div class="tags-input-wrapper-default tags-input" :class="isActive ? 'active' : ''">
+      <!-- Tags -->
+      <span class="tags-input-badge" v-for="(tag, index) in tags" :key="index">
+        <span v-html="tag.name"></span>
+        <a @click.prevent="removeTag(index)" class="tags-input-remove"></a>
+      </span>
 
-        <!-- Tags -->
-        <span class="tags-input-badge"
-          v-for="(tag, index) in tags"
+      <!-- Add tag input -->
+      <input
+        ref="tagInput"
+        type="text"
+        v-model="input"
+        :placeholder="placeholder"
+        @keydown.8="removeLastTag"
+        @keydown.enter.prevent="tagFromInput(false)"
+        @keydown.down="nextSearchResult"
+        @keydown.up="prevSearchResult"
+        @keyup.esc="clearSearchResults"
+        @focus="onFocus"
+        @blur="onBlur"
+      />
+    </div>
+
+    <!-- Dropdown -->
+    <div>
+      <ul v-show="searchResults.length" class="dropdown">
+        <li
+          v-for="(tag, index) in searchResults"
           :key="index"
+          @mouseover="searchSelection = index"
+          @mousedown.prevent="tagFromSearchOnClick(tag.name)"
+          v-bind:class="{
+            'tags-input-typeahead-item-default': index != searchSelection,
+            'tags-input-typeahead-item-highlighted-default': index == searchSelection
+        }"
         >
-          <span v-html="tag.name"></span>
-          <a @click.prevent="removeTag(index)" class="tags-input-remove"></a>
-        </span>
-
-        <!-- Add tag input -->
-        <input
-          ref="tagInput"
-          type="text"
-          v-model="input"
-          :placeholder="placeholder"
-          @keydown.8="removeLastTag"
-          @keydown.enter.prevent="tagFromInput(false)"
-          @keydown.down="nextSearchResult"
-          @keydown.up="prevSearchResult"
-          @keyup.esc="clearSearchResults"
-          @focus="onFocus"
-          @blur="onBlur"
-        >
-
-        <!-- Dropdown -->
-        <ul v-show="searchResults.length" class="dropdown">
-          <li v-for="(tag, index) in searchResults"
-            :key="index"
-            v-html="tag.name"
-            @mouseover="searchSelection = index"
-            @mousedown.prevent="tagFromSearchOnClick(tag.name)"
-            v-bind:class="{
-              'tags-input-typeahead-item-default': index != searchSelection,
-              'tags-input-typeahead-item-highlighted-default': index == searchSelection
-          }"></li>
-        </ul>
-      </div>
-    </transition>
+          {{ tag.name }}
+        </li>
+      </ul>
+    </div>
     <p class="my-1">Input: {{ input }}</p>
     <p class="my-1">Tags: {{ tags }}</p>
   </div>
@@ -48,7 +47,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
-
 
 interface Tag {
   id?: number
@@ -63,10 +61,10 @@ export default class TagsInputCompletion extends Vue {
     tagInput: HTMLInputElement
   }
 
-  @Prop({default: 'Add a tag'}) placeholder!: string
+  @Prop({ default: 'Add a tag' }) placeholder!: string
   @Prop() existTags!: Tags
-  @Prop({default: false}) validate!: boolean
-  @Prop({default: 7}) maxResults!: number
+  @Prop({ default: false }) validate!: boolean
+  @Prop({ default: 7 }) maxResults!: number
 
   tags: Tags = []
   searchResults: Tags = []
@@ -78,7 +76,9 @@ export default class TagsInputCompletion extends Vue {
 
   @Watch('input')
   receiveData() {
-    this.$emit('inputChanged', this.input)
+    if (this.input.length >= 1) {
+      this.$emit('inputChanged', this.input)
+    }
     this.searchTag()
   }
 
@@ -101,7 +101,7 @@ export default class TagsInputCompletion extends Vue {
 
   removeLastTag() {
     if (!this.input.length && this.tags.length) {
-        this.removeTag(this.tags.length - 1)
+      this.removeTag(this.tags.length - 1)
     }
   }
 
@@ -118,7 +118,7 @@ export default class TagsInputCompletion extends Vue {
     this.searchResults = []
     this.searchSelection = 0
     const searchQuery: string = this.escapeRegExp(this.input.toLowerCase())
-    
+
     for (let tag of this.existTags) {
       const compareable = tag.name.toLowerCase()
 
@@ -136,15 +136,13 @@ export default class TagsInputCompletion extends Vue {
     })
 
     // Shorten Search results to desired length or emit back empty array
-    this.searchResults = (this.input.length >= 1) ?
-                          this.searchResults.slice(0, this.maxResults) :
-                          []
+    this.searchResults =
+      this.input.length >= 1 ? this.searchResults.slice(0, this.maxResults) : []
 
-    this.$emit("updateResult", this.searchResults)
+    this.$emit('updateResult', this.searchResults)
   }
 
   tagSelected(tag: Tag): boolean {
-
     if (!tag) {
       return false
     }
@@ -168,32 +166,32 @@ export default class TagsInputCompletion extends Vue {
 
   tagFromSearch(tag: string) {
     this.clearSearchResults()
-    this.addTag({name: tag})
-    console.log('tagFromSearch', tag)
+    this.addTag({ name: tag })
 
     this.$nextTick(() => {
-        this.input = ''
+      this.input = ''
     })
   }
 
   tagFromInput(ignoreSearchResults = false) {
     // If we're choosing a tag from the search results
     if (this.searchResults.length && this.searchSelection >= 0) {
-        this.tagFromSearch(this.searchResults[this.searchSelection].name)
+      this.tagFromSearch(this.searchResults[this.searchSelection].name)
 
-        this.input = '';
+      this.input = ''
     } else {
       // If we're adding an unexisting tag
-      let text = this.input.trim();
+      let text = this.input.trim()
 
       // If the new tag is not an empty string and passes validation
-      if (text.length) { // && this.validate(text)
-        this.input = ''
+      if (text.length) {
+        // && this.validate(text)
+        //this.input = ''
 
         // Determine if the inputted tag exists in the existingTags
-        // array
+        // Array
         let newTag: Tag = {
-            name: text
+          name: text
         }
 
         const searchQuery = this.escapeRegExp(newTag.name.toLowerCase())
@@ -261,121 +259,125 @@ export default class TagsInputCompletion extends Vue {
 
 /* The input */
 .tags-input {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
 }
 
 .tags-input input {
-    flex: 1;
-    background: transparent;
-    border: none;
+  flex: 1;
+  background: transparent;
+  border: none;
 }
 
 .tags-input input:focus {
-    outline: none;
+  outline: none;
 }
 
-.tags-input input[type="text"] {
-    color: #495057;
+.tags-input input[type='text'] {
+  color: #495057;
 }
 
 .tags-input-wrapper-default {
-    padding: .5em .25em;
-    background: #fff;
-    border: 1px solid transparent;
-    border-radius: .25em;
-    border-color: #dbdbdb;
+  padding: 0.5em 0.25em;
+  background: #fff;
+  border: 1px solid transparent;
+  border-radius: 0.25em;
+  border-color: #dbdbdb;
 }
 
 .tags-input-wrapper-default.active {
-    border: 1px solid #38b2ac;
-    outline: 0 none;
+  border: 1px solid #38b2ac;
+  outline: 0 none;
 }
 
 /* The tag badges & the remove icon */
 .tags-input span {
-    margin-right: 0.3em;
-    font-family: 'Source Sans Pro';
-    letter-spacing: 0.025em;
+  margin-right: 0.3em;
+  font-family: 'Source Sans Pro';
+  letter-spacing: 0.025em;
 }
 
 .tags-input-remove {
-    cursor: pointer;
-    position: absolute;
-    display: inline-block;
-    right: 0.3em;
-    top: 0.3em;
-    padding: 0.5em;
-    overflow: hidden;
+  cursor: pointer;
+  position: absolute;
+  display: inline-block;
+  right: 0.3em;
+  top: 0.3em;
+  padding: 0.5em;
+  overflow: hidden;
 }
 
 .tags-input-remove:focus {
-    outline: none;
+  outline: none;
 }
 
-.tags-input-remove:before, .tags-input-remove:after {
-    content: '';
-    position: absolute;
-    width: 85%;
-    left: 0.15em;
-    background: #5dc282;
-    height: 2px;
-    margin-top: -1px;
+.tags-input-remove:before,
+.tags-input-remove:after {
+  content: '';
+  position: absolute;
+  width: 85%;
+  left: 0.15em;
+  background: #5dc282;
+  height: 2px;
+  margin-top: -1px;
 }
 
 .tags-input-remove:before {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .tags-input-remove:after {
-    transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
 /* Tag badge styles */
 .tags-input-badge {
-    position: relative;
-    display: inline-block;
-    padding-top: 0.25em;
-    padding-bottom: 0.25em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 0.25em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-right: 1.25em;
-    padding-left: 0.6em;
-    border-radius: 10em;
-    color: #212529;
-    background-color: #f0f1f2;
+  position: relative;
+  display: inline-block;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 1.25em;
+  padding-left: 0.6em;
+  border-radius: 10em;
+  color: #212529;
+  background-color: #f0f1f2;
 }
 
 /* Typeahead - dropdown */
 .dropdown {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    width: 100%;
-    z-index: 1000;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: 0 0 10px 10px / 0 0 10px 10px;
 }
 
 .dropdown li {
-    padding: .25em 1em;
-    cursor: pointer;
+  padding: 0.25em 1em;
+  cursor: pointer;
 }
 
 /* Typeahead elements style/theme */
 .tags-input-typeahead-item-default {
-    color: #fff;
-    background-color: #343a40;
+  color: #2d3748;
+  background-color: #fff;
 }
 
 .tags-input-typeahead-item-highlighted-default {
-    color: #fff;
-    background-color: #007bff;
+  color: #2d3748;
+  background-color: #e2e8f0;
 }
 </style>
