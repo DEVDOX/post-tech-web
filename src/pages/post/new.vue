@@ -20,16 +20,18 @@
         </div>
 
         <div class="px-5 py-3">
-          <label class="block text-gray-700 text-base font-semibold mb-1" for="title">
+          <label class="block text-gray-700 text-base font-semibold mb-1" for="tags">
             {{ $t('post.tags') }}
           </label>
-          <input
+          <TagsInputCompletion
             id="tags"
-            v-model="newPost.tags"
-            class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
-            type="text"
-            placeholder="Example text"
+            :validate="tagInputResult"
+            :existTags="queryData"
+            @inputChanged="checkValidation"
+            @tagsChanged="updateTags"
           />
+          <p>{{ selectedTags }}</p>
+          <small class="text-xs text-gray-600">{{ $t('newPost.tagsWarn') }}</small>
         </div>
       </div>
 
@@ -100,8 +102,9 @@ import 'mavon-editor/dist/css/index.css'
 import mavonEditor from 'mavon-editor'
 import { directive as onClickaway } from 'vue-clickaway'
 import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
+import TagsInputCompletion from '~/components/TagsInputCompletion.vue'
 
-import { ValidationObserver, ValidationProvider, extend } from 'vee-validate'
+import { ValidationObserver, ValidationProvider, extend, validate } from 'vee-validate'
 import { required } from 'vee-validate/dist/rules'
 
 import { serviceContainer } from '~/dependencyInjection/container'
@@ -109,13 +112,22 @@ import { serviceContainer } from '~/dependencyInjection/container'
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
 
+
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(
   TYPES.PostRepositoryInterface
 )
 
+interface Tag {
+  id?: number
+  name: string
+}
+type Tags = Array<Tag>
 type postState = 'published' | 'private' | 'draft';
 
 extend('required', required)
+extend('tag', {
+  validate: value => /^([a-z0-9]+)$/.test(value)
+})
 
 
 @Component<NewPost>({
@@ -125,6 +137,7 @@ extend('required', required)
   components: {
     'mavon-editor': mavonEditor.mavonEditor,
     FloatingAlertBox,
+    TagsInputCompletion,
     ValidationObserver,
     ValidationProvider
   },
@@ -142,6 +155,17 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   isFailed: boolean = false
   isPublicOpen: boolean = false
   isFullscreen: boolean = false
+  tagInputResult: boolean = false
+  selectedTags: Tags = []
+  queryData: Tags = [
+    {name: 'java'},
+    {name: 'javascript'},
+    {name: 'json'},
+    {name: 'test'},
+    {name: 'typescript'},
+    {name: 'webdevelopment'},
+    {name: 'window10'},
+  ]
 
   visibilityState: postState = 'private' // APIからデータを取る
   submitIcon: string = 'upload' // APIからデータを取る
@@ -180,9 +204,57 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   toggleDropDown() { this.isPublicOpen = !this.isPublicOpen }
   closeDropDown() { this.isPublicOpen = false }
 
-
   mounted() {
     window.addEventListener('keypress', () => this.isBlockUnload = true)
+  }
+
+  checkValidation(value: string) {
+    this.sendQuery(value)
+    return validate(value, 'tag').then(result => {
+      if (result.valid) {
+        this.tagInputResult = true
+      } else {
+        this.tagInputResult = false
+      }
+    })
+  }
+
+  updateTags(tags: Tags) {
+    this.selectedTags = tags
+  }
+
+  async sendQuery(char: string) {
+    const data = this.queryData // await PostRepo.searchTagsByCharacter(char)
+
+    return { searchResults: data }
+  }
+
+  async createPost() {
+    this.newPost.state = this.visibilityState
+    const { successful, result, messages } = await PostRepo.createPost(this.newPost)
+
+    if (successful) {
+      this.isBlockUnload = false
+      this.$store.commit('CREATED_POST', true)
+      await this.$router.push(`/post/${result.url}`)
+    }/* else {
+      if (messages) {
+        this.message = ''
+        for (let message of messages) {
+          switch (message.field) {
+            case 'title':
+              this.message += this.$root.$tc('post.failed.title')
+              break
+            case 'body':
+              this.message += this.$root.$tc('post.failed.body')
+              break
+          }
+        }
+        this.isFailed = true
+      } else {
+        this.message = this.$root.$tc('error')
+      }
+    }*/
   }
 
   // user.language?をゲットして、mavonEditorに適用する
@@ -216,34 +288,6 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     trash: true,
     save: false,
     navigation: true
-  }
-
-  async createPost() {
-    this.newPost.state = this.visibilityState
-    const { successful, result, messages } = await PostRepo.createPost(this.newPost)
-
-    if (successful) {
-      this.isBlockUnload = false
-      this.$store.commit('CREATED_POST', true)
-      await this.$router.push(`/post/${result.url}`)
-    }/* else {
-      if (messages) {
-        this.message = ''
-        for (let message of messages) {
-          switch (message.field) {
-            case 'title':
-              this.message += this.$root.$tc('post.failed.title')
-              break
-            case 'body':
-              this.message += this.$root.$tc('post.failed.body')
-              break
-          }
-        }
-        this.isFailed = true
-      } else {
-        this.message = this.$root.$tc('error')
-      }
-    }*/
   }
 }
 </script>

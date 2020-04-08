@@ -33,6 +33,7 @@ export default {
   newPost: {
     publish: '投稿する',
     save: '保存',
+    tagsWarn: 'タグは、小文字のアルファベットもしくは数字のみ使用できます。',
   },
 
   header: {
@@ -48,7 +49,7 @@ export default {
     account: 'アカウント',
     preference: '基本設定',
     uniqueName: 'ユーザーネーム',
-    uniqueNameWarn: 'ユーザーネームは、アルファベットと数字、ハイフン、アンダースコアのみで、最低でも5文字以上でなければなりません。',
+    uniqueNameWarn: 'ユーザーネームは、小文字のアルファベットと数字、ハイフン、アンダースコアのみで、最低でも5文字以上でなければなりません。',
     displayName: '表示名',
     tagline: '一言コメント',
     webSiteUrl: 'サイト/ブログのURL',
