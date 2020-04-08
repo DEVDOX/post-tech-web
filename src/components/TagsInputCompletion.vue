@@ -83,7 +83,7 @@ export default class TagsInputCompletion extends Vue {
   addTag(tag: Tag) {
     console.log(this.searchResults.length)
     // this.searchResults.lengthが1以上なら、補完がある
-    if (this.validate == false && this.searchResults.length == 0) {
+    if (this.validate === false && this.searchResults.length == 0) {
       return false
     }
     // prohibit duplicates
