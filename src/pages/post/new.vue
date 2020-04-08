@@ -30,7 +30,7 @@
             @inputChanged="checkValidation"
             @tagsChanged="updateTags"
           />
-          <p>{{ selectedTags }}</p>
+          <p class="text-sm">テスト用: {{ selectedTags }}</p>
           <small class="text-xs text-gray-600">{{ $t('newPost.tagsWarn') }}</small>
         </div>
       </div>
