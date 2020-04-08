@@ -43,8 +43,9 @@
         <ValidationProvider rules="tag" v-slot="{ errors }">
           <TagsInputCompletion
             :validate="inputResult"
-            :existTags="searchResults"
+            :existTags="queryData"
             @inputChanged="checkValidation"
+            @updateResult="updateResult"
           />
           <p v-show="errors">{{ errors[0] }}</p>
         </ValidationProvider>
@@ -151,7 +152,7 @@ export default class Settings extends Vue {
   }
 
   mounted() {
-    console.warn(this.$refs.tagsInput)
+    // console.warn(this.$refs.tagsInput)
     extend('lowercase', {
       validate: value => /^([a-z0-9\-\_]+)$/.test(value),
       message: 'all of characters must be lowercase.'
@@ -165,6 +166,11 @@ export default class Settings extends Vue {
     extend('min', {message: `Name is at least 3 characters.`})
     extend('max', max)
     extend('max', {message: 'Name\'s limit is 15 characters.'})
+  }
+
+  updateResult(tags: Tags): void {
+    // 受け取った結果を表示させる
+    this.searchResults = tags
   }
 }
 </script>

@@ -8,17 +8,21 @@
           v-for="(tag, index) in tags"
           :key="index"
         >
-          <span v-html="tag.value"></span>
+          <span v-html="tag.name"></span>
           <a @click.prevent="removeTag(index)" class="tags-input-remove"></a>
         </span>
 
         <!-- Add tag input -->
         <input
+          ref="tagInput"
           type="text"
           v-model="input"
           :placeholder="placeholder"
           @keydown.8="removeLastTag"
-          @keydown.enter.prevent="addTag"
+          @keydown.enter.prevent="tagFromInput(false)"
+          @keydown.down="nextSearchResult"
+          @keydown.up="prevSearchResult"
+          @keyup.esc="clearSearchResults"
           @focus="onFocus"
           @blur="onBlur"
         >
@@ -27,9 +31,9 @@
         <ul v-show="searchResults.length" class="dropdown">
           <li v-for="(tag, index) in searchResults"
             :key="index"
-            v-html="tag.value"
+            v-html="tag.name"
             @mouseover="searchSelection = index"
-            @mousedown.prevent="tagFromSearchOnClick(tag)"
+            @mousedown.prevent="tagFromSearchOnClick(tag.name)"
             v-bind:class="{
               'tags-input-typeahead-item-default': index != searchSelection,
               'tags-input-typeahead-item-highlighted-default': index == searchSelection
@@ -45,12 +49,20 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
-type Tags = Array<{
-  value: string
-}>
+
+interface Tag {
+  id?: number
+  name: string
+}
+
+type Tags = Array<Tag>
 
 @Component
 export default class TagsInputCompletion extends Vue {
+  $refs!: {
+    tagInput: HTMLInputElement
+  }
+
   @Prop({default: 'Add a tag'}) placeholder!: string
   @Prop() existTags!: Tags
   @Prop({default: false}) validate!: boolean
@@ -67,18 +79,24 @@ export default class TagsInputCompletion extends Vue {
   @Watch('input')
   receiveData() {
     this.$emit('inputChanged', this.input)
-    this.searchTag(this.input)
+    this.searchTag()
   }
 
-  addTag() {
+  addTag(tag: Tag) {
     if (this.validate === true) {
-      this.tags.push({value: this.input})
+      console.log('adding: ', tag)
+
+      // prohibit duplicates
+      if (!this.tagSelected(tag)) {
+        this.tags.push(tag)
+      }
+
       this.$nextTick(() => {
         this.input = ''
       })
-    } else {
+    } /*else {
       console.log('validation failed')
-    }
+    }*/
   }
 
   removeLastTag() {
@@ -96,13 +114,13 @@ export default class TagsInputCompletion extends Vue {
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   }
 
-  searchTag(char: string) {
+  searchTag(): void {
     this.searchResults = []
     this.searchSelection = 0
     const searchQuery: string = this.escapeRegExp(this.input.toLowerCase())
-
+    
     for (let tag of this.existTags) {
-      const compareable = tag.value.toLowerCase()
+      const compareable = tag.name.toLowerCase()
 
       if (compareable.search(searchQuery) > -1) {
         this.searchResults.push(tag)
@@ -111,25 +129,115 @@ export default class TagsInputCompletion extends Vue {
 
     // Sort the search results alphabetically
     this.searchResults.sort((a, b) => {
-      if (a.value < b.value) return -1
-      if (a.value > b.value) return 1
+      if (a.name < b.name) return -1
+      if (a.name > b.name) return 1
 
       return 0
     })
 
-    // Shorten Search results to desired length
-    this.searchResults = this.searchResults.slice(0, this.maxResults)
+    // Shorten Search results to desired length or emit back empty array
+    this.searchResults = (this.input.length >= 1) ?
+                          this.searchResults.slice(0, this.maxResults) :
+                          []
+
+    this.$emit("updateResult", this.searchResults)
+  }
+
+  tagSelected(tag: Tag): boolean {
+
+    if (!tag) {
+      return false
+    }
+
+    const searchQuery = this.escapeRegExp(tag.name.toLowerCase())
+
+    for (let selectedTag of this.tags) {
+      const compareable = selectedTag.name.toLowerCase()
+
+      if (
+        selectedTag.name === tag.name &&
+        this.escapeRegExp(compareable).length == searchQuery.length &&
+        compareable.search(searchQuery) > -1
+      ) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  tagFromSearch(tag: string) {
+    this.clearSearchResults()
+    this.addTag({name: tag})
+    console.log('tagFromSearch', tag)
+
+    this.$nextTick(() => {
+        this.input = ''
+    })
+  }
+
+  tagFromInput(ignoreSearchResults = false) {
+    // If we're choosing a tag from the search results
+    if (this.searchResults.length && this.searchSelection >= 0) {
+        this.tagFromSearch(this.searchResults[this.searchSelection].name)
+
+        this.input = '';
+    } else {
+      // If we're adding an unexisting tag
+      let text = this.input.trim();
+
+      // If the new tag is not an empty string and passes validation
+      if (text.length) { // && this.validate(text)
+        this.input = ''
+
+        // Determine if the inputted tag exists in the existingTags
+        // array
+        let newTag: Tag = {
+            name: text
+        }
+
+        const searchQuery = this.escapeRegExp(newTag.name.toLowerCase())
+
+        for (let tag of this.existTags) {
+          const compareable = tag.name.toLowerCase()
+
+          if (searchQuery === compareable) {
+            newTag = Object.assign({}, tag)
+
+            break
+          }
+        }
+
+        this.addTag(newTag)
+      }
+    }
+  }
+
+  tagFromSearchOnClick(tag: string) {
+    this.tagFromSearch(tag)
+    console.log('onClick', tag)
+    this.$refs.tagInput.blur()
+  }
+
+  clearSearchResults(returnFocus = false) {
+    this.searchResults = []
+    this.searchSelection = 0
+
+    if (returnFocus) {
+      this.$refs.tagInput.focus()
+      // this.$refs['taginput'].focus();
+    }
   }
 
   nextSearchResult() {
     if (this.searchSelection + 1 <= this.searchResults.length - 1) {
-      this.searchSelection++;
+      this.searchSelection++
     }
   }
 
   prevSearchResult() {
     if (this.searchSelection > 0) {
-      this.searchSelection--;
+      this.searchSelection--
     }
   }
 
