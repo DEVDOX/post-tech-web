@@ -40,8 +40,8 @@
         </li>
       </ul>
     </div>
-    <p class="my-1">Input: {{ input }}</p>
-    <p class="my-1">Tags: {{ tags }}</p>
+    <!-- <p class="my-1">Input: {{ input }}</p>
+    <p class="my-1">Tags: {{ tags }}</p> -->
   </div>
 </template>
 
@@ -73,15 +73,19 @@ export default class TagsInputCompletion extends Vue {
   isActive: boolean = false
 
   @Watch('input')
-  receiveData() {
+  receiveInput() {
     if (this.input.length >= 1) {
       this.$emit('inputChanged', this.input)
     }
     this.searchTag()
   }
 
+  @Watch('tags')
+  recieveTags() {
+    this.$emit('tagsChanged', this.tags)
+  }
+
   addTag(tag: Tag) {
-    console.log(this.searchResults.length)
     // this.searchResults.lengthが1以上なら、補完がある
     if (this.validate === false && this.searchResults.length == 0) {
       return false
@@ -135,7 +139,7 @@ export default class TagsInputCompletion extends Vue {
     this.searchResults =
       this.input.length >= 1 ? this.searchResults.slice(0, this.maxResults) : []
 
-    this.$emit('updateResult', this.searchResults)
+    //this.$emit('updateResult', this.searchResults)
   }
 
   tagSelected(tag: Tag): boolean {
@@ -264,7 +268,7 @@ export default class TagsInputCompletion extends Vue {
 }
 
 .tags-input-wrapper-default {
-  padding: 0.5em 0.25em;
+  padding: 6px 0.75em;
   background: #fff;
   border: 1px solid transparent;
   border-radius: 0.25em;
@@ -290,6 +294,7 @@ export default class TagsInputCompletion extends Vue {
   right: 0.3em;
   top: 0.3em;
   padding: 0.5em;
+  margin-right: 3px;
   overflow: hidden;
 }
 
@@ -321,7 +326,9 @@ export default class TagsInputCompletion extends Vue {
   display: inline-block;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
-  font-size: 75%;
+  padding-right: 1.25em;
+  padding-left: 0.6em;
+  font-size: 85%;
   font-weight: 700;
   line-height: 1;
   text-align: center;
@@ -330,8 +337,6 @@ export default class TagsInputCompletion extends Vue {
   border-radius: 0.25em;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-right: 1.25em;
-  padding-left: 0.6em;
   border-radius: 10em;
   color: #212529;
   background-color: #f0f1f2;

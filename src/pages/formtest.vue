@@ -33,7 +33,6 @@
             :validate="inputResult"
             :existTags="queryData"
             @inputChanged="checkValidation"
-            @updateResult="updateResult"
           />
           <p v-show="errors">{{ errors[0] }}</p>
         </ValidationProvider>
@@ -110,18 +109,13 @@ export default class Settings extends Vue {
 
   checkValidation(value: string) {
     this.sendQuery(value)
-    const result = validate(value, 'tag').then(result => {
+    return validate(value, 'tag').then(result => {
       if (result.valid) {
         this.inputResult = true
       } else {
         this.inputResult = false
       }
     })
-    // @ts-ignore
-    const validation = this.$refs.parentObserver.validate({silent: false})
-    console.log('validation', validation)
-
-    return result
   }
 
   async sendQuery(char: string) {
