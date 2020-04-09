@@ -7,7 +7,7 @@
           <div class="flex items-center mb-16 lg:mb-8">
             <button @click="updateLikes()"
               class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 focus:border-teal-600 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
-              <LikeIcon :liked.sync="post.liked" className="text-xl"/>
+              <LikeIcon :liked.sync="isLiked" className="text-xl"/>
             </button>
             <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
               <n-link :to="`/post/${post.url}/likes`">{{ likeCount }}</n-link>
@@ -117,15 +117,23 @@ export default class Article extends Vue {
   private likeCount = 0
   private isLiked = false
 
-  async asyncData({ params: { url } }: Context) {
+  async asyncData({ store, params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
-    const likeCount = post.likes.length
+    const currentUser = store.getters['getAuthUser']
 
-    return {
+    const state = {
       post,
-      likeCount,
-      isLiked: post.liked
+      likeCount: post.likes.length
     }
+
+    if (post && currentUser) {
+      const isLiked = await PostRepo.getLike(post.url)
+      if (isLiked) {
+        state['isLiked'] = isLiked
+      }
+    }
+
+    return state
   }
 
   async mounted() {
@@ -157,10 +165,17 @@ export default class Article extends Vue {
     return dayjs(date).format('YYYY/MM/DD')
   }
 
-  updateLikes() {
+  async updateLikes(): Promise<void> {
     this.isLiked = !this.isLiked
-    this.isLiked ? this.likeCount-- : this.likeCount++;
-    PostRepo.updateLikes()
+    console.log(this.isLiked)
+
+    if (this.isLiked) {
+      result = await PostRepo.addLike(this.post.url)
+      this.likeCount++;
+    } else {
+      result = await PostRepo.deleteLike(this.post.url)
+      this.likeCount--
+    }
   }
 }
 </script>

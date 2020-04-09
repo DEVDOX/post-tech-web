@@ -67,7 +67,7 @@
           </ul>
         </div>
 
-        <button @click="createPost()" class="w-32 btn btn-blue mx-2">
+        <button @click="updatePost()" class="w-32 btn btn-blue mx-2">
           <i :class="`mdi-${submitIcon}`" class="mdi"/>
           <span>{{ submitText }}</span>
         </button>
