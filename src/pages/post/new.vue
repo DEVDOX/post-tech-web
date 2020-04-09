@@ -13,7 +13,7 @@
               class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-teal-500"
               :class="invalid ? 'input-invalid' : ''"
               type="text"
-              placeholder="Example text"
+              :placeholder="$t('post.titlePlaceholder')"
             />
             <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
           </ValidationProvider>
@@ -29,9 +29,10 @@
             :existTags="queryData"
             @inputChanged="checkValidation"
             @tagsChanged="updateTags"
+            :placeholder="$t('post.tagsPlaceholder')"
           />
           <p class="text-sm">テスト用: {{ selectedTags }}</p>
-          <small class="text-xs text-gray-600">{{ $t('newPost.tagsWarn') }}</small>
+          <small class="text-xs text-gray-600">{{ $t('post.tagsWarn') }}</small>
         </div>
       </div>
 
@@ -111,18 +112,15 @@ import { serviceContainer } from '~/dependencyInjection/container'
 
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { Post, postState } from '../../apollo/schemas/post'
+import { Tag } from '~/apollo/schemas/tag'
 
 
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(
   TYPES.PostRepositoryInterface
 )
 
-interface Tag {
-  id?: number
-  name: string
-}
-type Tags = Array<Tag>
-type postState = 'published' | 'private' | 'draft';
+type Tags = Array<Tag>;
 
 extend('required', required)
 extend('tag', {
@@ -144,11 +142,11 @@ extend('tag', {
 })
 export default class NewPost extends mixins(BlockUnloadMixin) {
   // user.language?をゲットして、mavonEditorに適用する
-  newPost = {
+  private newPost = {
     title: '',
     body: '',
     state: 'private',
-    tags: [{name: "asdf"}]
+    tags: [] as Tags
   }
 
   message: string = ''
@@ -167,9 +165,9 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     {name: 'window10'},
   ]
 
-  visibilityState: postState = 'private' // APIからデータを取る
-  submitIcon: string = 'upload' // APIからデータを取る
-  submitText: string = this.$root.$tc('newPost.publish') // APIからデータを取る
+  visibilityState: postState = 'private'
+  submitIcon: string = 'upload'
+  submitText: string = this.$root.$tc('post.publish')
 
   get visibility(): string {
     const localeString: string = 'post.state.' + this.visibilityState
@@ -179,17 +177,17 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
       case 'published':
         stateIcon = 'earth'
         this.submitIcon = 'upload'
-        this.submitText = this.$root.$tc('newPost.publish')
+        this.submitText = this.$root.$tc('post.publish')
         break
       case 'private':
         stateIcon = 'lock'
         this.submitIcon = 'content-save'
-        this.submitText = this.$root.$tc('newPost.save')
+        this.submitText = this.$root.$tc('post.save')
         break
       case 'draft':
         stateIcon = 'file-edit-outline'
         this.submitIcon = 'content-save'
-        this.submitText = this.$root.$tc('newPost.save')
+        this.submitText = this.$root.$tc('post.save')
         break
     }
     return `<i class="mdi mdi-${stateIcon} mr-1"></i><span>${this.$t(localeString)}</span>`
@@ -231,6 +229,7 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
 
   async createPost() {
     this.newPost.state = this.visibilityState
+    this.newPost.tags = this.selectedTags
     const { successful, result, messages } = await PostRepo.createPost(this.newPost)
 
     if (successful && result) {
@@ -283,8 +282,8 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     undo: true,
     redo: true,
     fullscreen: true,
-    readmodel: false,
-    htmlcode: false,
+    readmodel: true,
+    htmlcode: true,
     trash: true,
     save: false,
     navigation: true

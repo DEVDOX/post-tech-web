@@ -17,22 +17,26 @@ export default {
   
   post: {
     title: 'タイトル',
+    titlePlaceholder: 'タイトルを入力',
     tags: 'タグ',
+    tagsPlaceholder: 'タグを追加',
     state: {
       published: '公開',
       private: '非公開',
       draft: '下書き',
     },
-    successful: '記事を公開しました！',
+    successful: {
+      created: '記事を公開しました！',
+      updated: '記事を更新しました！',
+    },
     failed: {
       title: 'タイトルは必須です。',
       body: '本文は必須です。'
     },
-  },
-
-  newPost: {
-    publish: '投稿する',
+    edit: '編集する',
     save: '保存',
+    publish: '投稿する',
+    update: '更新する',
     tagsWarn: 'タグは、小文字のアルファベットもしくは数字のみ使用できます。',
   },
 

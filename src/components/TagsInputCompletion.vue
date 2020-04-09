@@ -202,7 +202,6 @@ export default class TagsInputCompletion extends Vue {
 
   tagFromSearchOnClick(tag: string) {
     this.tagFromSearch(tag)
-    console.log('onClick', tag)
     this.$refs.tagInput.blur()
   }
 

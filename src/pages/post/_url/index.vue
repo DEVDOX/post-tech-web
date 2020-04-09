@@ -27,17 +27,23 @@
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
               <i class="mdi mdi-update"/>{{ getDate(post.updatedAt) }}
             </p>
+            <p v-if="isLoggedIn" class="text-sm text-gray-600 hover:underline ml-auto">
+              <n-link :to="`/post/${post.url}/edit`">
+                <i class="mdi mdi-pencil"/>{{ $t('post.edit') }}
+              </n-link>
+            </p>
           </div>
-
-          <p class="text-4xl font-semibold">{{ post.title }}</p>
+          
+          <!-- タイトル -->
+          <h1 class="w-full text-4xl font-semibold break-words">{{ post.title }}</h1>
 
           <div class="flex flex-wrap">
             <n-link
               v-for="(tag, index) in post.tags"
-              :to="`/tag/${tag}`"
+              :to="`/tag/${tag.urlName}`"
               :key="index"
               class="bg-gray-100 rounded hover:underline cursor-pointer px-2 py-1 m-1">
-                #{{ tag.urlName }}
+                #{{ tag.name }}
             </n-link>
           </div>
 
@@ -69,11 +75,19 @@
       </div>
 
       <FloatingAlertBox
-        @close="successful = false"
-        v-if="successful"
+        @close="createdSuccessful = false"
+        :isShow="createdSuccessful"
         bgColor="bg-green-500"
         textColor="text-white"
-        :message="$t('post.successful')"
+        :message="$t('post.successful.created')"
+      />
+
+      <FloatingAlertBox
+        @close="updatedSuccessful = false"
+        :isShow="updatedSuccessful"
+        bgColor="bg-blue-500"
+        textColor="text-white"
+        :message="$t('post.successful.updated')"
       />
 
     </div>
@@ -92,6 +106,7 @@ import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
 import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { UserDetail } from '~/apollo/schemas/userDetail'
 import { TYPES } from '~/dependencyInjection/types'
 import { Post } from '~/apollo/schemas/post'
 import dayjs from 'dayjs'
@@ -110,11 +125,14 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostReposit
 })
 export default class Article extends Vue {
   markdownIt = null
-  successful: boolean = false
+  createdSuccessful: boolean = false
+  updatedSuccessful: boolean = false
 
   private post: Post | null = null
   private likeCount = 0
   private isLiked = false
+
+  currentUser!: UserDetail
 
   async asyncData({ store, params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
@@ -134,17 +152,27 @@ export default class Article extends Vue {
         }
       }
 
-      return state
+      return { ...state, currentUser }
     }
 
   }
 
   async mounted() {
-    this.successful = this.$store.getters['getPostSuccessful']
+    this.createdSuccessful = this.$store.getters['getPostCreatedSuccessful']
+    this.updatedSuccessful = this.$store.getters['getPostUpdatedSuccessful']
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
-    this.markdownIt = mavonEditor.mavonEditor.getMarkdownIt()
+    this.markdownIt = require('markdown-it')({
+      html: true,
+      linkify: true,
+      typographer: true,
+      breaks: true
+    })
+    .use(require('markdown-it-sanitizer'))
+    .use(require('markdown-it-emoji'))
+    .use(require('markdown-it-sub'))
+    .use(require('markdown-it-sup'))
 
     if (this.markdownIt) {
       // @ts-ignore
@@ -164,6 +192,12 @@ export default class Article extends Vue {
     }
   }
 
+  get isLoggedIn() {
+    if (!this.currentUser) return false
+    if (!this.post) return false
+    if (this.post.author.uniqueName == this.currentUser.uniqueName) return true
+  }
+
   getDate(date: string) {
     return dayjs(date).format('YYYY/MM/DD')
   }
@@ -180,6 +214,7 @@ export default class Article extends Vue {
       this.likeCount--
     }
   }
+
 }
 </script>
 

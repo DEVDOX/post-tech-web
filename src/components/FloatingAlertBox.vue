@@ -1,6 +1,6 @@
 <template>
   <transition>
-    <div v-if="isShow" @click="closeToast" class="alert-toast fixed bottom-0 right-0 m-8 w-full lg:w-64 max-w-sm z-50">
+    <div v-if="isShow" @click="closeToast" class="alert-toast flex items-start justify-between fixed bottom-0 right-0 m-8 w-full lg:w-64 max-w-sm z-50">
       <input type="checkbox" class="hidden" id="footertoast">
       <label :class="classSet" class="close cursor-pointer flex items-start justify-between w-full p-2 h-24 rounded shadow-lg" title="close" for="footertoast">
         {{ message }}

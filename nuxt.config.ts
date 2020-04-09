@@ -118,7 +118,7 @@ const config: Configuration = {
     google: {
       families: [
         'Source+Sans+Pro:400,600,700',
-        'Noto+Sans+JP:wght@400;700',
+        'Noto+Sans+JP:wght@300;700',
       ]
     }
   },

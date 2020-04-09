@@ -12,13 +12,15 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(
 type State = {
   authUser: UserDetail | null
   token: null
-  postSuccess: boolean
+  postCreatedSuccess: boolean
+  postUpdatedSuccess: boolean
 }
 
 export const state: () => State = (): State => ({
   authUser: null,
   token: null,
-  postSuccess: false
+  postCreatedSuccess: false,
+  postUpdatedSuccess: false,
 })
 
 export type RootState = ReturnType<typeof state>
@@ -40,8 +42,12 @@ export const getters: GetterTree<RootState, RootState> = {
     }
   },
 
-  getPostSuccessful(state: RootState) {
-    return state.postSuccess
+  getPostCreatedSuccessful(state: RootState) {
+    return state.postCreatedSuccess
+  },
+
+  getPostUpdatedSuccessful(state: RootState) {
+    return state.postUpdatedSuccess
   }
 }
 
@@ -106,6 +112,10 @@ export const mutations: MutationTree<RootState> = {
   },
 
   CREATED_POST: (state: any, successful: boolean) => {
-    state.postSuccess = successful
+    state.postCreatedSuccess = successful
+  },
+
+  UPDATED_POST: (state: any, successful: boolean) => {
+    state.postUpdatedSuccess = successful
   }
 }
