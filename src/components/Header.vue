@@ -35,8 +35,8 @@
           </ul>
         </span>
       </div>
-      <div v-else>
-        <button @click="openModal" class="text-sm px-4 py-3 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white ml-3 duration-100">
+      <div v-else class="ml-auto">
+        <button @click="openModal" class="text-sm px-4 py-3 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white duration-100">
           {{ $t('user.login') }}
         </button>
       </div>

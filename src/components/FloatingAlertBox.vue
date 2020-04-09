@@ -1,11 +1,13 @@
 <template>
-  <div @click="$emit('close')" class="alert-toast fixed bottom-0 right-0 m-8 w-full lg:w-64 max-w-sm z-50">
-    <input type="checkbox" class="hidden" id="footertoast">
-    <label :class="classSet" class="close cursor-pointer flex items-start justify-between w-full p-2 h-24 rounded shadow-lg" title="close" for="footertoast">
-      {{ message }}
-      <i class="mdi mdi-close"/>
-    </label>
-  </div>
+  <transition>
+    <div v-if="isShow" @click="closeToast" class="alert-toast fixed bottom-0 right-0 m-8 w-full lg:w-64 max-w-sm z-50">
+      <input type="checkbox" class="hidden" id="footertoast">
+      <label :class="classSet" class="close cursor-pointer flex items-start justify-between w-full p-2 h-24 rounded shadow-lg" title="close" for="footertoast">
+        {{ message }}
+        <i class="mdi mdi-close"/>
+      </label>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -13,12 +15,19 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class Article extends Vue {
+  @Prop() isShow!: boolean
   @Prop() message!: string
   @Prop({default: 'bg-blue-500'}) bgColor!: string
   @Prop({default: 'text-white'}) textColor!: string
 
+  get show(): boolean { return this.isShow }
+
   get classSet() {
     return `${this.bgColor} ${this.textColor}`
+  }
+
+  closeToast() {
+    this.$emit('close')
   }
 }
 </script>
@@ -31,7 +40,12 @@ export default class Article extends Vue {
 }
 
 /*Toast close animation*/
-.alert-toast input:checked ~ * {
+/*.alert-toast input:checked ~ * {
+  -webkit-animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}*/
+
+.v-leave-active {
   -webkit-animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
   animation: fade-out-right 0.7s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }

@@ -33,6 +33,7 @@ export default {
   newPost: {
     publish: 'Publish',
     save: 'Save',
+    tagsWarn: 'Tags must be small letter alphabetical or numeric.',
   },
 
   header: {
@@ -48,7 +49,7 @@ export default {
     account: 'Account',
     preference: 'Preference',
     uniqueName: 'User Name',
-    uniqueNameWarn: 'Username must be alphabetical, numeric or hyphen and at least 5 characters.',
+    uniqueNameWarn: 'Username must be small letter alphabetical, numeric or hyphen and at least 5 characters.',
     displayName: 'Display Name',
     tagline: 'Tagline',
     webSiteUrl: 'Website / Blog URL',
