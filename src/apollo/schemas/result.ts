@@ -7,7 +7,7 @@ export type ResultMessage = {
     code?: string
 }
 
-export interface ApiResult<T> {
+export interface MutateResult<T> {
   messages?: Array<ResultMessage>
   result?: T
   successful?: boolean
@@ -33,7 +33,7 @@ export interface PaginatedResult<T> {
   entries: T
 }
 
-export type MutateLikeResult = ApiResult<Like>
-export type CreatePostResult = ApiResult<Post>
-export type CreateUserResult = ApiResult<UserDetail & TokenType>
-export type LoginResult = ApiResult<TokenType>
+export type MutateLikeResult = MutateResult<Like>
+export type MutatePostResult = MutateResult<Post>
+export type MutateUserResult = MutateResult<UserDetail & TokenType>
+export type LoginResult = MutateResult<TokenType>
