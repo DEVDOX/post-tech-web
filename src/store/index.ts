@@ -55,7 +55,7 @@ export const actions: Actions<RootState, RootState> = {
 
     // @ts-ignore
     let token: string | undefined = this.$cookies.get('auth._token.' + strategy)
-    
+
     // @ts-ignore
     if (token !== null && token !== undefined && this.$auth.loggedIn) {
       token = token.split(' ').slice(1)[0]
@@ -77,9 +77,7 @@ export const actions: Actions<RootState, RootState> = {
           uniqueName: login
         })
 
-        console.log(result)
-
-        if (successful) {
+        if (successful && result) {
           commit('SET_USER', result.userDetail)
           commit('SET_TOKEN', result.token)
         } else {

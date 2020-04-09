@@ -86,7 +86,7 @@
             <i :class="`mdi-${submitIcon}`" class="mdi"/>
             <span>{{ submitText }}</span>
           </button>
-          
+
         </div>
       </div>
     </ValidationObserver>
@@ -233,7 +233,7 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     this.newPost.state = this.visibilityState
     const { successful, result, messages } = await PostRepo.createPost(this.newPost)
 
-    if (successful) {
+    if (successful && result) {
       this.isBlockUnload = false
       this.$store.commit('CREATED_POST', true)
       await this.$router.push(`/post/${result.url}`)

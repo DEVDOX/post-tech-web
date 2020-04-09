@@ -1,11 +1,11 @@
 import { injectable } from 'inversify-props'
 import BaseRepository from '~/repositories/baseRepository'
 import UserRepositoryInterface from '~/repositories/User/UserRepositoryInterface'
-// import { UserInterface } from '~/apollo/schemas/user'
 import {
   UserDetail
 } from '~/apollo/schemas/userDetail'
 import { GET_USER_DETAIL, CREATE_USER, UPDATE_USER, LOGIN_QUERY, GET_USER_DETAIL_BY_U_NAME } from '~/apollo/queries/user'
+import { MutateUserResult } from '~/apollo/schemas/result'
 
 @injectable()
 export default class UserRepository extends BaseRepository

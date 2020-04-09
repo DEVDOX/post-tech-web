@@ -120,19 +120,23 @@ export default class Article extends Vue {
     const post = await PostRepo.getUserPostByUrl(url)
     const currentUser = store.getters['getAuthUser']
 
-    const state = {
-      post,
-      likeCount: post.likes.length
-    }
+    if (post && post.likes) {
 
-    if (post && currentUser) {
-      const isLiked = await PostRepo.getLike(post.url)
-      if (isLiked) {
-        state['isLiked'] = isLiked
+      const state: any = {
+        post,
+        likeCount: post.likes.length
       }
+
+      if (currentUser) {
+        const isLiked = await PostRepo.getLike(post.url)
+        if (isLiked) {
+          state['isLiked'] = isLiked
+        }
+      }
+
+      return state
     }
 
-    return state
   }
 
   async mounted() {
@@ -166,13 +170,13 @@ export default class Article extends Vue {
 
   async updateLikes(): Promise<void> {
     this.isLiked = !this.isLiked
-    console.log(this.isLiked)
+    if (!this.post ) return
 
     if (this.isLiked) {
-      result = await PostRepo.addLike(this.post.url)
+      await PostRepo.addLike(this.post.url)
       this.likeCount++;
     } else {
-      result = await PostRepo.deleteLike(this.post.url)
+      await PostRepo.deleteLike(this.post.url)
       this.likeCount--
     }
   }

@@ -26,13 +26,10 @@ export default interface PostRepositoryInterface {
 
   getPublicPosts(metadata: Metadata): Promise<PaginatedPostResult>
 
-  /* Queries for Likes */
-  checkLikeForPost(post: string, currentUser: UserDetailType): Promise<Like>
-
   /* Mutations for Likes */
   getLike(url: string): Promise<Like>
   addLike(postUrl: string): Promise<MutateLikeResult>
-  deleteLike(postUrl: string, likeId: number): Promise<MutateLikeResult>
+  deleteLike(postUrl: string): Promise<MutateLikeResult>
 
   /* Mutations for posts */
   updatePost(params: any): Promise<MutatePostResult>

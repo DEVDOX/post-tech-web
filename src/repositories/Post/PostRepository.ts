@@ -13,10 +13,10 @@ import {
   GET_LIKE
 } from '~/apollo/queries/post'
 import {
-  CreatePostResult,
   Metadata,
   PaginatedPostResult,
-  MutateLikeResult
+  MutateLikeResult,
+  MutatePostResult
 } from '~/apollo/schemas/result'
 import PostRepositoryInterface from './PostRepositoryInterface'
 import { Post, Like } from '~/apollo/schemas/post'
@@ -80,7 +80,7 @@ export default class PostRepository extends BaseRepository
     return result
   }
 
-  public async createPost(params: any): Promise<CreatePostResult> {
+  public async createPost(params: any): Promise<MutatePostResult> {
     const { data: { post } } = await global._$app.apolloProvider.defaultClient.mutate({
       mutation: CREATE_POST_QUERY,
       variables: { params }
@@ -89,7 +89,7 @@ export default class PostRepository extends BaseRepository
     return post
   }
 
-  public async updatePost(params: any): Promise<CreatePostResult> {
+  public async updatePost(params: any): Promise<MutatePostResult> {
     const {
       data: { updatePost }
     } = await global._$app.apolloProvider.defaultClient.mutate({
@@ -100,7 +100,7 @@ export default class PostRepository extends BaseRepository
     return updatePost
   }
 
-  async deletePost(params: any): Promise<CreatePostResult> {
+  async deletePost(params: any): Promise<MutatePostResult> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.mutate({
