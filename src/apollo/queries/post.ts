@@ -10,6 +10,9 @@ export const GET_POST_BY_URL = gql`
       title
       url
       state
+      likes {
+        id
+      }
       tags {
         name
         urlName
@@ -17,7 +20,7 @@ export const GET_POST_BY_URL = gql`
       body
       insertedAt
       updatedAt
-      author: userDetail {
+      author {
         id
         uniqueName
         tagline
@@ -43,7 +46,7 @@ export const GET_POSTS_BY_TAG = gql`
           urlName
         }
         body
-        author: userDetail {
+        author {
           id
           uniqueName
           tagline
@@ -76,7 +79,7 @@ export const GET_USER_POSTS_BY_ID = gql`
           urlName
         }
         body
-        author: userDetail {
+        author {
           id
           uniqueName
           tagline
@@ -104,7 +107,7 @@ export const GET_PUBLIC_POSTS = gql`
           urlName
         }
         body
-        author: userDetail {
+        author {
           id
           uniqueName
           tagline
@@ -131,7 +134,7 @@ export const GET_USER_POSTS_BY_U_NAME = gql`
           urlName
         }
         body
-        author: userDetail {
+        author {
           id
           uniqueName
           tagline
@@ -186,7 +189,7 @@ export const LOGIN_QUERY = gql`
     login(params: $params) {
       result {
         token
-        userDetail {
+        userDetails {
           displayName
         }
       }
@@ -196,6 +199,60 @@ export const LOGIN_QUERY = gql`
         message
         field
       }
+    }
+  }
+`
+
+export const UPDATE_POST_QUERY = gql`
+  mutation updatePost($params: UpdatePostParams!) {
+    updatePost(params: $params) {
+      result {
+        title
+        body
+        tags
+        state
+      }
+      successful
+      messages {
+        code
+        message
+        field
+      }
+    }
+  }
+`
+
+export const ADD_LIKE_QUERY = gql`
+  mutation addLike($url: String!) {
+    addLike(url: $url) {
+      result {
+        id
+        insertedAt
+        updatedAt
+      }
+      successful
+      messages {
+        code
+        message
+        field
+      }
+    }
+  }
+`
+
+export const GET_LIKE = gql`
+  query getLike($url: String!) {
+    getLike(url: $url) {
+      id
+      insertedAt
+    }
+  }
+`
+
+export const DELETE_LIKE_QUERY = gql`
+  mutation deleteLike($url: String!) {
+    deleteLike(url: $url) {
+      successful
     }
   }
 `

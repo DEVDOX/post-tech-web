@@ -6,7 +6,6 @@ import {
   UserDetail
 } from '~/apollo/schemas/userDetail'
 import { GET_USER_DETAIL, CREATE_USER, UPDATE_USER, LOGIN_QUERY, GET_USER_DETAIL_BY_U_NAME } from '~/apollo/queries/user'
-import {  CreateUserResult } from '~/apollo/schemas/result'
 
 @injectable()
 export default class UserRepository extends BaseRepository
@@ -35,7 +34,7 @@ export default class UserRepository extends BaseRepository
     return user
   }
 
-  public async getOrCreate(params: any): Promise<CreateUserResult> {
+  public async getOrCreate(params: any): Promise<MutateUserResult> {
     const { data: { login } } = await global._$app.apolloProvider.defaultClient.mutate({
       mutation: LOGIN_QUERY,
       variables: { params }
@@ -44,7 +43,7 @@ export default class UserRepository extends BaseRepository
     return login
   }
 
-  public async createUser(params: any): Promise<CreateUserResult> {
+  public async createUser(params: any): Promise<MutateUserResult> {
     const {
       data: { user }
     } = await global._$app.apolloProvider.defaultClient.mutate({

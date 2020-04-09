@@ -6,10 +6,10 @@
         <div class="fixed bottom-0 lg:sticky lg:top-25 lg:bottom-auto w-full flex flex-col justify-center items-end mt-16">
           <div class="flex items-center mb-16 lg:mb-8">
             <button @click="updateLikes()" class="focus:outline-none hover:shadow w-12 h-12 bg-white rounded-full border-white hover:border-teal-500 border-2 shadow-md lg:shadow-none hover:shadow-sm duration-150">
-              <LikeIcon :liked.sync="post.liked" className="text-xl"/>
+              <LikeIcon :liked.sync="isLiked" className="text-xl"/>
             </button>
             <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
-              <n-link :to="`/post/${post.url}/likes`">{{ post.likes }}</n-link>
+              <n-link :to="`/post/${post.url}/likes`">{{ likeCount }}</n-link>
             </p>
           </div>
         </div>
@@ -113,15 +113,26 @@ export default class Article extends Vue {
   successful: boolean = false
 
   private post: Post | null = null
+  private likeCount = 0
+  private isLiked = false
 
-  async asyncData({ params: { url } }: Context) {
+  async asyncData({ store, params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
+    const currentUser = store.getters['getAuthUser']
 
-    //console.log(post)
-
-    return {
-      post
+    const state = {
+      post,
+      likeCount: post.likes.length
     }
+
+    if (post && currentUser) {
+      const isLiked = await PostRepo.getLike(post.url)
+      if (isLiked) {
+        state['isLiked'] = isLiked
+      }
+    }
+
+    return state
   }
 
   async mounted() {
@@ -153,17 +164,17 @@ export default class Article extends Vue {
     return dayjs(date).format('YYYY/MM/DD')
   }
 
-  updateLikes() {
-    /*
-    if (this.post.liked) {
-      this.post.liked = false
-      this.post.likes--
+  async updateLikes(): Promise<void> {
+    this.isLiked = !this.isLiked
+    console.log(this.isLiked)
+
+    if (this.isLiked) {
+      result = await PostRepo.addLike(this.post.url)
+      this.likeCount++;
     } else {
-      this.post.liked = true
-      this.post.likes++
+      result = await PostRepo.deleteLike(this.post.url)
+      this.likeCount--
     }
-    console.log(this.post.likes)
-    */
   }
 }
 </script>

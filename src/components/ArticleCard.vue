@@ -52,7 +52,7 @@ export default class ArticleCard extends Vue {
   }
 
   tagUrl(urlName: string) {
-    return `/tags/${urlName}`
+    return `/tag/${urlName}`
   }
 
   articleUrl() {
