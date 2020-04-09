@@ -7,15 +7,19 @@ import {
   GET_PUBLIC_POSTS,
   GET_POST_BY_URL,
   GET_POSTS_BY_TAG,
-  UPDATE_POST_QUERY
+  UPDATE_POST_QUERY,
+  DELETE_LIKE_QUERY,
+  ADD_LIKE_QUERY,
+  GET_LIKE
 } from '~/apollo/queries/post'
 import {
   CreatePostResult,
   Metadata,
-  PaginatedPostResult
+  PaginatedPostResult,
+  MutateLikeResult
 } from '~/apollo/schemas/result'
 import PostRepositoryInterface from './PostRepositoryInterface'
-import { Post } from '~/apollo/schemas/post'
+import { Post, Like } from '~/apollo/schemas/post'
 
 @injectable()
 export default class PostRepository extends BaseRepository
@@ -107,6 +111,36 @@ export default class PostRepository extends BaseRepository
     return user
   }
 
-  async addLike(){}
-  async deleteLike(){}
+  async getLike(url: string): Promise<Like> {
+    const {
+      data: { getLike }
+    } = await global._$app.apolloProvider.defaultClient.mutate({
+      mutation: GET_LIKE,
+      variables: { url }
+    })
+
+    return getLike
+  }
+
+  async addLike(url: string): Promise<MutateLikeResult> {
+    const {
+      data: { addLike }
+    } = await global._$app.apolloProvider.defaultClient.mutate({
+      mutation: ADD_LIKE_QUERY,
+      variables: { url }
+    })
+
+    return addLike
+  }
+
+  async deleteLike(url: string): Promise<MutateLikeResult> {
+    const {
+      data: { deleteLike }
+    } = await global._$app.apolloProvider.defaultClient.mutate({
+      mutation: DELETE_LIKE_QUERY,
+      variables: { url }
+    })
+
+    return deleteLike
+  }
 }
