@@ -6,6 +6,7 @@ export default {
   myPosts: 'My Posts',
   likedPosts: 'Liked Posts',
   error: 'An error occured. Please contact to administrator',
+  redirecting: 'Redirecting...',
 
   user: {
     login: 'Log in',
