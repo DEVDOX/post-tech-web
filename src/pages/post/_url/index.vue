@@ -154,7 +154,6 @@ export default class Article extends Vue {
 
       return { ...state, currentUser }
     }
-
   }
 
   async mounted() {
