@@ -32,7 +32,6 @@ const config: Configuration = {
     '~/plugins/serviceContainer',
     '~/plugins/inject',
     '~/plugins/i18n',
-    { src: '~/plugins/voerro-tags-input', ssr: false },
   ],
 
   buildModules: [
