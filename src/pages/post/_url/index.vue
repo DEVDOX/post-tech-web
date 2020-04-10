@@ -159,6 +159,7 @@ export default class Article extends Vue {
   async mounted() {
     this.createdSuccessful = this.$store.getters['getPostCreatedSuccessful']
     this.updatedSuccessful = this.$store.getters['getPostUpdatedSuccessful']
+
     // @ts-ignore
     const hljs = require('highlight.js')
     // @ts-ignore
@@ -168,7 +169,6 @@ export default class Article extends Vue {
       typographer: true,
       breaks: true
     })
-    .use(require('markdown-it-sanitizer'))
     .use(require('markdown-it-emoji'))
     .use(require('markdown-it-sub'))
     .use(require('markdown-it-sup'))
@@ -182,9 +182,7 @@ export default class Article extends Vue {
                   hljs.highlight(lang, str, true).value +
                   '</code></div></pre>'
           } catch (__) {}
-        }
-
-        if (this.markdownIt) {
+        } else {
           return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
         }
       }
