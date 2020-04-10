@@ -49,6 +49,7 @@ export default {
   },
 
   options: {
+    enable: 'Enable',
     save: 'Save',
     profile: 'Profile',
     account: 'Account',
@@ -62,6 +63,8 @@ export default {
     email: 'Email',
     link: 'Link',
     linked: 'Linked',
+    showLike: 'Visibility of your likes',
+    showLikeDescription: 'Visible posts that you likes to other users',
     language: 'Language',
   },
 
