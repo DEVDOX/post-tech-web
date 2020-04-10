@@ -5,7 +5,9 @@
       <div class="mb-5">
         <p class="title text-gray-900 font-bold text-xl mb-2">{{ article.title }}</p>
         <div class="relative text-gray-900 text-base z-20">
-          <n-link v-for="(tag, index) in article.tags" :key="index" :to="tagUrl(tag.urlName)" class="hover:underline">#{{ tag.name }}</n-link>
+          <n-link v-for="(tag, index) in article.tags" :key="index" :to="tagUrl(tag.urlName)" class="hover:underline mr-1">
+            #{{ tag.name }}
+          </n-link>
         </div>
       </div>
       <div class="w-full flex items-center">
@@ -13,7 +15,9 @@
           <img class="w-10 h-10 rounded-full object-cover mr-2" :src="article.author.avatar" alt="Avatar of Jonathan Reinink">
           <p class="text-gray-700 leading-none no-underline text-base mr-3">@{{ article.author.uniqueName }}</p>
         </n-link>
-        <p class="text-gray-700 mr-3"><LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
+        <p class="text-gray-700 mr-3">
+          <LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span>
+        </p>
         <p class="text-gray-700 text-sm ml-auto"><i class="mdi mdi-clock-outline"/>{{ getDate(article.insertedAt) }}</p>
         <p class="text-gray-700 text-sm ml-2"><i class="mdi mdi-update"/>{{ getDate(article.updatedAt) }}</p>
       </div>
