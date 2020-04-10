@@ -19,8 +19,10 @@
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
-            <img class="w-8 h-8 rounded-full object-cover mr-2" :src="post.author.avatar" alt="avatar">
-            <p class="text-gray-800 text-base leading-none mr-2">@{{ post.author.uniqueName }}</p>
+            <n-link :to="`/user/${post.author.uniqueName}`" class="flex items-center hover:underline">
+              <img class="w-8 h-8 rounded-full object-cover mr-2" :src="post.author.avatar" alt="avatar">
+              <p class="text-gray-800 text-base leading-none mr-2">@{{ post.author.uniqueName }}</p>
+            </n-link>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
               <i class="mdi mdi-clock-outline"/>{{ getDate(post.insertedAt) }}
             </p>
@@ -167,17 +169,6 @@ export default class Article extends Vue {
       html: true,
       typographer: true,
       breaks: true,
-      /* highlight: function (str: string, lang: string) {
-        if (lang && hljs.getLanguage(lang)) {
-          try {
-            return '<pre class="hljs"><div class="mx-8"><code>' +
-                  hljs.highlight(lang, str, true).value +
-                  '</code></div></pre>'
-          } catch (__) {}
-        } else {
-          return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
-        }
-      }, */
     })
     .use(require('markdown-it-emoji'))
     .use(require('markdown-it-sub'))
