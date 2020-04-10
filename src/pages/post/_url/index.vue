@@ -96,7 +96,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import 'highlight.js/styles/obsidian.css'
+import 'prismjs-material-theme/css/darker.css'
 
 import mavonEditor from 'mavon-editor'
 import PersonCard from '~/components/PersonCard.vue'
@@ -165,17 +165,9 @@ export default class Article extends Vue {
     // @ts-ignore
     this.markdownIt = require('markdown-it')({
       html: true,
-      linkify: true,
       typographer: true,
-      breaks: true
-    })
-    .use(require('markdown-it-emoji'))
-    .use(require('markdown-it-sub'))
-    .use(require('markdown-it-sup'))
-
-    if (this.markdownIt) {
-      // @ts-ignore
-      this.markdownIt.options.highlight = function (str: string, lang: string) {
+      breaks: true,
+      /* highlight: function (str: string, lang: string) {
         if (lang && hljs.getLanguage(lang)) {
           try {
             return '<pre class="hljs"><div class="mx-8"><code>' +
@@ -185,8 +177,12 @@ export default class Article extends Vue {
         } else {
           return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
         }
-      }
-    }
+      }, */
+    })
+    .use(require('markdown-it-emoji'))
+    .use(require('markdown-it-sub'))
+    .use(require('markdown-it-sup'))
+    .use(require('markdown-it-prism'))
   }
 
   get isLoggedIn() {
@@ -289,9 +285,7 @@ export default class Article extends Vue {
   @apply p-1 bg-gray-200 rounded;
 }
 .markdown pre {
-  @apply text-base;
-}
-.markdown pre {
+  @apply text-base px-8;
   margin: 1rem -33px;
 }
 .markdown pre code {
