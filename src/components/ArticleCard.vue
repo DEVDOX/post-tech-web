@@ -9,9 +9,9 @@
         </div>
       </div>
       <div class="w-full flex items-center">
-        <n-link :to="`/user/${article.author.uniqueName}`" class="relative z-20 flex items-center">
+        <n-link :to="`/user/${article.author.uniqueName}`" class="relative z-20 flex items-center hover:underline">
           <img class="w-10 h-10 rounded-full object-cover mr-2" :src="article.author.avatar" alt="Avatar of Jonathan Reinink">
-          <p class="text-gray-700 leading-none no-underline hover:underline text-base mr-3">@{{ article.author.uniqueName }}</p>
+          <p class="text-gray-700 leading-none no-underline text-base mr-3">@{{ article.author.uniqueName }}</p>
         </n-link>
         <p class="text-gray-700 mr-3"><LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span></p>
         <p class="text-gray-700 text-sm ml-auto"><i class="mdi mdi-clock-outline"/>{{ getDate(article.insertedAt) }}</p>

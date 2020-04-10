@@ -19,25 +19,33 @@
         <div class="w-full border border-gray-400 bg-white rounded p-8">
 
           <div class="flex items-center mb-2">
-            <img class="w-8 h-8 rounded-full object-cover mr-2" :src="post.author.avatar" alt="avatar">
-            <p class="text-gray-800 text-base leading-none mr-2">@{{ post.author.uniqueName }}</p>
+            <n-link :to="`/user/${post.author.uniqueName}`" class="flex items-center hover:underline">
+              <img class="w-8 h-8 rounded-full object-cover mr-2" :src="post.author.avatar" alt="avatar">
+              <p class="text-gray-800 text-base leading-none mr-2">@{{ post.author.uniqueName }}</p>
+            </n-link>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
               <i class="mdi mdi-clock-outline"/>{{ getDate(post.insertedAt) }}
             </p>
             <p class="text-gray-600 text-base leading-none whitespace-no-wrap mr-2">
               <i class="mdi mdi-update"/>{{ getDate(post.updatedAt) }}
             </p>
+            <p v-if="isLoggedIn" class="text-sm text-gray-600 hover:underline ml-auto">
+              <n-link :to="`/post/${post.url}/edit`">
+                <i class="mdi mdi-pencil"/>{{ $t('post.edit') }}
+              </n-link>
+            </p>
           </div>
-
-          <p class="text-4xl font-semibold">{{ post.title }}</p>
+          
+          <!-- タイトル -->
+          <h1 class="w-full text-4xl font-semibold break-words">{{ post.title }}</h1>
 
           <div class="flex flex-wrap">
             <n-link
               v-for="(tag, index) in post.tags"
-              :to="`/tag/${tag}`"
+              :to="`/tag/${tag.urlName}`"
               :key="index"
               class="bg-gray-100 rounded hover:underline cursor-pointer px-2 py-1 m-1">
-                #{{ tag.urlName }}
+                #{{ tag.name }}
             </n-link>
           </div>
 
@@ -69,11 +77,19 @@
       </div>
 
       <FloatingAlertBox
-        @close="successful = false"
-        v-if="successful"
+        @close="createdSuccessful = false"
+        :isShow="createdSuccessful"
         bgColor="bg-green-500"
         textColor="text-white"
-        :message="$t('post.successful')"
+        :message="$t('post.successful.created')"
+      />
+
+      <FloatingAlertBox
+        @close="updatedSuccessful = false"
+        :isShow="updatedSuccessful"
+        bgColor="bg-blue-500"
+        textColor="text-white"
+        :message="$t('post.successful.updated')"
       />
 
     </div>
@@ -82,7 +98,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import 'highlight.js/styles/obsidian.css'
+import 'prismjs-material-theme/css/darker.css'
 
 import mavonEditor from 'mavon-editor'
 import PersonCard from '~/components/PersonCard.vue'
@@ -92,6 +108,7 @@ import FloatingAlertBox from '~/components/FloatingAlertBox.vue'
 import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { UserDetail } from '~/apollo/schemas/userDetail'
 import { TYPES } from '~/dependencyInjection/types'
 import { Post } from '~/apollo/schemas/post'
 import dayjs from 'dayjs'
@@ -110,11 +127,14 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostReposit
 })
 export default class Article extends Vue {
   markdownIt = null
-  successful: boolean = false
+  createdSuccessful: boolean = false
+  updatedSuccessful: boolean = false
 
   post!: Post
   likeCount = 0
   isLiked = false
+
+  currentUser!: UserDetail
 
   async asyncData({ store, params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
@@ -134,34 +154,33 @@ export default class Article extends Vue {
         }
       }
 
-      return state
+      return { ...state, currentUser }
     }
   }
 
   async mounted() {
-    this.successful = this.$store.getters['getPostSuccessful']
+    this.createdSuccessful = this.$store.getters['getPostCreatedSuccessful']
+    this.updatedSuccessful = this.$store.getters['getPostUpdatedSuccessful']
+
     // @ts-ignore
     const hljs = require('highlight.js')
 
     // @ts-ignore
-    this.markdownIt = mavonEditor.mavonEditor.getMarkdownIt()
+    this.markdownIt = require('markdown-it')({
+      html: true,
+      typographer: true,
+      breaks: true,
+    })
+    .use(require('markdown-it-emoji'))
+    .use(require('markdown-it-sub'))
+    .use(require('markdown-it-sup'))
+    .use(require('markdown-it-prism'))
+  }
 
-    if (this.markdownIt) {
-      // @ts-ignore
-      this.markdownIt.options.highlight = function (str: string, lang: string) {
-        if (lang && hljs.getLanguage(lang)) {
-          try {
-            return '<pre class="hljs"><div class="mx-8"><code>' +
-                  hljs.highlight(lang, str, true).value +
-                  '</code></div></pre>'
-          } catch (__) {}
-        }
-
-        if (this.markdownIt) {
-          return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
-        }
-      }
-    }
+  get isLoggedIn() {
+    if (!this.currentUser) return false
+    if (!this.post) return false
+    if (this.post.author.uniqueName == this.currentUser.uniqueName) return true
   }
 
   getDate(date: string) {
@@ -183,6 +202,7 @@ export default class Article extends Vue {
 
     return false
   }
+
 }
 </script>
 
@@ -260,9 +280,7 @@ export default class Article extends Vue {
   @apply p-1 bg-gray-200 rounded;
 }
 .markdown pre {
-  @apply text-base;
-}
-.markdown pre {
+  @apply text-base px-8;
   margin: 1rem -33px;
 }
 .markdown pre code {

@@ -8,12 +8,12 @@
               <h1 class="text-gray-800 font-bold text-xl mb-3">Upcoming Tags</h1>
               <div class="h-96 flex flex-col overflow-y-auto">
                 <n-link
-                  :to="`/tag/${tag}`"
+                  :to="`/tag/${tag.urlName}`"
                   v-for="(tag, index) in tags"
                   :key="index"
                   class="hover:underline p-1 m-1"
                 >
-                  #{{ tag }}
+                  #{{ tag.name }}
                 </n-link>
               </div>
             </div>
@@ -67,12 +67,13 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostReposit
 })
 export default class IndexPage extends Vue {
   isSidebar: boolean = false
-  tags: string[] = [
-    'docker', 'linux', 'webpack', 'unix', 'java',
-    'rust', 'typescript', 'discord', 'python', 'babel',
-    'unixporn', 'algorithm', 'nodetree', 'binary', 'json',
-    'graphql', 'rest-api', 'webassembly', 'elm', 'vscode',
-  ]
+  tags: {}[] = [
+    { "name": "docker" }, { "name": "linux" }, { "name": "webpack" }, { "name": "unix" },
+    { "name": "java" }, { "name": "rust" }, { "name": "typescript" }, { "name": "discord" },
+    { "name": "python" }, { "name": "babel" }, { "name": "unixporn" }, { "name": "algorithm" },
+    { "name": "nodetree" }, { "name": "binary" }, { "name": "json" }, { "name": "graphql" },
+    { "name": "rest-api" }, { "name": "webassembly" }, { "name": "elm" }, { "name": "vscode" }
+  ] 
 
   async asyncData({ store, app: { $auth } }: Context) {
     const { metadata, entries } = await PostRepo.getPublicPosts({})

@@ -6,6 +6,7 @@ export default {
   myPosts: 'My Posts',
   likedPosts: 'Liked Posts',
   error: 'An error occured. Please contact to administrator',
+  redirecting: 'Redirecting...',
 
   user: {
     login: 'Log in',
@@ -17,22 +18,26 @@ export default {
   
   post: {
     title: 'Title',
+    titlePlaceholder: 'Enter the title',
     tags: 'Tags',
+    tagsPlaceholder: 'Add a tag',
     state: {
       published: 'Publish',
       private: 'Private',
       draft: 'Draft',
     },
-    successful: 'Post has been successfully created!',
+    successful: {
+      created: 'Post has been successfully created!',
+      updated: 'Post has been successfully updated!',
+    },
     failed: {
       title: 'Title is required',
       body: 'Body is required'
     },
-  },
-
-  newPost: {
-    publish: 'Publish',
+    edit: 'Edit',
     save: 'Save',
+    publish: 'Publish',
+    update: 'Update',
     tagsWarn: 'Tags must be small letter alphabetical or numeric.',
   },
 

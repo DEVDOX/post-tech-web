@@ -39,7 +39,7 @@ const config: Configuration = {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
-    'cookie-universal-nuxt'
+    'cookie-universal-nuxt',
   ],
 
   modules: [
@@ -72,13 +72,6 @@ const config: Configuration = {
       langDir: 'lang/',
       defaultLocale: 'jp',
       strategy: 'no_prefix'
-    }],
-    ['@nuxt/typescript-build', {
-      typeCheck: {
-        memoryLimit: 4096,
-        workers: 2
-      },
-      ignoreNotFoundWarnings: false
     }],
   ],
 
@@ -118,7 +111,7 @@ const config: Configuration = {
     google: {
       families: [
         'Source+Sans+Pro:400,600,700',
-        'Noto+Sans+JP:wght@400;700',
+        'Noto+Sans+JP:wght@300;700',
       ]
     }
   },

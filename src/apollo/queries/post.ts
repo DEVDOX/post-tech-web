@@ -220,7 +220,10 @@ export const UPDATE_POST_QUERY = gql`
       result {
         title
         body
-        tags
+        tags {
+          id
+          name
+        }
         state
       }
       successful
