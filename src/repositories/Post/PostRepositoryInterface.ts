@@ -6,6 +6,7 @@ import {
   PaginatedPostResult
 } from '~/apollo/schemas/result'
 import { UserDetailType } from '~/types/graphql'
+import {Tag} from '~/apollo/schemas/tag'
 
 export default interface PostRepositoryInterface {
   getUserPostByUrl(url: string): Promise<Post>
@@ -25,6 +26,7 @@ export default interface PostRepositoryInterface {
   ): Promise<PaginatedPostResult>
 
   getPublicPosts(metadata: Metadata): Promise<PaginatedPostResult>
+  searchTagsByCharacter(char: string): Promise<Tag[]>
 
   /* Mutations for Likes */
   getLike(url: string): Promise<Like>

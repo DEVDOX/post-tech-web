@@ -9,7 +9,7 @@
               <LikeIcon :liked.sync="isLiked" className="text-xl"/>
             </button>
             <p class="w-10 lg:w-12 text-xl font-bold text-center hover:underline">
-              <n-link :to="`/post/${post.url}/likes`">{{ likeCount }}</n-link>
+              <n-link :to="`/post/${post.url}/likes`">{{ 0 }}</n-link>
             </p>
           </div>
         </div>
@@ -41,8 +41,8 @@
             </n-link>
           </div>
 
-          <div class="markdown mt-16">
-            <div v-if="markdownIt" v-html="markdownIt.render(post.body)"></div>
+          <div v-if="markdownIt" class="markdown mt-16">
+            <div v-html="markdownIt.render(post.body)"></div>
           </div>
 
           <hr class="my-16">
@@ -112,15 +112,15 @@ export default class Article extends Vue {
   markdownIt = null
   successful: boolean = false
 
-  private post: Post | null = null
-  private likeCount = 0
-  private isLiked = false
+  post!: Post
+  likeCount = 0
+  isLiked = false
 
   async asyncData({ store, params: { url } }: Context) {
     const post = await PostRepo.getUserPostByUrl(url)
-    const currentUser = store.getters['getAuthUser']
 
     if (post && post.likes) {
+      const currentUser = store.getters['getAuthUser']
 
       const state: any = {
         post,
@@ -136,13 +136,13 @@ export default class Article extends Vue {
 
       return state
     }
-
   }
 
   async mounted() {
     this.successful = this.$store.getters['getPostSuccessful']
     // @ts-ignore
     const hljs = require('highlight.js')
+
     // @ts-ignore
     this.markdownIt = mavonEditor.mavonEditor.getMarkdownIt()
 
@@ -168,17 +168,20 @@ export default class Article extends Vue {
     return dayjs(date).format('YYYY/MM/DD')
   }
 
-  async updateLikes(): Promise<void> {
+  async updateLikes(): Promise<Boolean> {
+    if (!this.post) return false
+
     this.isLiked = !this.isLiked
-    if (!this.post ) return
 
     if (this.isLiked) {
       await PostRepo.addLike(this.post.url)
       this.likeCount++;
     } else {
       await PostRepo.deleteLike(this.post.url)
-      this.likeCount--
+      this.likeCount--;
     }
+
+    return false
   }
 }
 </script>

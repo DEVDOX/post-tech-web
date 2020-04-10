@@ -25,6 +25,7 @@
           </label>
           <TagsInputCompletion
             id="tags"
+            ref="tagCompletion"
             :validate="tagInputResult"
             :existTags="queryData"
             @inputChanged="checkValidation"
@@ -111,16 +112,13 @@ import { serviceContainer } from '~/dependencyInjection/container'
 
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { Tag } from '../../apollo/schemas/tag'
 
 
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(
   TYPES.PostRepositoryInterface
 )
 
-interface Tag {
-  id?: number
-  name: string
-}
 type Tags = Array<Tag>
 type postState = 'published' | 'private' | 'draft';
 
@@ -157,15 +155,8 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   isFullscreen: boolean = false
   tagInputResult: boolean = false
   selectedTags: Tags = []
-  queryData: Tags = [
-    {name: 'java'},
-    {name: 'javascript'},
-    {name: 'json'},
-    {name: 'test'},
-    {name: 'typescript'},
-    {name: 'webdevelopment'},
-    {name: 'window10'},
-  ]
+
+  queryData: Tags = []
 
   visibilityState: postState = 'private' // APIからデータを取る
   submitIcon: string = 'upload' // APIからデータを取る
@@ -208,15 +199,20 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     window.addEventListener('keypress', () => this.isBlockUnload = true)
   }
 
-  checkValidation(value: string) {
-    this.sendQuery(value)
-    return validate(value, 'tag').then(result => {
-      if (result.valid) {
-        this.tagInputResult = true
-      } else {
-        this.tagInputResult = false
-      }
+  async checkValidation(value: string) {
+    this.$nextTick(() => {
+      validate(value, 'tag').then(result => {
+        if (result.valid) {
+          this.tagInputResult = true
+        } else {
+          this.tagInputResult = false
+        }
+      })
     })
+
+    await this.sendQuery(value)
+
+    (this.$refs.tagCompletion as TagsInputCompletion).searchTag();
   }
 
   updateTags(tags: Tags) {
@@ -224,9 +220,8 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   }
 
   async sendQuery(char: string) {
-    const data = this.queryData // await PostRepo.searchTagsByCharacter(char)
-
-    return { searchResults: data }
+    const data = await PostRepo.searchTagsByCharacter(char)
+    this.queryData = data
   }
 
   async createPost() {
@@ -284,7 +279,7 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     redo: true,
     fullscreen: true,
     readmodel: false,
-    htmlcode: false,
+    htmlcode: true,
     trash: true,
     save: false,
     navigation: true

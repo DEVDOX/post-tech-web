@@ -30,17 +30,6 @@ export const GET_POST_BY_URL = gql`
     }
   }
 `
-
-export const SEARCH_TAGS = gql`
-  query searchTags($char: String!) {
-    searchTags(char: $char) {
-      id
-      name
-      urlName
-    }
-  }
-`
-
 export const GET_POSTS_BY_TAG = gql`
   query getPostsByTag($url: String, $metadata: MetadataInput) {
     result: getPostsByTag(url: $url, metadata: $metadata) {
@@ -268,3 +257,12 @@ export const DELETE_LIKE_QUERY = gql`
   }
 `
 
+export const SEARCH_TAGS = gql`
+  mutation searchTags($char: String!) {
+    deleteLike(char: $char) {
+      id
+      name
+      urlName
+    }
+  }
+`

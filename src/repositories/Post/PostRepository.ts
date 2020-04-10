@@ -10,7 +10,8 @@ import {
   UPDATE_POST_QUERY,
   DELETE_LIKE_QUERY,
   ADD_LIKE_QUERY,
-  GET_LIKE
+  GET_LIKE,
+  SEARCH_TAGS
 } from '~/apollo/queries/post'
 import {
   Metadata,
@@ -18,6 +19,7 @@ import {
   MutateLikeResult,
   MutatePostResult
 } from '~/apollo/schemas/result'
+import { Tag } from '~/apollo/schemas/tag'
 import PostRepositoryInterface from './PostRepositoryInterface'
 import { Post, Like } from '~/apollo/schemas/post'
 
@@ -33,6 +35,17 @@ export default class PostRepository extends BaseRepository
     })
 
     return post
+  }
+
+  async searchTagsByCharacter(char: string): Promise<Tag[]> {
+    const {
+      data: { searchTags }
+    } = await global._$app.apolloProvider.defaultClient.query({
+      query: SEARCH_TAGS,
+      variables: { char }
+    })
+
+    return searchTags
   }
 
   async getUserPostsById(userId: number): Promise<PaginatedPostResult> {
