@@ -25,7 +25,6 @@
           </label>
           <TagsInputCompletion
             id="tags"
-            ref="tagCompletion"
             :validate="tagInputResult"
             :existTags="queryData"
             @inputChanged="checkValidation"
@@ -113,7 +112,7 @@ import { serviceContainer } from '~/dependencyInjection/container'
 
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
-import { Post } from '../../apollo/schemas/post'
+import { Post, postState } from '../../apollo/schemas/post'
 import { Tag } from '~/apollo/schemas/tag'
 
 
@@ -121,8 +120,7 @@ const PostRepo = serviceContainer.get<PostRepositoryInterface>(
   TYPES.PostRepositoryInterface
 )
 
-type Tags = Array<Tag>
-type postState = 'published' | 'private' | 'draft';
+type Tags = Array<Tag>;
 
 extend('required', required)
 extend('tag', {
@@ -157,8 +155,15 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   isFullscreen: boolean = false
   tagInputResult: boolean = false
   selectedTags: Tags = []
-
-  queryData: Tags = []
+  queryData: Tags = [
+    {name: 'java'},
+    {name: 'javascript'},
+    {name: 'json'},
+    {name: 'test'},
+    {name: 'typescript'},
+    {name: 'webdevelopment'},
+    {name: 'window10'},
+  ]
 
   visibilityState: postState = 'private'
   submitIcon: string = 'upload'
@@ -203,10 +208,13 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
 
   checkValidation(value: string) {
     this.sendQuery(value)
-
-
-
-    (this.$refs.tagCompletion as TagsInputCompletion).searchTag();
+    return validate(value, 'tag').then(result => {
+      if (result.valid) {
+        this.tagInputResult = true
+      } else {
+        this.tagInputResult = false
+      }
+    })
   }
 
   updateTags(tags: Tags) {
@@ -214,8 +222,9 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   }
 
   async sendQuery(char: string) {
-    const data = await PostRepo.searchTagsByCharacter(char)
-    this.queryData = data
+    const data = this.queryData // await PostRepo.searchTagsByCharacter(char)
+
+    return { searchResults: data }
   }
 
   async createPost() {
@@ -301,3 +310,4 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   @apply border-red-500;
 }
 </style>
+
