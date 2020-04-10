@@ -49,6 +49,7 @@ export default {
   },
 
   options: {
+    enable: '有効にする',
     save: '保存',
     profile: 'プロフィール',
     account: 'アカウント',
@@ -62,6 +63,8 @@ export default {
     email: 'メールアドレス',
     link: '連携する',
     linked: '連携済み',
+    showLike: 'いいねした記事の可視化',
+    showLikeDescription: '自分がいいねした記事を他のユーザーに見えるようにするか',
     language: '言語',
   },
 

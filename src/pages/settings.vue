@@ -2,6 +2,8 @@
   <div class="mx-3 lg:mx-64">
     <ValidationObserver v-slot="{ invalid }">
       <div class="grid grid-cols-4 col-gap-8">
+
+        <!-- ボタンやバーなど -->
         <div id="sidebar" class="col-span-4 lg:col-span-1 mb-4">
           <button
             class="w-full btn btn-blue mb-5"
@@ -26,7 +28,10 @@
           </div>
         </div>
 
+        <!-- メインの設定欄 -->
         <div id="main" class="col-span-4 lg:col-span-3 card p-8">
+
+          <!-- プロフィール設定 -->
           <div :class="tabId == 'profile' ? 'block' : 'hidden'">
             <div class="flex justify-center">
               <div class="w-96 mb-8">
@@ -113,8 +118,9 @@
             </div>
           </div>
 
+          <!-- アカウント設定 -->
           <div :class="tabId == 'account' ? 'block' : 'hidden'">
-            <div class="mb-6">
+            <!-- <div class="mb-6">
               <label class="text-sm text-gray-700" for="email">{{ $t('options.email') }}</label>
               <ValidationProvider rules="required|email" v-slot="{ invalid, errors }">
                 <input
@@ -128,7 +134,7 @@
                 >
                 <p v-show="errors.length" class="text-xs text-red-500">{{ errors[0] }}</p>
               </ValidationProvider>
-            </div>
+            </div> -->
             <div class="flex flex-col mb-6">
               <div class="mb-3">
                 <button class="w-32 btn btn-twitter mr-3">
@@ -147,7 +153,25 @@
             </div>
           </div>
 
+          <!-- 基本設定 -->
           <div :class="tabId == 'preference' ? 'block' : 'hidden'">
+            <!-- showLikesができたらコメントアウトする -->
+            <!-- <div class="mb-6">
+              <label class="text-sm text-gray-700">{{ $t('options.showLike') }}</label>
+              <p class="text-xs text-gray-600">{{ $t('options.showLikeDescription') }}</p>
+              <div class="flex items-center m-3">
+                <input
+                  id="show-like"
+                  type="checkbox"
+                  value="ja"
+                  class="mr-2"
+                  :checked="updatedUser.showLikes == true"
+                >
+                <label for="show-like">
+                  {{ $t('options.enable') }}
+                </label>
+              </div>
+            </div> -->
             <div class="mb-6">
               <label class="text-sm text-gray-700">{{ $t('options.language') }}</label>
               <div class="flex items-center m-3">
@@ -157,7 +181,7 @@
                   type="radio"
                   value="ja"
                   class="mr-2"
-                  :checked="updatedUser.languageCode == 'ja'"
+                  :checked="updatedUser.localeCode == 'ja'"
                 >
                 <label for="japanese">
                   日本語
@@ -171,7 +195,7 @@
                   type="radio"
                   value="en"
                   class="mr-2"
-                  :checked="updatedUser.languageCode == 'en'"
+                  :checked="updatedUser.localeCode == 'en'"
                 >
                 <label for="english">
                   English
