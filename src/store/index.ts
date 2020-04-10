@@ -80,7 +80,9 @@ export const actions: Actions<RootState, RootState> = {
           email,
           avatar: avatar_url,
           displayName: login,
-          uniqueName: login
+          uniqueName: login,
+          // @ts-ignore
+          //localeCode: this.$cookies.get('i18n_redirected')
         })
 
         if (successful && result) {
