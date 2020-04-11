@@ -30,6 +30,12 @@
           :article="post"
           class="mb-2"
         />
+        <client-only>
+          <infinite-loading
+            ref="infiniteLoading"
+            @infinite="infiniteLoad">
+          </infinite-loading>
+        </client-only>
       </div>
 
       <div v-if="currentUser" id="toc" class="w-full col-span-12 xl:col-span-3">
@@ -50,11 +56,15 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import ArticleCard from '~/components/ArticleCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
+import infiniteLoading from 'vue-infinite-loading'
+
 import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
 import { UserRepositoryInterface, PostRepositoryInterface } from '~/dependencyInjection/interfaces'
 import { TYPES } from '~/dependencyInjection/types'
 import { UserDetail } from '../apollo/schemas/userDetail'
+import { Post } from '../apollo/schemas/post'
+import InfiniteLoading from 'vue-infinite-loading'
 
 const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserRepositoryInterface)
 const PostRepo = serviceContainer.get<PostRepositoryInterface>(TYPES.PostRepositoryInterface)
@@ -75,15 +85,38 @@ export default class IndexPage extends Vue {
     { "name": "rest-api" }, { "name": "webassembly" }, { "name": "elm" }, { "name": "vscode" }
   ] 
 
+  publicPosts!: Array<Post>
+  next!: string | undefined
+
   async asyncData({ store, app: { $auth } }: Context) {
     const { metadata, entries } = await PostRepo.getPublicPosts({})
     return {
-      publicPosts: entries
+      publicPosts: entries,
+      next: metadata.after
     }
   }
 
   get currentUser() {
     return this.$store.getters['getAuthUser']
+  }
+
+  counter: number = 0
+
+  async infiniteLoad($state: any) {
+    if (!this.next) {
+      $state.complete()
+      return
+    }
+
+    const { metadata, entries } = await PostRepo.getPublicPosts({after: this.next})
+    this.counter++
+    console.log(this.counter)
+    console.log('metadata', metadata)
+    console.log('entries', entries)
+
+    this.publicPosts.push(...entries)
+    this.next = metadata.after
+    $state.loaded()
   }
 }
 </script>

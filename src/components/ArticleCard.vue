@@ -52,7 +52,7 @@ export default class ArticleCard extends Vue {
   }
 
   getDate(date: string) {
-    return dayjs(this.article.insertedAt).format('YYYY/MM/DD')
+    return dayjs(date).format('YYYY/MM/DD')
   }
 
   tagUrl(urlName: string) {

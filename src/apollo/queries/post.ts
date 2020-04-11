@@ -18,8 +18,6 @@ export const GET_POST_BY_URL = gql`
         urlName
       }
       body
-      insertedAt
-      updatedAt
       author {
         id
         uniqueName
@@ -27,6 +25,8 @@ export const GET_POST_BY_URL = gql`
         avatar
         displayName
       }
+      insertedAt
+      updatedAt
     }
   }
 `
@@ -64,6 +64,8 @@ export const GET_POSTS_BY_TAG = gql`
           avatar
           displayName
         }
+        insertedAt
+        updatedAt
       }
     }
   }
@@ -83,6 +85,7 @@ export const GET_USER_POSTS_BY_ID = gql`
         urlName
       }
       entries {
+        state
         title
         url
         tags {
@@ -97,6 +100,8 @@ export const GET_USER_POSTS_BY_ID = gql`
           avatar
           displayName
         }
+        insertedAt
+        updatedAt
       }
     }
   }
@@ -117,6 +122,7 @@ export const GET_PUBLIC_POSTS = gql`
           name
           urlName
         }
+        state
         body
         author {
           id
@@ -125,6 +131,8 @@ export const GET_PUBLIC_POSTS = gql`
           avatar
           displayName
         }
+        insertedAt
+        updatedAt
       }
     }
   }
