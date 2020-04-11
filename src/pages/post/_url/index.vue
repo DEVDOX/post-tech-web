@@ -74,23 +74,22 @@
         />
       </div>
 
-      <FloatingAlertBox
-        @close="createdSuccessful = false"
-        :isShow="createdSuccessful"
-        bgColor="bg-green-500"
-        textColor="text-white"
-        :message="$t('post.successful.created')"
-      />
-
-      <FloatingAlertBox
-        @close="updatedSuccessful = false"
-        :isShow="updatedSuccessful"
-        bgColor="bg-blue-500"
-        textColor="text-white"
-        :message="$t('post.successful.updated')"
-      />
-
     </div>
+    <FloatingAlertBox
+      @close="createdSuccessful = false"
+      :isShow="createdSuccessful"
+      bgColor="bg-green-500"
+      textColor="text-white"
+      :message="$t('post.successful.created')"
+    />
+
+    <FloatingAlertBox
+      @close="updatedSuccessful = false"
+      :isShow="updatedSuccessful"
+      bgColor="bg-blue-500"
+      textColor="text-white"
+      :message="$t('post.successful.updated')"
+    />
   </div>
 </template>
 

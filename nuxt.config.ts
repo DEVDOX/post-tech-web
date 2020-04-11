@@ -32,6 +32,7 @@ const config: Configuration = {
     '~/plugins/serviceContainer',
     '~/plugins/inject',
     '~/plugins/i18n',
+    { src: '~/plugins/vue-infinite-loading', ssr: false },
   ],
 
   buildModules: [

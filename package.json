@@ -48,6 +48,7 @@
     "tailwindcss-rfs": "^3.0.0",
     "vee-validate": "^3.2.5",
     "vue-clickaway": "^2.2.2",
+    "vue-infinite-loading": "^2.4.5",
     "vue-tailwind": "^0.4.6",
     "vuex-module-decorators": "^0.16.1"
   },
