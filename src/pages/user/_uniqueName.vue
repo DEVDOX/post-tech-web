@@ -21,26 +21,42 @@
               </button>
             </nav>
           </div>
-          <!-- last:border-b-0 が効いてない -->
-          <div v-if="currentTab == 'mine'">
+
+          <!-- 自分の記事 -->
+          <div v-show="currentTab == 'mine'">
             <ArticleCard
-              v-for="(article, index) in posts"
+              v-for="(article, index) in myPosts"
               :article="article"
               :key="index"
-              :card="false"
-              :hover="false"
               class="border-b last:border-b-0 p-4"
             />
+            <client-only>
+              <infinite-loading
+                @infinite="loadMyPosts">
+              </infinite-loading>
+            </client-only>
           </div>
-          <div v-if="currentTab == 'liked'">
-            <p>TEST</p>
+
+          <!-- いいねした記事 -->
+          <div v-show="currentTab == 'liked'">
+            <ArticleCard
+              v-for="(article, index) in likedPosts"
+              :article="article"
+              :key="index"
+              class="border-b last:border-b-0 p-4"
+            />
+            <client-only>
+              <infinite-loading
+                @infinite="loadLikedPosts">
+              </infinite-loading>
+            </client-only>
           </div>
+
         </div>
       </div>
       <div id="sidebar" class="w-full col-span-3 lg:col-span-1">
         <PersonCard
           :card="true"
-          :hover="false"
           :user="user"
         >
           <hr class="my-5">
@@ -58,12 +74,15 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import ArticleCard from '~/components/ArticleCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
+
 import { serviceContainer } from '~/dependencyInjection/container'
 import PostRepository from '~/repositories/Post/PostRepository'
-import { PostRepositoryInterface, UserRepositoryInterface } from '../../dependencyInjection/interfaces'
-import { TYPES } from '../../dependencyInjection/types'
+import { PostRepositoryInterface, UserRepositoryInterface } from '~/dependencyInjection/interfaces'
+import { TYPES } from '~/dependencyInjection/types'
 import { Context } from '@nuxt/types'
-import { UserDetail } from '../../apollo/schemas/userDetail'
+import { UserDetail } from '~/apollo/schemas/userDetail'
+import { Post } from '~/apollo/schemas/post'
+import InfiniteLoading from 'vue-infinite-loading'
 
 type articleType = 'mine' | 'liked'
 
@@ -73,7 +92,8 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserReposit
 @Component({
   components: {
     ArticleCard,
-    PersonCard
+    PersonCard,
+    InfiniteLoading
   }
 })
 export default class UserPage extends Vue {
@@ -90,12 +110,47 @@ export default class UserPage extends Vue {
 
   async asyncData({ params }: Context) {
     const user = await UserRepo.getUserByUName(params.uniqueName)
+    // ユーザーの投稿
     const { entries, metadata } = await PostRepo.getUserPostsByUName(user.uniqueName, {})
 
     return {
       user,
-      posts: entries
+      myPosts: entries,
+      myPostsNext: metadata.after,
+      likedPosts: entries,
+      likedPostsNext: metadata.after
     }
+  }
+
+  myPosts!: Array<Post>
+  likedPosts!: Array<Post>
+  myPostsNext!: string | undefined
+  likedPostsNext!: string | undefined
+
+  async loadMyPosts($state: any) {
+    if (!this.myPostsNext) {
+      $state.complete()
+      return
+    }
+
+    const { entries, metadata } = await PostRepo.getUserPostsByUName(this.user.uniqueName, {after: this.myPostsNext})
+
+    this.myPosts = this.myPosts.concat(entries)
+    this.myPostsNext = metadata.after
+    $state.loaded()
+  }
+
+  async loadLikedPosts($state: any) {
+    if (!this.likedPostsNext) {
+      $state.complete()
+      return
+    }
+
+    const { entries, metadata } = await PostRepo.getUserPostsByUName(this.user.uniqueName, {after: this.likedPostsNext})
+
+    this.likedPosts = this.likedPosts.concat(entries)
+    this.likedPostsNext = metadata.after
+    $state.loaded()
   }
 }
 </script>

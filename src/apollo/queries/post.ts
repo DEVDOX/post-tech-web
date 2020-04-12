@@ -77,6 +77,11 @@ export const GET_POSTS_BY_TAG = gql`
 export const GET_USER_POSTS_BY_ID = gql`
   query getUserPostsById($userId: Integer) {
     posts: getUserPostsById(userId: $userId) {
+      metadata {
+        after
+        before
+        limit
+      }
       title
       url
       state
@@ -160,6 +165,8 @@ export const GET_USER_POSTS_BY_U_NAME = gql`
           avatar
           displayName
         }
+        insertedAt
+        updatedAt
       }
     }
   }

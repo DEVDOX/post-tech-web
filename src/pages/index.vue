@@ -56,7 +56,6 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import ArticleCard from '~/components/ArticleCard.vue'
 import PersonCard from '~/components/PersonCard.vue'
-import infiniteLoading from 'vue-infinite-loading'
 
 import { Context } from '@nuxt/types'
 import { serviceContainer } from '~/dependencyInjection/container'
@@ -100,8 +99,6 @@ export default class IndexPage extends Vue {
     return this.$store.getters['getAuthUser']
   }
 
-  counter: number = 0
-
   async infiniteLoad($state: any) {
     if (!this.next) {
       $state.complete()
@@ -109,10 +106,6 @@ export default class IndexPage extends Vue {
     }
 
     const { metadata, entries } = await PostRepo.getPublicPosts({after: this.next})
-    this.counter++
-    console.log(this.counter)
-    console.log('metadata', metadata)
-    console.log('entries', entries)
 
     this.publicPosts.push(...entries)
     this.next = metadata.after
