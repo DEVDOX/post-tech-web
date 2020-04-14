@@ -81,6 +81,7 @@ export const LOGIN_QUERY = gql`
       result {
         token
         userDetail {
+          id
           displayName
           uniqueName
           avatar

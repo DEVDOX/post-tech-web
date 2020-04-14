@@ -21,4 +21,5 @@ export interface Post {
   author: UserDetail
   insertedAt: string
   updatedAt: string
+  likeCount: number
 }

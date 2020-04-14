@@ -5,8 +5,8 @@ import gql from 'graphql-tag'
  * returns Post
  */
 export const GET_POST_BY_URL = gql`
-  query getPostByUrl($url: String) {
-    post: getPostByUrl(url: $url) {
+  query postByUrl($url: String) {
+    post: postByUrl(url: $url) {
       title
       url
       state
@@ -30,6 +30,40 @@ export const GET_POST_BY_URL = gql`
     }
   }
 `
+/*
+ * Gets a single Post by the given url
+ * returns Post
+ */
+export const GET_USER_LIKED_POSTS = gql`
+  query userLikedPosts($uniqueName: String!, $metadata: MetadataInput) {
+    userLikedPosts(uniqueName: $uniqueName, metadata: $metadata) {
+      metadata {
+        after
+        before
+        limit
+      }
+      entries {
+        title
+        url
+        tags {
+          name
+          urlName
+        }
+        state
+        body
+        author {
+          id
+          uniqueName
+          tagline
+          avatar
+          displayName
+        }
+        insertedAt
+        updatedAt
+      }
+    }
+  }
+`
 
 export const SEARCH_TAGS = gql`
   query searchTags($char: String!) {
@@ -42,8 +76,8 @@ export const SEARCH_TAGS = gql`
 `
 
 export const GET_POSTS_BY_TAG = gql`
-  query getPostsByTag($url: String, $metadata: MetadataInput) {
-    result: getPostsByTag(url: $url, metadata: $metadata) {
+  query postsByTag($url: String, $metadata: MetadataInput) {
+    result: postsByTag(url: $url, metadata: $metadata) {
       metadata {
         after
         before
@@ -75,8 +109,8 @@ export const GET_POSTS_BY_TAG = gql`
  * Get a paginated post object for a specific user
  */
 export const GET_USER_POSTS_BY_ID = gql`
-  query getUserPostsById($userId: Integer) {
-    posts: getUserPostsById(userId: $userId) {
+  query userPostsById($userId: Integer) {
+    posts: userPostsById(userId: $userId) {
       metadata {
         after
         before
@@ -113,8 +147,8 @@ export const GET_USER_POSTS_BY_ID = gql`
 `
 
 export const GET_PUBLIC_POSTS = gql`
-  query getPublicPosts($metadata: MetadataInput) {
-    result: getPublicPosts(metadata: $metadata) {
+  query publicPosts($metadata: MetadataInput) {
+    result: publicPosts(metadata: $metadata) {
       metadata {
         after
         before
@@ -138,14 +172,15 @@ export const GET_PUBLIC_POSTS = gql`
         }
         insertedAt
         updatedAt
+        likeCount
       }
     }
   }
 `
 
 export const GET_USER_POSTS_BY_U_NAME = gql`
-  query getUserPostsByUName($uniqueName: String!, $metadata: MetadataInput) {
-    result: getUserPostsByUName(uniqueName: $uniqueName, metadata: $metadata) {
+  query userPostsByUName($uniqueName: String!, $metadata: MetadataInput) {
+    result: userPostsByUName(uniqueName: $uniqueName, metadata: $metadata) {
       metadata {
         after
         before
@@ -172,10 +207,9 @@ export const GET_USER_POSTS_BY_U_NAME = gql`
   }
 `
 
-/* Mutations */
 export const GET_USER_DETAIL = gql`
-  query user($strategy: String, $strategyId: String) {
-    user: getUserDetail(strategy: $strategy, strategyId: $strategyId) {
+  query userDetail($strategy: String, $strategyId: String) {
+    user: userDetail(strategy: $strategy, strategyId: $strategyId) {
       company
       displayName
       id
@@ -187,6 +221,7 @@ export const GET_USER_DETAIL = gql`
   }
 `
 
+/* Mutations */
 export const CREATE_POST_QUERY = gql`
   mutation createPost($params: CreatePostParams!) {
     post: createPost(params: $params) {
@@ -270,8 +305,8 @@ export const ADD_LIKE_QUERY = gql`
 `
 
 export const GET_LIKE = gql`
-  query getLike($url: String!) {
-    getLike(url: $url) {
+  query Like($url: String!) {
+    Like(url: $url) {
       id
       insertedAt
     }

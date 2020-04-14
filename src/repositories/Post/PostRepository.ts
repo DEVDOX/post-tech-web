@@ -4,9 +4,11 @@ import {
   CREATE_POST_QUERY,
   GET_USER_POSTS_BY_U_NAME,
   GET_USER_POSTS_BY_ID,
+  GET_USER_LIKED_POSTS,
   GET_PUBLIC_POSTS,
   GET_POST_BY_URL,
   GET_POSTS_BY_TAG,
+
   UPDATE_POST_QUERY,
   DELETE_LIKE_QUERY,
   ADD_LIKE_QUERY,
@@ -35,6 +37,17 @@ export default class PostRepository extends BaseRepository
     })
 
     return post
+  }
+
+  async getUserLikedPosts(uniqueName: string, metadata = <Metadata>{}): Promise<PaginatedPostResult> {
+    const {
+      data: { userLikedPosts }
+    } = await global._$app.apolloProvider.defaultClient.query({
+      query: GET_USER_LIKED_POSTS,
+      variables: { uniqueName, metadata }
+    })
+
+    return userLikedPosts
   }
 
   async searchTagsByCharacter(char: string): Promise<Tag[]> {

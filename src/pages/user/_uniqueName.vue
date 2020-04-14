@@ -99,6 +99,11 @@ const UserRepo = serviceContainer.get<UserRepositoryInterface>(TYPES.UserReposit
 export default class UserPage extends Vue {
   private user!: UserDetail
   tab: articleType = 'mine'
+  myPosts!: Array<Post>
+  likedPosts!: Array<Post>
+  myPostsNext!: string | undefined
+  likedPostsNext!: string | undefined
+
 
   get currentTab() {
     return this.tab
@@ -111,21 +116,19 @@ export default class UserPage extends Vue {
   async asyncData({ params }: Context) {
     const user = await UserRepo.getUserByUName(params.uniqueName)
     // ユーザーの投稿
-    const { entries, metadata } = await PostRepo.getUserPostsByUName(user.uniqueName, {})
+    const userPosts = await PostRepo.getUserPostsByUName(user.uniqueName, {})
+    const userLikedPosts = await PostRepo.getUserLikedPosts(user.uniqueName, {})
+    console.log(userLikedPosts)
 
     return {
       user,
-      myPosts: entries,
-      myPostsNext: metadata.after,
-      likedPosts: entries,
-      likedPostsNext: metadata.after
+      myPosts: userPosts.entries,
+      myPostsNext: userPosts.metadata.after,
+
+      likedPosts: userLikedPosts.entries,
+      likedPostsNext: userLikedPosts.metadata.after
     }
   }
-
-  myPosts!: Array<Post>
-  likedPosts!: Array<Post>
-  myPostsNext!: string | undefined
-  likedPostsNext!: string | undefined
 
   async loadMyPosts($state: any) {
     if (!this.myPostsNext) {
@@ -146,7 +149,7 @@ export default class UserPage extends Vue {
       return
     }
 
-    const { entries, metadata } = await PostRepo.getUserPostsByUName(this.user.uniqueName, {after: this.likedPostsNext})
+    const { entries, metadata } = await PostRepo.getUserLikedPosts(this.user.uniqueName, {after: this.likedPostsNext})
 
     this.likedPosts = this.likedPosts.concat(entries)
     this.likedPostsNext = metadata.after

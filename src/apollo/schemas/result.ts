@@ -18,8 +18,6 @@ export interface IErrorResult {
   status: number
 }
 
-export type PaginatedPostResult = PaginatedResult<Post[]>
-
 export interface Metadata {
   after?: string
   before?: string
@@ -32,6 +30,8 @@ export interface PaginatedResult<T> {
   metadata: Metadata
   entries: T
 }
+
+export type PaginatedPostResult = PaginatedResult<Post[]>
 
 export type MutateLikeResult = MutateResult<Like>
 export type MutatePostResult = MutateResult<Post>

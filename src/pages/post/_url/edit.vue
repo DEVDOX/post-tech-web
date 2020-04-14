@@ -140,8 +140,13 @@ extend('tag', {
   }
 })
 export default class EditPost extends mixins(BlockUnloadMixin) {
-  async asyncData({ params: { url } }: Context) {
+  async asyncData({ redirect, store, params: { url } }: Context) {
+    const currentUser = store.getters['getAuthUser']
     const post = await PostRepo.getUserPostByUrl(url)
+
+    if (post.author.id !== currentUser.id) {
+      return redirect('/')
+    }
 
     return {
       post,

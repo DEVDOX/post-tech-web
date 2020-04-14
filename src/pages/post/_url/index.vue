@@ -33,7 +33,7 @@
               </n-link>
             </p>
           </div>
-          
+
           <!-- タイトル -->
           <h1 class="w-full text-4xl font-semibold break-words">{{ post.title }}</h1>
 
@@ -176,7 +176,8 @@ export default class Article extends Vue {
                   '</code></div></pre>'
           } catch (__) {}
         } else {
-          return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
+          if (this.markdownIt)
+            return '<pre class="hljs"><div class="mx-8"><code>' + this.markdownIt.utils.escapeHtml(str) + '</code></div></pre>'
         }
       },
     })

@@ -82,7 +82,7 @@ export default class IndexPage extends Vue {
     { "name": "python" }, { "name": "babel" }, { "name": "unixporn" }, { "name": "algorithm" },
     { "name": "nodetree" }, { "name": "binary" }, { "name": "json" }, { "name": "graphql" },
     { "name": "rest-api" }, { "name": "webassembly" }, { "name": "elm" }, { "name": "vscode" }
-  ] 
+  ]
 
   publicPosts!: Array<Post>
   next!: string | undefined

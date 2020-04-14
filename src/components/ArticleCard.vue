@@ -16,7 +16,9 @@
           <p class="text-gray-700 leading-none no-underline text-base mr-3">@{{ article.author.uniqueName }}</p>
         </n-link>
         <p class="text-gray-700 mr-3">
-          <LikeIcon :liked="false"/>{{ $t('like') }}<span class="ml-1 font-semibold">15</span>
+          <LikeIcon :liked="false"/>
+          {{ $t('like') }}
+          <span class="ml-1 font-semibold">{{ article.likeCount }}</span>
         </p>
         <p class="text-gray-700 text-sm ml-auto"><i class="mdi mdi-clock-outline"/>{{ getDate(article.insertedAt) }}</p>
         <p class="text-gray-700 text-sm ml-2"><i class="mdi mdi-update"/>{{ getDate(article.updatedAt) }}</p>
