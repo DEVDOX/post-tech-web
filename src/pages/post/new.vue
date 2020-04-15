@@ -26,8 +26,8 @@
           <TagsInputCompletion
             id="tags"
             :validate="tagInputResult"
-            :existTags="queryData"
-            @inputChanged="checkValidation"
+            :existTags="existTags"
+            @inputChanged="inputChanged"
             @tagsChanged="updateTags"
             :placeholder="$t('post.tagsPlaceholder')"
           />
@@ -155,15 +155,10 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   isFullscreen: boolean = false
   tagInputResult: boolean = false
   selectedTags: Tags = []
-  queryData: Tags = [
-    {name: 'java'},
-    {name: 'javascript'},
-    {name: 'json'},
-    {name: 'test'},
-    {name: 'typescript'},
-    {name: 'webdevelopment'},
-    {name: 'window10'},
-  ]
+  searchResults: Tags = []
+  get existTags(): Tags {
+    return this.searchResults
+  }
 
   visibilityState: postState = 'private'
   submitIcon: string = 'upload'
@@ -206,7 +201,7 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
     window.addEventListener('keypress', () => this.isBlockUnload = true)
   }
 
-  checkValidation(value: string) {
+  inputChanged(value: string) {
     this.sendQuery(value)
     return validate(value, 'tag').then(result => {
       if (result.valid) {
@@ -222,9 +217,9 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   }
 
   async sendQuery(char: string) {
-    const data = this.queryData // await PostRepo.searchTagsByCharacter(char)
+    const data = await PostRepo.searchTagsByCharacter(char)
 
-    return { searchResults: data }
+    this.searchResults = data
   }
 
   async createPost() {
