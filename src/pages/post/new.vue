@@ -236,24 +236,7 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
       this.isBlockUnload = false
       this.$store.commit('CREATED_POST', true)
       await this.$router.push(`/post/${result.url}`)
-    }/* else {
-      if (messages) {
-        this.message = ''
-        for (let message of messages) {
-          switch (message.field) {
-            case 'title':
-              this.message += this.$root.$tc('post.failed.title')
-              break
-            case 'body':
-              this.message += this.$root.$tc('post.failed.body')
-              break
-          }
-        }
-        this.isFailed = true
-      } else {
-        this.message = this.$root.$tc('error')
-      }
-    }*/
+    }
   }
 
   // user.language?をゲットして、mavonEditorに適用する

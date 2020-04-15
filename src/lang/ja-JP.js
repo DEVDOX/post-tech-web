@@ -5,8 +5,12 @@ export default {
   areYouSure: '本当にページから移動しても良いですか？',
   myPosts: '自分の記事',
   likedPosts: 'いいねした記事',
-  error: '原因不明のエラーが起きました。管理人にコンタクトを行ってください。',
   redirecting: 'リダイレクト中...',
+
+  error: {
+    invalid: '原因不明のエラーが起きました。管理人にコンタクトを行ってください。',
+    404: '指定されたページが見つかりませんでした。'
+  },
 
   user: {
     login: 'ログイン',
@@ -75,5 +79,13 @@ export default {
     url: 'このフィールドはhttp://もしくはhttps://が必要です。',
     max: '{_value_}は長すぎます。{length}文字以下にしてください。',
     min: '{_value_}は短すぎます。{length}文字以上にしてください。',
+  },
+
+  infinite: {
+    noResults: {
+      index: '記事を増やしましょう！',
+      myPost: 'もっと他の記事も書いてみましょう！',
+      likes: '他の記事にもいいねをつけてみましょう！',
+    },
   },
 }

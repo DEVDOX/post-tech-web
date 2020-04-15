@@ -5,8 +5,12 @@ export default {
   areYouSure: 'Are you sure you want to exit?',
   myPosts: 'My Posts',
   likedPosts: 'Liked Posts',
-  error: 'An error occured. Please contact to administrator',
   redirecting: 'Redirecting...',
+
+  error: {
+    invalid: 'An error occured. Please contact to administrator',
+    404: 'The specified page could not be found.'
+  },
 
   user: {
     login: 'Log in',
@@ -75,5 +79,13 @@ export default {
     url: 'This field require "http://" or "https://".',
     max: '{_value_} is too long. It should be less than {length} characters.',
     min: '{_value_} is too short. It should be at least {length} characters.',
+  },
+
+  infinite: {
+    noResults: {
+      index: 'Would you like to write more article too? :)',
+      myPost: 'Write more articles! :D',
+      likes: 'Give more like to another post! ;)',
+    },
   },
 }

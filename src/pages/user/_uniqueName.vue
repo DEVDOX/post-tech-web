@@ -32,7 +32,9 @@
             />
             <client-only>
               <infinite-loading
-                @infinite="loadMyPosts">
+                @infinite="loadMyPosts"
+              >
+                <div slot="no-results" class="text-gray-700 text-sm mt-5">{{ $t('infinite.noResults.myPost') }}</div>
               </infinite-loading>
             </client-only>
           </div>
@@ -47,7 +49,9 @@
             />
             <client-only>
               <infinite-loading
-                @infinite="loadLikedPosts">
+                @infinite="loadLikedPosts"
+              >
+                <div slot="no-results" class="text-gray-700 text-sm mt-5">{{ $t('infinite.noResults.likes') }}</div>
               </infinite-loading>
             </client-only>
           </div>
