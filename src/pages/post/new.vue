@@ -112,7 +112,7 @@ import { serviceContainer } from '~/dependencyInjection/container'
 
 import { TYPES } from '~/dependencyInjection/types'
 import { PostRepositoryInterface } from '~/dependencyInjection/interfaces'
-import { Post, postState } from '../../apollo/schemas/post'
+import { Post, postState } from '~/apollo/schemas/post'
 import { Tag } from '~/apollo/schemas/tag'
 
 
