@@ -35,7 +35,7 @@
           v-bind:class="{
             'tags-input-typeahead-item-default': index != searchSelection,
             'tags-input-typeahead-item-highlighted-default': index == searchSelection
-        }"
+          }"
         >
           {{ tag.name }}
         </li>
