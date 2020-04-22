@@ -66,8 +66,9 @@ export default class TagsInputCompletion extends Vue {
   @Prop() existTags!: Tags
   @Prop({ default: false }) validate!: boolean
   @Prop({ default: 7 }) maxResults!: number
+  @Prop({ default: [] }) gotTags!: Tags
 
-  tags: Tags = []
+  tags: Tags = this.gotTags
   searchResults: Tags = this.existTags
   searchSelection: number = 0
   input: string = ''
