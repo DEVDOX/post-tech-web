@@ -26,13 +26,12 @@
           <TagsInputCompletion
             id="tags"
             :validate="tagInputResult"
-            :existTags="existTags"
+            :existTags="searchResults"
             @inputChanged="inputChanged"
             @tagsChanged="updateTags"
             :placeholder="$t('post.tagsPlaceholder')"
           />
           <p class="text-sm">テスト用: {{ selectedTags }}</p>
-          <small class="text-xs text-gray-600">{{ $t('post.tagsWarn') }}</small>
         </div>
       </div>
 
@@ -156,9 +155,6 @@ export default class NewPost extends mixins(BlockUnloadMixin) {
   tagInputResult: boolean = false
   selectedTags: Tags = []
   searchResults: Tags = []
-  get existTags(): Tags {
-    return this.searchResults
-  }
 
   visibilityState: postState = 'private'
   submitIcon: string = 'upload'

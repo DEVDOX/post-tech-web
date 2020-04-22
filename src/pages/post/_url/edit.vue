@@ -26,13 +26,12 @@
           <TagsInputCompletion
             id="tags"
             :validate="tagInputResult"
-            :existTags="queryData"
-            @inputChanged="checkValidation"
+            :existTags="searchResults"
+            @inputChanged="inputChanged"
             @tagsChanged="updateTags"
             :placeholder="$t('post.tagsPlaceholder')"
           />
           <p class="text-sm">テスト用: {{ selectedTags }}</p>
-          <small class="text-xs text-gray-600">{{ $t('post.tagsWarn') }}</small>
         </div>
       </div>
 
@@ -171,15 +170,7 @@ export default class EditPost extends mixins(BlockUnloadMixin) {
   isFullscreen: boolean = false
   tagInputResult: boolean = false
   selectedTags: Tags = []
-  queryData: Tags = [
-    {name: 'java'},
-    {name: 'javascript'},
-    {name: 'json'},
-    {name: 'test'},
-    {name: 'typescript'},
-    {name: 'webdevelopment'},
-    {name: 'window10'},
-  ]
+  searchResults: Tags = []
 
   visibilityState: postState = 'private'
   submitIcon: string = 'sync'
@@ -238,7 +229,7 @@ export default class EditPost extends mixins(BlockUnloadMixin) {
     window.addEventListener('keypress', () => this.isBlockUnload = true)
   }
 
-  checkValidation(value: string) {
+  inputChanged(value: string) {
     this.sendQuery(value)
     return validate(value, 'tag').then(result => {
       if (result.valid) {
@@ -254,7 +245,7 @@ export default class EditPost extends mixins(BlockUnloadMixin) {
   }
 
   async sendQuery(char: string) {
-    const data = this.queryData // await PostRepo.searchTagsByCharacter(char)
+    const data = await PostRepo.searchTagsByCharacter(char)
 
     return { searchResults: data }
   }

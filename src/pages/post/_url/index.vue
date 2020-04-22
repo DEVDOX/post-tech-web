@@ -203,10 +203,10 @@ export default class Article extends Vue {
 
     if (this.isLiked) {
       await PostRepo.addLike(this.post.url)
-      this.likeCount++;
+      this.likeCount++
     } else {
       await PostRepo.deleteLike(this.post.url)
-      this.likeCount--;
+      this.likeCount--
     }
 
     return false
