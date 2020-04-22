@@ -27,11 +27,13 @@
             id="tags"
             :validate="tagInputResult"
             :existTags="searchResults"
+            :gotTags="editPost.tags"
             @inputChanged="inputChanged"
             @tagsChanged="updateTags"
             :placeholder="$t('post.tagsPlaceholder')"
           />
           <p class="text-sm">テスト用: {{ selectedTags }}</p>
+          <small class="text-xs text-gray-600">{{ $t('post.tagsWarn') }}</small>
         </div>
       </div>
 
@@ -147,13 +149,19 @@ export default class EditPost extends mixins(BlockUnloadMixin) {
       return redirect('/')
     }
 
+    const editedTags: Tags = post.tags.map(tag => {
+      if (tag.__typename) delete tag.__typename
+      if (tag.urlName) delete tag.urlName
+      return tag
+    })
+
     return {
       post,
       editPost: {
         title: post.title,
         body: post.body,
         state: post.state,
-        tags: post.tags,
+        tags: editedTags,
         url: post.url
       },
       visibilityState: post.state

@@ -32,6 +32,7 @@
             :placeholder="$t('post.tagsPlaceholder')"
           />
           <p class="text-sm">テスト用: {{ selectedTags }}</p>
+          <small class="text-xs text-gray-600">{{ $t('post.tagsWarn') }}</small>
         </div>
       </div>
 
