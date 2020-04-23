@@ -6,6 +6,7 @@ export default {
   myPosts: 'My Posts',
   likedPosts: 'Liked Posts',
   redirecting: 'Redirecting...',
+  trend: 'Trending Tags',
 
   error: {
     invalid: 'An error occured. Please contact to administrator',

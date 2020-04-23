@@ -5,7 +5,7 @@
         <div>
           <div :class="isSidebar ? 'block' : 'hidden'" class="h-screen lg:h-auto fixed lg:static z-30 top-0 left-0 bg-white lg:bg-transparent lg:block mt-12 lg:mt-0">
             <div class="relative px-2 pb-2 pt-3 lg:pt-0">
-              <h1 class="text-gray-800 font-bold text-xl mb-3">Upcoming Tags</h1>
+              <h1 class="text-gray-800 font-bold text-xl mb-3">{{ $t('trend') }}</h1>
               <div class="h-96 flex flex-col overflow-y-auto">
                 <n-link
                   :to="`/tag/${tag.urlName}`"

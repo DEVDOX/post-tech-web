@@ -6,6 +6,7 @@ export default {
   myPosts: '自分の記事',
   likedPosts: 'いいねした記事',
   redirecting: 'リダイレクト中...',
+  trend: 'トレンドのタグ',
 
   error: {
     invalid: '原因不明のエラーが起きました。管理人にコンタクトを行ってください。',
