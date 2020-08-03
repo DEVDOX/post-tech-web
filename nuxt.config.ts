@@ -27,7 +27,7 @@ const config: Configuration = {
   ],
 
   plugins: [
-    '~/plugins/tailwind-vue',
+//    '~/plugins/tailwind-vue',
     '~/plugins/vue-apollo',
     '~/plugins/serviceContainer',
     '~/plugins/inject',
@@ -36,13 +36,7 @@ const config: Configuration = {
   ],
 
   buildModules: [
-    ['@nuxt/typescript-build', {
-      typeCheck: {
-        memoryLimit: 4096,
-        workers: 2
-      },
-      ignoreNotFoundWarnings: false
-    }],
+    '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/tailwindcss',
     'cookie-universal-nuxt',
