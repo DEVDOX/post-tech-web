@@ -34,7 +34,7 @@
           <infinite-loading
             @infinite="infiniteLoad"
           >
-          <p slot="no-results" class="text-gray-700 text-sm">{{ $t('infinite.noResults.index') }}</p>
+            <p slot="no-results" class="text-gray-700 text-sm">{{ $t('infinite.noResults.index') }}</p>
           </infinite-loading>
         </client-only>
       </div>

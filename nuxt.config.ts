@@ -109,9 +109,9 @@ const config: Configuration = {
   //   nuxti18n: true
   // },
 
-  proxy: {
-    '/api/': process.env.SSR_API_URL
-  },
+  // proxy: {
+  //   '/api/': process.env.SSR_API_URL
+  // },
 
   webfontloader: {
     google: {

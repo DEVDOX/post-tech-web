@@ -4,12 +4,12 @@
 			"path": "."
 		}
 	],
-"settings": {
-	"eslint.nodePath": "./node_modules/eslint",
-	"eslint.packageManager": "yarn",
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	},
-	"eslint.alwaysShowStatus": true
-}
+	"settings": {
+		"eslint.nodePath": "./node_modules/eslint",
+		"eslint.packageManager": "yarn",
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": true
+		},
+		"eslint.alwaysShowStatus": true
+	}
 }
