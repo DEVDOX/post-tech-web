@@ -4,6 +4,9 @@ const fileName = `.env.${process.env.NODE_ENV || 'local'}`
 require('dotenv').config({ path: fileName })
 
 const config: Configuration = {
+  server: {
+    host: '0.0.0.0'
+  },
   srcDir: 'src/',
   mode: 'universal',
   head: {
