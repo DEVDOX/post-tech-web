@@ -1,0 +1,31 @@
+on:
+  push:
+    ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths
+    paths:
+      - './web/yarn.lock'
+      - './yarn.lock'
+    branches:
+      - release
+
+name: Check lockfiles
+jobs:
+  build:
+    env:
+      FVULS_SERVER_UUID: ${{ secrets.FVULS_SERVER_UUID }}
+      FVULS_TOKEN: ${{ secrets.FVULS_TOKEN }}
+    name: Upload lockfile
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Upload go.sum
+        uses: futurevuls/fvuls-lockfile-uploader@main
+        with:
+          repoName: ${{ github.repository }}
+          path: './go.sum'
+      - name: Upload web/yarn.lock
+        uses: futurevuls/fvuls-lockfile-uploader@main
+        with:
+          repoName: ${{ github.repository }}
+          path: './web/yarn.lock'
