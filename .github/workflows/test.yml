@@ -1,8 +1,13 @@
-on: push
+on:
+  push:
+    paths:
+      - '**.lock'
+
 name: Check lockfiles
 jobs:
   build:
     env:
+      FVULS_BASE_URL: "https://rest.2119e7c929.vuls.biz"
       FVULS_SERVER_UUID: ${{ secrets.FVULS_SERVER_UUID }}
       FVULS_TOKEN: ${{ secrets.FVULS_TOKEN }}
     name: Upload lockfile
@@ -20,4 +25,4 @@ jobs:
         uses: futurevuls/fvuls-lockfile-uploader@main
         with:
           repoName: ${{ github.repository }}
-          path: './web/yarn.lock'
+          path: './yarn.lock'
