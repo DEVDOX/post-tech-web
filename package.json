@@ -1,7 +1,6 @@
 {
   "name": "post-techs",
   "version": "1.0.0",
-  "description": "My doozie Nuxt.js project",
   "author": "rikusen0335",
   "private": true,
   "scripts": {
@@ -20,8 +19,7 @@
     "nuxt": "^2.0.0",
     "nuxt-i18n": "^6.7.0",
     "nuxt-property-decorator": "^2.5.1",
-    "nuxt-webfontloader": "^1.1.0",
-    "vue-tailwind": "^0.4.6"
+    "nuxt-webfontloader": "^1.1.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
