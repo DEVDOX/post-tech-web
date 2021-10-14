@@ -2,6 +2,7 @@ on:
   push:
     paths:
       - 'yarn.lock'
+      - 'web/yarn.lock'
 
 name: Check lockfiles
 jobs:
