@@ -1,10 +1,4 @@
-on:
-  push:
-    ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#onpushpull_requestpaths
-    paths:
-      - './web/yarn.lock'
-      - './yarn.lock'
-
+on: push
 name: Check lockfiles
 jobs:
   build:
